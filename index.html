@@ -12,8 +12,48 @@
 <link rel="stylesheet" href="css/site.css">
 </head>
 <body>
-<header class="topo"></header>
-<main></main>
+<header class="topo">
+  <div class="topo__barra env">
+    <a class="topo__logo" href="index.html" aria-label="v0n — início">
+      <img src="img/logo.svg" width="140" height="56" alt="v0n">
+    </a>
+
+    <button class="topo__alterna" type="button" aria-expanded="false" aria-controls="menu-principal" aria-label="Abrir menu">
+      <span class="topo__icone" aria-hidden="true"></span>
+    </button>
+
+    <nav class="topo__nav" id="menu-principal" aria-label="Principal">
+      <ul class="topo__menu">
+        <li><a href="#trabalhos">Trabalhos</a></li>
+        <li><a href="#servicos">Serviços</a></li>
+        <li><a href="#quem-faz">Quem faz</a></li>
+      </ul>
+      <!-- Número pendente. Quando existir, o link vira: https://wa.me/NUMERO?text=Oi!%20Vim%20pelo%20site.%20Queria%20entender%20como%20funciona%20pro%20meu%20neg%C3%B3cio. -->
+      <a class="btn btn--ouro topo__cta" href="#contato-pendente">Chamar no WhatsApp</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <section class="hero">
+    <div class="env hero__conteudo">
+      <p class="rotulo">Agência solo · Remoto</p>
+      <h1 class="t1">Sites que vendem enquanto você atende</h1>
+      <p class="hero__texto">Sites e landing pages para negócios que atendem cliente no presencial: clínica, barbearia, loja, oficina.</p>
+      <a class="btn" href="#contato-pendente">Chamar no WhatsApp</a>
+    </div>
+  </section>
+</main>
 <footer class="rodape"></footer>
+<script>
+(function(){
+  var alterna = document.querySelector('.topo__alterna');
+  var topo = document.querySelector('.topo');
+  alterna.addEventListener('click', function(){
+    var aberto = topo.classList.toggle('menu-aberto');
+    alterna.setAttribute('aria-expanded', aberto);
+    alterna.setAttribute('aria-label', aberto ? 'Fechar menu' : 'Abrir menu');
+  });
+})();
+</script>
 </body>
 </html>
