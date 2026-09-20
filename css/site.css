@@ -260,3 +260,37 @@ a{color:inherit}
 @media (max-width:719px){
   .cards{grid-template-columns:1fr}
 }
+
+/* ===== Quem faz ===== */
+.quemfaz{margin:32px 0 0; max-width:640px}
+.quemfaz p{margin:0}
+.quemfaz .rotulo{margin:0 0 12px}
+
+/* ===== Fecho ===== */
+.fecho{max-width:640px; margin-inline:auto; text-align:center}
+.fecho__texto{margin:0 0 32px}
+
+/* ===== Rodape ===== */
+.rodape{border-top:1px solid var(--linha); padding-block:32px}
+.rodape__conteudo{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:16px 24px;
+}
+.rodape__logo{display:block; color:var(--aco)}
+.rodape__assinatura,
+.rodape__ano{
+  margin:0;
+  font:500 13px/1 'IBM Plex Mono', ui-monospace, monospace;
+  color:var(--aco);
+}
+.rodape__contato{
+  margin-inline-start:auto;
+  font:500 13px/1 'IBM Plex Mono', ui-monospace, monospace;
+  text-transform:uppercase;
+  letter-spacing:.09em;
+  color:var(--aco);
+  text-decoration:none;
+}
+.rodape__contato:hover{color:var(--osso)}
