@@ -1,0 +1,38 @@
+/* Tokens da identidade v0n. Fonte: MazyOS/identidade/design-guide.md */
+:root{
+  --carbono:#121317;  --grafite:#1B1D23;
+  --linha:#2A2D35;    --aco:#8C96A3;   /* valor confirmado no Step 2 */
+  --osso:#ECEDE8;     --ouro:#FFC531;
+  --sucesso:#3FBF7F;
+  --env:1120px;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:var(--carbono);
+  color:var(--osso);
+  font:400 17px/1.6 'Space Grotesk', system-ui, sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+
+.env{width:min(100% - 40px, var(--env)); margin-inline:auto}
+
+.t1{font-size:clamp(38px, 7vw, 64px); font-weight:700; letter-spacing:-.02em; line-height:1.05;
+    text-shadow:0 0 28px rgb(236 237 232 / .18); margin:0}
+.t2{font-size:clamp(28px, 4.4vw, 44px); font-weight:700; letter-spacing:-.02em; line-height:1.1;
+    text-shadow:0 0 22px rgb(236 237 232 / .14); margin:0}
+.t3{font-size:28px; font-weight:700; letter-spacing:-.02em; line-height:1.15; margin:0}
+
+.rotulo{font:500 13px/1 'IBM Plex Mono', ui-monospace, monospace;
+        text-transform:uppercase; letter-spacing:.09em; color:var(--aco)}
+
+p{max-width:65ch}
+
+a{color:inherit}
+:focus-visible{outline:2px solid var(--ouro); outline-offset:3px}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation:none !important; transition:none !important; scroll-behavior:auto !important}
+}
