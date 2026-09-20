@@ -28,6 +28,13 @@ body{
 .rotulo{font:500 13px/1 'IBM Plex Mono', ui-monospace, monospace;
         text-transform:uppercase; letter-spacing:.09em; color:var(--aco)}
 
+/* Etiqueta de seção encostada numa régua de 1px — ficha técnica, não menu. */
+.ficha-eyebrow{display:flex; align-items:center; gap:16px; margin:0 0 28px}
+.ficha-eyebrow::after{content:''; flex:1 1 auto; height:1px; background:var(--linha)}
+
+/* Caixa alta seletiva: uma palavra do título vira ficha, sem outro efeito. */
+.t1__marca{text-transform:uppercase}
+
 p{max-width:65ch}
 
 a{color:inherit}
@@ -100,9 +107,9 @@ a{color:inherit}
   padding:0;
   background:transparent;
   border:1px solid var(--linha);
-  border-radius:7px;
   color:var(--osso);
   cursor:pointer;
+  clip-path:polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
 }
 .topo__alterna:hover{border-color:var(--aco)}
 .topo__icone{
@@ -147,7 +154,9 @@ a{color:inherit}
     top:100%;
     padding:24px 20px 28px;
     background:var(--grafite);
-    border-bottom:1px solid var(--linha);
+    border:1px solid var(--linha);
+    border-top:none;
+    clip-path:polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
   }
   html.js .topo.menu-aberto .topo__nav{display:flex}
 }
@@ -172,7 +181,15 @@ a{color:inherit}
   gap:24px;
   margin:48px 0 0;
 }
+/* Moldura dura: duas camadas com o mesmo corte de 45°, a de fora 1px maior.
+   Um `border` comum some exatamente na diagonal do clip-path; isto não. */
 .travas__item{
+  background:var(--linha);
+  padding:1px;
+  clip-path:polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 0 100%);
+}
+.travas__caixa{
+  height:100%;
   background:var(--grafite);
   padding:clamp(24px, 4vw, 32px);
   clip-path:polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 0 100%);
@@ -195,14 +212,19 @@ a{color:inherit}
 }
 .passo{
   padding-top:24px;
-  border-top:2px solid var(--linha);
+  border-top:1px solid var(--linha);
+}
+.passo__ficha{
+  display:flex;
+  align-items:baseline;
+  gap:12px;
+  margin:0 0 16px;
 }
 .passo__num{
-  display:block;
   font:500 40px/1 'IBM Plex Mono', ui-monospace, monospace;
   color:var(--ouro);
   text-shadow:0 0 24px rgb(255 197 49 / .45);
-  margin:0 0 16px;
+  margin:0;
 }
 .passo .t3{margin:0 0 10px}
 .passo p{margin:0}
