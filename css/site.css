@@ -168,6 +168,19 @@ a{color:inherit}
 .hero .t1{margin-bottom:28px}
 .hero__texto{margin:0 0 36px}
 
+@media (max-width:719px){
+  /* Correcao: sem isto, 360px com JS media ZERO ouro preenchido visivel -
+     o do topo entra no menu colapsado, o do hero era so contorno. Abaixo
+     de 720px com JS, o CTA do hero vira o preenchido no lugar do topo. */
+  html.js .hero .btn{background:var(--ouro); border-color:var(--ouro); color:var(--carbono)}
+  html.js .hero .btn:hover{filter:brightness(.93)}
+
+  /* Com o menu aberto, o proprio CTA do menu fica visivel de novo - o do
+     hero volta a contorno pra nunca juntar dois ouros preenchidos na tela. */
+  html.js .topo.menu-aberto ~ main .hero .btn{background:transparent; color:var(--osso)}
+  html.js .topo.menu-aberto ~ main .hero .btn:hover{background:color-mix(in srgb, var(--ouro) 12%, transparent); filter:none}
+}
+
 /* ===== Seção (ritmo vertical padrão, a partir daqui) ===== */
 .secao{
   padding-block:clamp(64px, 10vw, 120px);
