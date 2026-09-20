@@ -109,6 +109,43 @@ Fonte da verdade: `MazyOS/identidade/design-guide.md`. O que o site herda:
 **Um botão ouro por tela:** o do topo e o do fecho nunca aparecem juntos na
 mesma rolagem. CTA intermediária é de traço, não preenchida.
 
+## Direção visual: estilo do Hermes, cor da v0n
+
+> Acrescentado em 20/09/2026, durante a execução, a pedido do Kauã:
+> referência https://hermes-agent.nousresearch.com — *"eu quero o estilo, a
+> cor podemos colocar da minha marca mesmo"*.
+
+O que o Hermes é, medido no CSS dele: fundo claro (`#fdfdfd`, `#f5f5f5`),
+azul elétrico `#0000f2` como assinatura, amarelo `#ffcd42`, e tipografia
+mono/comprimida licenciada (`Aeonik Fono Pro`, `Rules Gothic Compressed`,
+`Hermes Legacy Mono`).
+
+**Nada disso entra em cor.** A paleta segue sendo a da v0n — carbono e ouro,
+azul proibido. O amarelo deles (`#ffcd42`) é quase o ouro da marca
+(`#FFC531`), e essa coincidência é o único ponto onde as duas já se tocavam.
+
+**O que entra é o vocabulário estrutural:**
+
+- **Mono em toda etiqueta**, caixa alta, tracking +9%: nome de seção, número,
+  prazo, categoria, estado. IBM Plex Mono faz o papel do mono do Hermes.
+- **Seção numerada e nomeada** — `01 / O QUE TRAVA`, `02 / MÉTODO` — como
+  ficha técnica, não como menu de marketing.
+- **Régua fina de 1px** (`--linha`) separando blocos, com o rótulo encostado
+  nela. A régua é o ornamento; não existe outro.
+- **Painel de moldura dura**, canto chanfrado a 45°, sem sombra e sem
+  gradiente.
+- **Bloco denso tipo ficha**: pares rótulo → valor em mono, alinhados em
+  grade, no lugar de parágrafo quando a informação for enumerável.
+- **Título grande com tracking negativo**, caixa alta seletiva, muito respiro
+  em volta. O contraste de escala é o que impressiona, não o efeito.
+- **Zero ilustração genérica, zero ícone decorativo, zero gradiente.**
+
+**Tipografia permanece em duas famílias** — Space Grotesk e IBM Plex Mono. O
+Hermes usa display comprimido licenciado; imitar isso exigiria uma terceira
+família, e a revisão de 20/09 do design-guide cortou a terceira de propósito.
+O papel do display comprimido é feito por Space Grotesk 700 em escala grande
+com tracking negativo.
+
 ## Card do link no WhatsApp
 
 O primeiro contato do público 1 com o site não é o site — é a miniatura dentro
