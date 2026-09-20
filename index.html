@@ -25,7 +25,9 @@
 
     <nav class="topo__nav" id="menu-principal" aria-label="Principal">
       <ul class="topo__menu">
-        <li><a href="#trabalhos">Trabalhos</a></li>
+        <!-- Item "Trabalhos" volta quando #trabalhos (abaixo, no <main>) for
+             descomentado - material dos cases ainda nao chegou (Tarefa 4). -->
+        <!-- <li><a href="#trabalhos">Trabalhos</a></li> -->
         <li><a href="#servicos">Serviços</a></li>
         <li><a href="#quem-faz">Quem faz</a></li>
       </ul>
@@ -97,6 +99,35 @@
       </ol>
     </div>
   </section>
+
+  <!--
+    Secao "Trabalhos" (03) - pendencia do Kaua: falta nome, print e link de
+    cada case (spec "Pendencias assumidas"). Nao inventar case nenhum, nem
+    nome, nem print, nem numero - seção vazia com "em breve" e pior que
+    seção nenhuma. Bloco pronto: so descomentar quando o material chegar,
+    trocar cada [placeholder] e duplicar o <article class="card"> por
+    trabalho. Usa a mesma .cards/.card dos Serviços (04, abaixo) - o CSS
+    nao esta morto so por esta secao estar comentada. Descomentar tambem
+    o item "Trabalhos" no menu do topo, no mesmo commit.
+
+  <section class="secao" id="trabalhos">
+    <div class="env">
+      <p class="rotulo ficha-eyebrow">03 / TRABALHOS</p>
+      <h2 class="t2">Trabalhos</h2>
+      <div class="cards">
+        <article class="card">
+          <div class="card__corpo">
+            <p class="rotulo">[Ramo do negócio]</p>
+            <h3 class="t3">[Nome do negócio]</h3>
+            <p>[Uma linha do que mudou - sem número inventado]</p>
+            <p><a href="cases/[nome-do-negocio].html">Ver o trabalho</a></p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  -->
 </main>
 <footer class="rodape"></footer>
 <script>

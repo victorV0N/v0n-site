@@ -232,3 +232,31 @@ a{color:inherit}
 @media (max-width:719px){
   .passos{grid-template-columns:1fr; gap:32px}
 }
+
+/* ===== Cards (grade de trabalhos comentada + servicos) ===== */
+.cards{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:24px;
+  margin:48px 0 0;
+}
+/* Mesma moldura de duas camadas de .travas__item (task-3-report.md linha 56):
+   um border comum some exatamente no corte de 45°, isto nao. */
+.card{
+  background:var(--linha);
+  padding:1px;
+  clip-path:polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 0 100%);
+}
+.card__corpo{
+  height:100%;
+  background:var(--grafite);
+  padding:clamp(24px, 4vw, 32px);
+  clip-path:polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 0 100%);
+}
+.card .rotulo{margin:0 0 12px}
+.card .t3{margin:0 0 12px}
+.card p{margin:0}
+
+@media (max-width:719px){
+  .cards{grid-template-columns:1fr}
+}
