@@ -127,22 +127,29 @@ a{color:inherit}
 .topo__alterna[aria-expanded="true"] .topo__icone::after{top:0; transform:rotate(-45deg)}
 
 @media (max-width:719px){
-  .topo__alterna{display:inline-flex}
+  /* Sem JS: o nav (links + CTA) fica visível, só empilhado. Nada aqui depende de script. */
+  .topo__barra{flex-wrap:wrap; row-gap:20px}
   .topo__nav{
+    flex-direction:column;
+    align-items:stretch;
+    gap:20px;
+    width:100%;
+  }
+  .topo__menu{flex-direction:column; align-items:flex-start; gap:16px}
+  .topo__cta{width:100%}
+
+  /* Com JS: a classe .js (aplicada no <html> antes da pintura) autoriza o colapso. */
+  html.js .topo__alterna{display:inline-flex}
+  html.js .topo__nav{
     display:none;
     position:absolute;
     inset-inline:0;
     top:100%;
-    flex-direction:column;
-    align-items:stretch;
-    gap:20px;
     padding:24px 20px 28px;
     background:var(--grafite);
     border-bottom:1px solid var(--linha);
   }
-  .topo.menu-aberto .topo__nav{display:flex}
-  .topo__menu{flex-direction:column; align-items:flex-start; gap:16px}
-  .topo__cta{width:100%}
+  html.js .topo.menu-aberto .topo__nav{display:flex}
 }
 
 /* ===== Hero ===== */
