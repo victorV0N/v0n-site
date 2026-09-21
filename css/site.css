@@ -255,31 +255,57 @@ html:not(.js) .entra-regua::after{transform:none}
   border-top:1px solid var(--linha);
 }
 
-/* ===== O que trava hoje ===== */
-.travas{
-  display:grid;
-  grid-template-columns:repeat(2, 1fr);
-  gap:24px;
-  margin:48px 0 0;
+/* ===== 01 / Diagnóstico ===== */
+.diag{
+  background:var(--sup);
+  border:1px solid var(--borda);
+  border-radius:var(--raio-g);
+  padding:clamp(20px, 4vw, 40px);
+  margin-top:40px;
 }
-/* Moldura dura: duas camadas com o mesmo corte de 45°, a de fora 1px maior.
-   Um `border` comum some exatamente na diagonal do clip-path; isto não. */
-.travas__item{
-  background:var(--linha);
-  padding:1px;
-  clip-path:polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 0 100%);
-}
-.travas__caixa{
-  height:100%;
-  background:var(--grafite);
-  padding:clamp(24px, 4vw, 32px);
-  clip-path:polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 0 100%);
-}
-.travas__item .t3{margin:0 0 12px}
-.travas__item p{margin:0}
+.diag__lista{list-style:none; margin:0; padding:0; display:grid; gap:28px}
+.diag__item{display:grid; gap:14px}
+.diag__pergunta{margin:0; max-width:52ch; font-weight:500}
+.diag__num{color:var(--aco); margin-right:10px; text-shadow:0 0 14px rgb(140 150 163 / .4)}
 
-@media (max-width:719px){
-  .travas{grid-template-columns:1fr}
+.diag__opcoes{display:flex; gap:12px}
+.diag__opcao{
+  font:500 13px/1 'IBM Plex Mono', ui-monospace, monospace;
+  text-transform:uppercase; letter-spacing:.09em;
+  color:var(--aco); background:transparent;
+  border:1px solid var(--linha); border-radius:var(--raio-p);
+  padding:12px 26px; cursor:pointer; min-width:92px;
+  transition:color var(--rapido) var(--saida), border-color var(--rapido) var(--saida);
+}
+.diag__opcao:hover{color:var(--osso); border-color:var(--aco)}
+
+/* Estado escolhido. O `animation` aqui é o único laço infinito que o spec
+   autoriza em todo o site: o pulso do estado ativo. */
+.diag__opcao[aria-pressed="true"]{
+  color:var(--carbono); background:var(--osso); border-color:var(--osso);
+  animation:diag-pulso 2.4s var(--saida) infinite;
+}
+@keyframes diag-pulso{
+  0%, 100%{box-shadow:0 0 0 0 rgb(236 237 232 / .18)}
+  50%{box-shadow:0 0 0 6px rgb(236 237 232 / 0)}
+}
+
+.diag__laudo{margin:32px 0 0; display:grid; gap:10px}
+.diag__laudo:empty{display:none}
+.diag__laudo p{
+  margin:0; max-width:60ch; color:var(--osso);
+  border-left:2px solid var(--ouro); padding-left:16px;
+}
+.diag__cta{margin-top:32px}
+
+/* Sem JS: as perguntas ficam e valem como lista do que trava; o que depende
+   de resposta sai de cena. A CTA continua sendo a genérica. */
+html:not(.js) .diag__opcoes,
+html:not(.js) .diag__laudo{display:none}
+
+@media (max-width:599px){
+  .diag__opcoes{gap:10px}
+  .diag__opcao{flex:1 1 auto; min-width:0; padding:14px 18px}
 }
 
 /* ===== Como eu trabalho ===== */
@@ -321,8 +347,6 @@ html:not(.js) .entra-regua::after{transform:none}
   gap:24px;
   margin:48px 0 0;
 }
-/* Mesma moldura de duas camadas de .travas__item (task-3-report.md linha 56):
-   um border comum some exatamente no corte de 45°, isto nao. */
 /* Uma camada só. O truque de duas camadas existia porque `border` comum
    desaparece na diagonal de um clip-path — com raio, `border` funciona. */
 .card{

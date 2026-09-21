@@ -56,6 +56,16 @@
       }
     }
 
+    // ?clique=nao,nao,sim responde o Diagnostico antes de medir. E o unico
+    // jeito de testar a interacao num print, que nao clica sozinho.
+    var clique = busca.get('clique')
+    if (clique) {
+      clique.split(',').forEach(function (resposta, i) {
+        var botao = doc.querySelector('.diag__opcao[data-p="' + i + '"][data-r="' + resposta.trim() + '"]')
+        if (botao) botao.click()
+      })
+    }
+
     // Entrada por rolagem: quantos alvos ja receberam .visivel. Medido meio
     // segundo depois do load, que e mais que a duracao da transicao.
     setTimeout(function () {

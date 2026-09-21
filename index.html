@@ -46,23 +46,41 @@
     </div>
   </section>
 
-  <section class="secao">
+  <section class="secao" id="diagnostico">
     <div class="env">
-      <p class="rotulo ficha-eyebrow entra-regua">01 / O QUE TRAVA</p>
-      <h2 class="t2 entra">O que trava hoje</h2>
-      <div class="travas">
-        <article class="travas__item">
-          <div class="travas__caixa">
-            <h3 class="t3">Não tem site</h3>
-            <p>Seu cliente procura no Google e acha o concorrente.</p>
-          </div>
-        </article>
-        <article class="travas__item">
-          <div class="travas__caixa">
-            <h3 class="t3">Tem site que não converte</h3>
-            <p>Existe, mas ninguém acha e ninguém usa.</p>
-          </div>
-        </article>
+      <p class="rotulo ficha-eyebrow entra-regua">01 / DIAGNÓSTICO</p>
+      <h2 class="t2 entra">Três perguntas e você já sabe o que trava</h2>
+
+      <div class="diag entra" style="--i:1">
+        <ol class="diag__lista" role="list">
+          <li class="diag__item">
+            <p class="diag__pergunta"><span class="diag__num rotulo">01</span> Seu negócio aparece no Google quando alguém busca o que você faz?</p>
+            <div class="diag__opcoes" role="group" aria-label="Seu negócio aparece no Google?">
+              <button class="diag__opcao" type="button" data-p="0" data-r="sim" aria-pressed="false">Sim</button>
+              <button class="diag__opcao" type="button" data-p="0" data-r="nao" aria-pressed="false">Não</button>
+            </div>
+          </li>
+          <li class="diag__item">
+            <p class="diag__pergunta"><span class="diag__num rotulo">02</span> Você tem site?</p>
+            <div class="diag__opcoes" role="group" aria-label="Você tem site?">
+              <button class="diag__opcao" type="button" data-p="1" data-r="sim" aria-pressed="false">Sim</button>
+              <button class="diag__opcao" type="button" data-p="1" data-r="nao" aria-pressed="false">Não</button>
+            </div>
+          </li>
+          <li class="diag__item">
+            <p class="diag__pergunta"><span class="diag__num rotulo">03</span> Quem te acha consegue chamar no WhatsApp em um toque?</p>
+            <div class="diag__opcoes" role="group" aria-label="Consegue chamar no WhatsApp em um toque?">
+              <button class="diag__opcao" type="button" data-p="2" data-r="sim" aria-pressed="false">Sim</button>
+              <button class="diag__opcao" type="button" data-p="2" data-r="nao" aria-pressed="false">Não</button>
+            </div>
+          </li>
+        </ol>
+
+        <div class="diag__laudo" id="diag-laudo" aria-live="polite"></div>
+
+        <!-- Número pendente. Quando existir, WPP no js/site.js vira
+             https://wa.me/NUMERO?text= e o laudo entra codificado na mensagem. -->
+        <a class="btn diag__cta" id="diag-cta" href="#contato-pendente">Chamar no WhatsApp</a>
       </div>
     </div>
   </section>

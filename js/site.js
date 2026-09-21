@@ -40,4 +40,78 @@
     // entrada é enfeite, nunca condição pra ler.
     for (var i = 0; i < alvos.length; i++) alvos[i].classList.add('visivel')
   }
+
+  // ---- 01 / Diagnóstico -------------------------------------------------
+  // Estado só na memória: sem localStorage, sem cookie, sem servidor. O laudo
+  // vive enquanto a aba vive. É diagnóstico, não cadastro — cadastro pediria
+  // aviso de privacidade que o spec não tem.
+  var LAUDO = [
+    { nao: 'Quem procura o que você faz acha o concorrente, não você.',
+      sim: 'Você já aparece no Google.',
+      queixa: 'não apareço no Google' },
+    { nao: 'Você não tem um lugar seu na internet — só o perfil que a rede te empresta.',
+      sim: 'Você tem site.',
+      queixa: 'não tenho site' },
+    { nao: 'Quem te acha desiste antes de conseguir te chamar.',
+      sim: 'Quem te acha te chama em um toque.',
+      queixa: 'quem me acha não consegue me chamar no WhatsApp' }
+  ]
+
+  var WPP = '#contato-pendente' // trocar por https://wa.me/NUMERO?text=
+  var respostas = [null, null, null]
+  var opcoes = document.querySelectorAll('.diag__opcao')
+  var laudo = document.getElementById('diag-laudo')
+  var cta = document.getElementById('diag-cta')
+
+  function mensagem () {
+    var queixas = []
+    for (var i = 0; i < 3; i++) {
+      if (respostas[i] === 'nao') queixas.push(LAUDO[i].queixa)
+    }
+    if (!queixas.length) {
+      return 'Oi! Vim pelo site. Tenho site, apareço no Google e recebo no ' +
+             'WhatsApp — quero achar o que ainda está travando.'
+    }
+    return 'Oi! Vim pelo site. Meu caso: ' + queixas.join('; ') + '.'
+  }
+
+  function desenhaLaudo () {
+    laudo.textContent = ''
+    for (var i = 0; i < 3; i++) {
+      if (respostas[i] === null) continue
+      var p = document.createElement('p')
+      p.textContent = LAUDO[i][respostas[i]]
+      laudo.appendChild(p)
+    }
+
+    if (respostas.indexOf(null) !== -1) return
+
+    var tudoOk = respostas.every(function (r) { return r === 'sim' })
+    var fecho = document.createElement('p')
+    fecho.textContent = tudoOk
+      ? 'O básico está de pé. Nesse caso o gargalo é outro — e achar isso é o que eu faço.'
+      : 'É isso que trava. Me chama que eu te mostro funcionando antes de falar de valor.'
+    laudo.appendChild(fecho)
+
+    // O ouro do Diagnóstico só existe depois das três respostas: é o ouro que
+    // paga a interação, e antes disso a CTA é de traço.
+    cta.classList.add('btn--ouro')
+    cta.textContent = tudoOk ? 'Me chama que eu olho' : 'Chamar no WhatsApp'
+    cta.href = WPP === '#contato-pendente'
+      ? '#contato-pendente'
+      : WPP + encodeURIComponent(mensagem())
+  }
+
+  if (laudo && cta) {
+    for (var o = 0; o < opcoes.length; o++) {
+      opcoes[o].addEventListener('click', function () {
+        respostas[Number(this.dataset.p)] = this.dataset.r
+        var irmas = this.parentNode.querySelectorAll('.diag__opcao')
+        for (var k = 0; k < irmas.length; k++) {
+          irmas[k].setAttribute('aria-pressed', String(irmas[k] === this))
+        }
+        desenhaLaudo()
+      })
+    }
+  }
 })()
