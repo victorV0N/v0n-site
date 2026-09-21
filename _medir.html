@@ -96,11 +96,17 @@
       relato.textContent = largura + 'px  ·  scroll=' + d.scrollWidth + ' client=' + d.clientWidth +
         ' altura=' + d.scrollHeight + '  ·  ' +
         (estoura ? 'ESTOURA >> ' + culpados.slice(0, 5).join('  //  ') : 'sem rolagem horizontal') +
-        // A contagem de entrada so vale com a janela do Chrome tao alta
-        // quanto o iframe: o IntersectionObserver de dentro e recortado pela
-        // janela de fora, e janela baixa devolve zero falso.
+        // A contagem de entrada tem dois jeitos de mentir, e os dois dao zero:
+        // 1) com root nulo o IntersectionObserver mede contra a viewport do
+        //    documento de TOPO, nao a do iframe - a janela do Chrome precisa
+        //    ser tao alta quanto o iframe, senao nada intersecta nunca;
+        // 2) a entrada so liga quando a abertura acaba (5 batidas), e este
+        //    relato sai aos 400ms.
+        // Zero aqui nao e prova de nada. Quem prova e o print no relogio de
+        // verdade, com a pagina inteira na janela.
         '  ·  entrada: ' + prontos.length + '/' + alvos.length +
-        (window.innerHeight < altura ? ' (janela baixa, nao vale)' : '') +
+        (window.innerHeight < altura ? ' (janela baixa, nao vale)'
+          : (alvos.length && !prontos.length ? ' (cedo demais, nao vale)' : '')) +
         '  ·  ouro por dobra de 900px: [' + dobras.join(',') + '] max=' + pior +
         (pior > 1 ? '  << DOIS OUROS NA MESMA DOBRA' : '')
     }

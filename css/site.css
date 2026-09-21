@@ -491,7 +491,9 @@ html.intro-rodando{overflow:hidden}
    a borda do SVG cortaria os dois na entrada. */
 .intro__logo{
   position:absolute; top:50%; left:50%;
-  width:min(320px, 62vw); height:auto;
+  /* 420 e nao 320: a 1440px a frase tem uns 600px e a logo de 320 ficava um
+     degrau abaixo dela. No celular quem manda continua sendo o 62vw. */
+  width:min(420px, 62vw); height:auto;
   transform:translate(-50%, -50%);
   overflow:visible; fill:var(--osso);
 }

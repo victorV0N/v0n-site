@@ -59,22 +59,26 @@
     jaViu = sessionStorage.getItem('v0n-abertura') === 'visto'
   } catch (e) { /* armazenamento indisponível */ }
 
-  function fechaAbertura () {
+  function tiraOverlay () {
     if (intro && intro.parentNode) intro.remove()
     document.documentElement.classList.remove('intro-rodando')
-    ligaEntradas()
   }
 
   if (intro && !menosMovimento && !jaViu) {
     document.documentElement.classList.add('intro-rodando')
-    // A batida vem do CSS: mudar --batida lá muda a abertura e este tempo
-    // junto, sem dois números pra manter em sincronia.
+    // A batida vem do CSS: mudar --batida lá muda a abertura e estes tempos
+    // junto, sem números pra manter em sincronia na mão.
     var batida = parseFloat(getComputedStyle(intro).getPropertyValue('--batida')) || 0.9
     try { sessionStorage.setItem('v0n-abertura', 'visto') } catch (e) {}
-    // 4,9 batidas e o fim do fade do overlay; 5 tira ele logo depois.
-    setTimeout(fechaAbertura, batida * 5 * 1000)
+    // A hero sobe quando o overlay COMEÇA a sumir (4,5 batidas, o mesmo
+    // atraso do intro-sai no CSS), não quando ele sai: assim a logo dissolve
+    // sobre uma hero já em movimento, em vez de piscar carbono vazio entre
+    // as duas. O overlay some aos 4,9 e é removido aos 5.
+    setTimeout(ligaEntradas, batida * 4.5 * 1000)
+    setTimeout(tiraOverlay, batida * 5 * 1000)
   } else {
-    fechaAbertura()
+    tiraOverlay()
+    ligaEntradas()
   }
 
   // ---- 01 / Diagnóstico -------------------------------------------------
