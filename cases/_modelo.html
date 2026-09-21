@@ -1,0 +1,105 @@
+<!doctype html>
+<!--
+  MOLDE DE CASE. Não é página do site: tem noindex e não entra no sitemap.
+  Pra criar um case:
+  1. copie este arquivo pra cases/<slug-do-negocio>.html
+  2. troque cada [placeholder]
+  3. apague a linha do <meta name="robots" content="noindex"> da cópia
+  4. acrescente um <article class="card"> na grade da home (seção Trabalhos,
+     que está comentada — descomente e siga a instrução que está lá dentro)
+  5. acrescente uma <url> no sitemap.xml
+
+  NÚMERO SÓ ENTRA SE FOI MEDIDO. Sem medição, descreva em palavras o que
+  mudou. Case sem métrica convence mais que "+300%" que ninguém acredita —
+  e é lei do spec.
+-->
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<script>document.documentElement.classList.add('js')</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>[Nome do negócio] · case da v0n</title>
+<meta name="description" content="[Uma linha: o que o negócio faz e o que mudou depois do site.]">
+<link rel="icon" href="../img/selo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@200;300&family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="../css/site.css">
+</head>
+<body>
+<header class="topo">
+  <div class="topo__barra env">
+    <a class="topo__logo" href="../index.html" aria-label="v0n — início">
+      <img src="../img/logo.svg" width="140" height="56" alt="v0n">
+    </a>
+  </div>
+</header>
+<main>
+  <section class="hero">
+    <div class="env hero__conteudo">
+      <p class="rotulo ficha-eyebrow">[Ramo do negócio] · [Cidade ou "remoto"]</p>
+      <h1 class="t1">[Nome do negócio]</h1>
+      <p class="hero__texto">[O que o negócio faz, em uma linha.]</p>
+    </div>
+  </section>
+
+  <section class="secao">
+    <div class="env">
+      <p class="rotulo ficha-eyebrow entra-regua">01 / O QUE TRAVAVA</p>
+      <h2 class="t2 entra">[O gargalo, na língua do dono]</h2>
+      <p class="entra-fade">[Duas ou três linhas. Sem jargão de agência: o que
+        acontecia de ruim, do ponto de vista de quem toca o negócio.]</p>
+    </div>
+  </section>
+
+  <section class="secao">
+    <div class="env">
+      <p class="rotulo ficha-eyebrow entra-regua">02 / O QUE EU FIZ</p>
+      <h2 class="t2 entra">[A decisão, não a lista de tecnologia]</h2>
+      <p class="entra-fade">[O que foi feito e por quê. "Escolhi X porque Y",
+        não "usei HTML, CSS e JavaScript".]</p>
+    </div>
+  </section>
+
+  <section class="secao">
+    <div class="env">
+      <p class="rotulo ficha-eyebrow entra-regua">03 / O RESULTADO</p>
+      <h2 class="t2 entra">[O que mudou]</h2>
+      <p class="entra-fade">[Número SÓ se foi medido. Sem medição: descreva o
+        que mudou em palavras, sem adjetivo inflado.]</p>
+    </div>
+  </section>
+
+  <section class="secao">
+    <div class="env">
+      <p class="rotulo ficha-eyebrow entra-regua">04 / NO AR</p>
+      <div class="entra">
+        <!-- Print em WebP, com width e height, senão a página pula ao carregar.
+             Se não houver print, apague a <img> em vez de deixar caminho
+             quebrado: imagem que não carrega é pior que imagem que não existe. -->
+        <img class="case__print" src="../img/case-[slug].webp" width="1120" height="700"
+             alt="Tela inicial do site do [Nome do negócio]">
+        <p><a href="https://[endereco-do-site]">[endereco-do-site]</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao" aria-label="Fecho">
+    <div class="env fecho entra">
+      <p class="t2 fecho__texto">Seu negócio trava parecido?</p>
+      <a class="btn btn--ouro" href="#contato-pendente">Me chama no WhatsApp</a>
+    </div>
+  </section>
+</main>
+<footer class="rodape">
+  <div class="env rodape__conteudo">
+    <img class="rodape__logo" src="../img/logo-mono.svg" width="120" height="54" alt="v0n">
+    <p class="rodape__assinatura">— v0n · sites e landing pages</p>
+    <p class="rodape__ano">© 2026</p>
+    <a class="rodape__contato" href="#contato-pendente">Chamar no WhatsApp</a>
+  </div>
+</footer>
+<script src="../js/site.js" defer></script>
+</body>
+</html>

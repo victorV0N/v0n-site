@@ -418,3 +418,14 @@ html:not(.js) .diag__laudo{display:none}
 }
 .faq__item[open] .faq__pergunta::after{transform:translateY(-30%) rotate(-135deg); border-color:var(--ouro)}
 .faq__resposta{margin:0 0 26px; max-width:62ch; color:var(--aco)}
+
+/* ===== Página de case =====
+   O global de imagem entra junto com o primeiro print de verdade: sem ele,
+   print maior que o envelope estoura a largura e cria rolagem horizontal.
+   Ficou anotado como pendência desde a v1, e o molde é quem cobra. */
+img{max-width:100%}
+.case__print{
+  display:block; width:100%; height:auto;
+  border:1px solid var(--borda); border-radius:var(--raio);
+  margin:0 0 20px;
+}
