@@ -19,26 +19,61 @@
   // ---- Entrada por rolagem ---------------------------------------------
   // Um observer pra página inteira. Cada alvo entra uma vez e para de ser
   // observado: nada anima duas vezes, e o observer se esvazia sozinho.
-  var alvos = document.querySelectorAll('.entra, .entra-fade, .entra-regua')
+  // Só começa depois da abertura: seção que entra atrás do overlay entrega
+  // uma página que já terminou de animar antes de alguém olhar.
+  function ligaEntradas () {
+    var alvos = document.querySelectorAll('.entra, .entra-fade, .entra-regua')
 
-  if ('IntersectionObserver' in window) {
-    var observer = new IntersectionObserver(function (entradas) {
-      entradas.forEach(function (entrada) {
-        if (!entrada.isIntersecting) return
-        entrada.target.classList.add('visivel')
-        observer.unobserve(entrada.target)
+    if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(function (entradas) {
+        entradas.forEach(function (entrada) {
+          if (!entrada.isIntersecting) return
+          entrada.target.classList.add('visivel')
+          observer.unobserve(entrada.target)
+        })
+      }, {
+        // -12% no rodapé: o elemento começa a entrar um pouco depois de
+        // aparecer, senão a animação termina antes de a pessoa ter olhado.
+        rootMargin: '0px 0px -12% 0px',
+        threshold: 0.1
       })
-    }, {
-      // -12% no rodapé: o elemento começa a entrar um pouco depois de
-      // aparecer, senão a animação termina antes de a pessoa ter olhado.
-      rootMargin: '0px 0px -12% 0px',
-      threshold: 0.1
-    })
-    alvos.forEach(function (alvo) { observer.observe(alvo) })
+      alvos.forEach(function (alvo) { observer.observe(alvo) })
+    } else {
+      // Navegador antigo vê a página montada, sem entrada. Não é erro: a
+      // entrada é enfeite, nunca condição pra ler.
+      for (var i = 0; i < alvos.length; i++) alvos[i].classList.add('visivel')
+    }
+  }
+
+  // ---- Abertura ---------------------------------------------------------
+  // A abertura inteira é CSS. O JS só decide se ela roda e tira o overlay
+  // no fim — overlay fixo que fica é o site coberto pra sempre.
+  var intro = document.getElementById('intro')
+  var menosMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  var jaViu = false
+  try {
+    // Só nesta aba: quem volta na mesma visita não assiste de novo. Aba
+    // anônima com armazenamento bloqueado cai no catch e vê a abertura,
+    // que é o pior caso aceitável.
+    jaViu = sessionStorage.getItem('v0n-abertura') === 'visto'
+  } catch (e) { /* armazenamento indisponível */ }
+
+  function fechaAbertura () {
+    if (intro && intro.parentNode) intro.remove()
+    document.documentElement.classList.remove('intro-rodando')
+    ligaEntradas()
+  }
+
+  if (intro && !menosMovimento && !jaViu) {
+    document.documentElement.classList.add('intro-rodando')
+    // A batida vem do CSS: mudar --batida lá muda a abertura e este tempo
+    // junto, sem dois números pra manter em sincronia.
+    var batida = parseFloat(getComputedStyle(intro).getPropertyValue('--batida')) || 2.025
+    try { sessionStorage.setItem('v0n-abertura', 'visto') } catch (e) {}
+    setTimeout(fechaAbertura, batida * 5.4 * 1000)
   } else {
-    // Navegador antigo vê a página montada, sem entrada. Não é erro: a
-    // entrada é enfeite, nunca condição pra ler.
-    for (var i = 0; i < alvos.length; i++) alvos[i].classList.add('visivel')
+    fechaAbertura()
   }
 
   // ---- 01 / Diagnóstico -------------------------------------------------

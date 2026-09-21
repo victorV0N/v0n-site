@@ -430,3 +430,109 @@ img{max-width:100%}
   border:1px solid var(--borda); border-radius:var(--raio);
   margin:0 0 20px;
 }
+
+/* ===== Abertura =====
+   Esquema medido no styles.css do mazyos.com.br. A batida e a unidade de
+   tudo: 2.025s no original, e todos os atrasos sao multiplos dela. Mudar
+   --batida encolhe ou estica a abertura inteira, sem tocar em mais nada.
+
+   Cor e da v0n, nao da referencia: carbono no fundo, osso na letra. */
+.intro{
+  --batida:2.025s;
+  position:fixed; inset:0; z-index:9999;
+  background:var(--carbono);
+  display:flex; align-items:center; justify-content:center;
+  animation:intro-sai calc(var(--batida) * .4) cubic-bezier(.4, 0, .2, 1) calc(var(--batida) * 4.88) forwards;
+}
+html.intro-rodando{overflow:hidden}
+
+.intro__palco{
+  position:relative;
+  width:min(90%, 900px); height:1.4em;
+  font:500 clamp(2rem, 5vw, 4rem)/1.2 'Space Grotesk', system-ui, sans-serif;
+  letter-spacing:-.025em; text-align:center;
+  color:var(--osso);
+  /* Neon fraco: dois halos largos e de alfa baixo. Forte demais engorda a
+     letra em vez de iluminar, que e o mesmo motivo de o titulo da hero
+     nao ter neon. */
+  text-shadow:0 0 18px rgb(236 237 232 / .35), 0 0 60px rgb(236 237 232 / .14);
+}
+
+.intro__frase{
+  position:absolute; top:0; left:50%; white-space:nowrap;
+  opacity:0; transform:translate(-50%, 40%);
+  animation:intro-ciclo var(--batida) cubic-bezier(.65, 0, .35, 1) forwards;
+  will-change:opacity, transform;
+}
+.intro__fixo{white-space:nowrap}
+.intro__palavras{display:grid; grid-template-columns:1fr; grid-template-rows:1fr; justify-items:start; align-items:baseline}
+.intro__palavra{
+  grid-column:1; grid-row:1;
+  opacity:0; transform:translateY(40%);
+  animation:intro-palavra var(--batida) cubic-bezier(.65, 0, .35, 1) forwards;
+  will-change:opacity, transform;
+}
+
+/* O bloco "Seu cliente [palavra]" fica parado enquanto a palavra gira. */
+.intro__frase--varia{
+  display:inline-grid; grid-template-columns:auto auto;
+  align-items:baseline; column-gap:.24em;
+  animation:intro-bloco calc(var(--batida) * 3) cubic-bezier(.65, 0, .35, 1) calc(var(--batida) * .08) forwards;
+}
+.intro__palavra:nth-child(1){animation-delay:calc(var(--batida) * .08)}
+.intro__palavra:nth-child(2){animation-delay:calc(var(--batida) * 1.08)}
+.intro__palavra:nth-child(3){animation-delay:calc(var(--batida) * 2.08)}
+
+/* Frase 2 entra quando o bloco das palavras sai. */
+.intro__frase:nth-child(2){animation-delay:calc(var(--batida) * 3.08)}
+
+/* A logo e a ultima batida: entra e fica, e e ela que revela a hero. */
+.intro__logo{
+  position:absolute; top:50%; left:50%;
+  width:min(320px, 62vw); height:auto;
+  opacity:0; transform:translate(-50%, -10%);
+  animation:intro-logo calc(var(--batida) * .48) cubic-bezier(.22, 1, .36, 1) calc(var(--batida) * 4.08) forwards;
+}
+
+@keyframes intro-ciclo{
+  0%{opacity:0; transform:translate(-50%, 40%)}
+  20%{opacity:1; transform:translate(-50%, 0)}
+  80%{opacity:1; transform:translate(-50%, 0)}
+  100%{opacity:0; transform:translate(-50%, -40%)}
+}
+@keyframes intro-palavra{
+  0%{opacity:0; transform:translateY(40%)}
+  20%{opacity:1; transform:translateY(0)}
+  80%{opacity:1; transform:translateY(0)}
+  100%{opacity:0; transform:translateY(-40%)}
+}
+@keyframes intro-bloco{
+  0%{opacity:0; transform:translate(-50%, 40%)}
+  7%{opacity:1; transform:translate(-50%, 0)}
+  93%{opacity:1; transform:translate(-50%, 0)}
+  100%{opacity:0; transform:translate(-50%, -40%)}
+}
+@keyframes intro-logo{
+  from{opacity:0; transform:translate(-50%, -10%) scale(.96)}
+  to{opacity:1; transform:translate(-50%, -50%) scale(1)}
+}
+@keyframes intro-sai{
+  0%{opacity:1}
+  100%{opacity:0; visibility:hidden}
+}
+
+/* A abertura nunca pode ser obstaculo. Sem JS ela nao existe, senao um
+   overlay fixo cobriria o site pra sempre. */
+html:not(.js) .intro{display:none}
+@media (prefers-reduced-motion: reduce){
+  .intro{display:none}
+}
+
+/* A frase e nowrap (esquema do MazyOS), entao em tela pequena quem cede e
+   o corpo da fonte - os mesmos dois degraus que a referencia usa. */
+@media (max-width:719px){
+  .intro__palco{font-size:clamp(1.5rem, 8vw, 2.4rem); width:94%}
+}
+@media (max-width:420px){
+  .intro__palco{font-size:1.3rem}
+}
