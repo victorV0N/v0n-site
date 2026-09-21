@@ -367,8 +367,12 @@ lista curta, rodada antes de publicar:
 8. Lighthouse: verde em performance e acessibilidade
 9. Nenhum link quebrado entre home, cases e sitemap
 10. Nenhuma seção anima antes de entrar na tela, e nenhuma anima duas vezes
-11. `grep -rn "contato-pendente\|resposta-pendente\|SEU-SITE\|lorem\|em breve" .`
-    devolve nada. Enquanto devolver, o site não publica
+11. A varredura de marcas devolve nada. Enquanto devolver, o site não publica:
+    `grep -rnP "contato-pendente|resposta-pendente|SEU-SITE|lorem|em breve|(?<![A-Za-zÀ-ÿ])TODO" .`
+    O `TODO` precisa do lookbehind do PCRE (`-P`): a etiqueta `02 / MÉTODO`
+    contém TODO, e `\bTODO\b` acha fronteira antes do T porque o `É`
+    multibyte não conta como caractere de palavra nesta plataforma. Medido —
+    a versão com `\b` reprovava a página por causa do nome de uma seção.
 
 ## Fora de escopo, de propósito
 

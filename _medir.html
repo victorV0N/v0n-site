@@ -66,19 +66,48 @@
       })
     }
 
-    // Entrada por rolagem: quantos alvos ja receberam .visivel. Medido meio
-    // segundo depois do load, que e mais que a duracao da transicao.
-    setTimeout(function () {
+    // Relata na hora e de novo depois: o print do Chrome headless sai antes
+    // de qualquer setTimeout longo, e relato que nao aparece no print nao
+    // mede nada.
+    function relatar () {
       var alvos = doc.querySelectorAll('.entra, .entra-fade, .entra-regua')
       var prontos = doc.querySelectorAll('.entra.visivel, .entra-fade.visivel, .entra-regua.visivel')
 
-      relato.className = estoura ? 'ruim' : ''
+      // Ouro por dobra. Nao conta .btn--ouro: abaixo de 720px o CTA do hero
+      // fica ouro por media query, sem a classe. O que vale e a cor de fundo
+      // computada de verdade. Dobra = faixa de 900px de altura da pagina.
+      var OURO = 'rgb(255, 197, 49)'
+      var dobras = []
+      var botoes = doc.querySelectorAll('.btn')
+      for (var b = 0; b < botoes.length; b++) {
+        // display:none ainda devolve a cor computada. Sem este filtro, o CTA
+        // do topo dentro do menu fechado conta como ouro visivel na tela.
+        if (!botoes[b].getClientRects().length) continue
+        if (doc.defaultView.getComputedStyle(botoes[b]).backgroundColor !== OURO) continue
+        var topo = botoes[b].getBoundingClientRect().top + (doc.documentElement.scrollTop || 0)
+        var faixa = Math.floor(topo / 900)
+        dobras[faixa] = (dobras[faixa] || 0) + 1
+      }
+      var pior = 0
+      for (var f = 0; f < dobras.length; f++) if ((dobras[f] || 0) > pior) pior = dobras[f]
+
+      var ruim = estoura || pior > 1
+      relato.className = ruim ? 'ruim' : ''
       relato.textContent = largura + 'px  ·  scroll=' + d.scrollWidth + ' client=' + d.clientWidth +
         ' altura=' + d.scrollHeight + '  ·  ' +
         (estoura ? 'ESTOURA >> ' + culpados.slice(0, 5).join('  //  ') : 'sem rolagem horizontal') +
-        '  ·  ouro preenchido: ' + doc.querySelectorAll('.btn--ouro').length +
-        '  ·  entrada: ' + prontos.length + '/' + alvos.length + ' visiveis'
-    }, 500)
+        // A contagem de entrada so vale com a janela do Chrome tao alta
+        // quanto o iframe: o IntersectionObserver de dentro e recortado pela
+        // janela de fora, e janela baixa devolve zero falso.
+        '  ·  entrada: ' + prontos.length + '/' + alvos.length +
+        (window.innerHeight < altura ? ' (janela baixa, nao vale)' : '') +
+        '  ·  ouro por dobra de 900px: [' + dobras.join(',') + '] max=' + pior +
+        (pior > 1 ? '  << DOIS OUROS NA MESMA DOBRA' : '')
+    }
+
+    relatar()
+    setTimeout(relatar, 400)
+    setTimeout(relatar, 1200)
   })
 })()
 </script>
