@@ -80,8 +80,7 @@ a{color:inherit}
 /* ===== Entrada por rolagem =====
    Estado inicial na classe, estado final em .visivel, e o navegador
    interpola. Sem @keyframes: transition é mais barata e não precisa de nome.
-   Só transform e opacity animam — o clip-path da variante de corte é a
-   exceção medida do spec, composta na GPU.
+   Só transform e opacity animam, sem exceção.
    A cascata é --i no CSS, nunca setTimeout no JS. */
 .entra, .entra-fade, .entra-regua{
   transition-duration:var(--entra);
@@ -398,3 +397,24 @@ html:not(.js) .diag__laudo{display:none}
   text-decoration:none;
 }
 .rodape__contato:hover{color:var(--osso)}
+
+/* ===== 05 / Perguntas =====
+   <details> nativo: teclado, leitor de tela e funcionamento sem CSS de
+   graça. A seta é ::after; o triângulo padrão do navegador sai. */
+.faq{margin-top:40px; display:grid; gap:0; border-top:1px solid var(--linha)}
+.faq__item{border-bottom:1px solid var(--linha)}
+.faq__pergunta{
+  cursor:pointer; list-style:none; padding:22px 44px 22px 0; position:relative;
+  font-weight:500; color:var(--osso);
+  transition:color var(--rapido) var(--saida);
+}
+.faq__pergunta::-webkit-details-marker{display:none}
+.faq__pergunta:hover{color:var(--ouro)}
+.faq__pergunta::after{
+  content:''; position:absolute; right:8px; top:50%; width:9px; height:9px;
+  border-right:1.5px solid var(--aco); border-bottom:1.5px solid var(--aco);
+  transform:translateY(-70%) rotate(45deg);
+  transition:transform var(--rapido) var(--saida), border-color var(--rapido) var(--saida);
+}
+.faq__item[open] .faq__pergunta::after{transform:translateY(-30%) rotate(-135deg); border-color:var(--ouro)}
+.faq__resposta{margin:0 0 26px; max-width:62ch; color:var(--aco)}

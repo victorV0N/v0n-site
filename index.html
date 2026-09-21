@@ -124,9 +124,13 @@
     nome, nem print, nem numero - seção vazia com "em breve" e pior que
     seção nenhuma. Bloco pronto: so descomentar quando o material chegar,
     trocar cada [placeholder] e duplicar o <article class="card"> por
-    trabalho. Usa a mesma .cards/.card dos Serviços (04, abaixo) - o CSS
+    trabalho. Usa a mesma .cards/.card dos Serviços (03, abaixo) - o CSS
     nao esta morto so por esta secao estar comentada. Descomentar tambem
     o item "Trabalhos" no menu do topo, no mesmo commit.
+
+    RENUMERAR AO DESCOMENTAR: esta secao assume 03 / TRABALHOS, e Servicos,
+    Quem faz e Perguntas andam um pra frente (04, 05, 06). Numero faltando,
+    num site que se apresenta como ficha tecnica, le como defeito.
 
   <section class="secao" id="trabalhos">
     <div class="env">
@@ -147,7 +151,7 @@
 
   <section class="secao" id="servicos">
     <div class="env">
-      <p class="rotulo ficha-eyebrow entra-regua">04 / SERVIÇOS</p>
+      <p class="rotulo ficha-eyebrow entra-regua">03 / SERVIÇOS</p>
       <h2 class="t2 entra">Serviços</h2>
       <div class="cards">
         <article class="card entra" style="--i:0">
@@ -168,11 +172,50 @@
 
   <section class="secao" id="quem-faz">
     <div class="env">
-      <p class="rotulo ficha-eyebrow entra-regua">05 / QUEM FAZ</p>
+      <p class="rotulo ficha-eyebrow entra-regua">04 / QUEM FAZ</p>
       <h2 class="t2 entra">Quem faz</h2>
       <div class="quemfaz entra-fade">
         <p class="rotulo">Kauã "v0n" Victor</p>
         <p class="quemfaz__texto">v0n cuida de tudo: design, código e entrega. Remoto, atende o Brasil inteiro.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao" id="perguntas">
+    <div class="env">
+      <p class="rotulo ficha-eyebrow entra-regua">05 / PERGUNTAS</p>
+      <h2 class="t2 entra">O que todo mundo pergunta antes de fechar</h2>
+
+      <div class="faq entra" style="--i:1">
+        <details class="faq__item">
+          <summary class="faq__pergunta">Preciso ter domínio próprio?</summary>
+          <p class="faq__resposta">Não pra começar. O site sobe num endereço que já funciona e já pode ser mandado pra cliente. Quando você quiser o domínio próprio, a gente aponta pro mesmo site, sem refazer nada.</p>
+        </details>
+
+        <details class="faq__item">
+          <summary class="faq__pergunta">Como começa?</summary>
+          <p class="faq__resposta">Você me chama no WhatsApp. Eu olho seu negócio no Google como um cliente olharia, acho o que está travando e te mostro funcionando. Só então a gente fala de valor.</p>
+        </details>
+
+        <details class="faq__item">
+          <summary class="faq__pergunta">O que você precisa que eu te mande?</summary>
+          <p class="faq__resposta">O nome do negócio, o que você faz e onde atende. Foto e texto, se você já tiver — se não tiver, a gente resolve com o que dá pra fazer bem feito.</p>
+        </details>
+
+        <details class="faq__item">
+          <summary class="faq__pergunta">Qual o prazo?</summary>
+          <p class="faq__resposta">resposta-pendente</p>
+        </details>
+
+        <details class="faq__item">
+          <summary class="faq__pergunta">Quem cuida do site depois de pronto?</summary>
+          <p class="faq__resposta">resposta-pendente</p>
+        </details>
+
+        <details class="faq__item">
+          <summary class="faq__pergunta">O que a v0n não faz?</summary>
+          <p class="faq__resposta">resposta-pendente</p>
+        </details>
       </div>
     </div>
   </section>
