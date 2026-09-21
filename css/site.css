@@ -78,7 +78,7 @@ a{color:inherit}
 .btn{
   display:inline-flex; align-items:center; justify-content:center;
   padding:14px 28px;
-  border-radius:7px;
+  border-radius:var(--raio-p);
   border:1.5px solid var(--ouro);
   font:500 15px/1 'Space Grotesk', system-ui, sans-serif;
   color:var(--osso);
@@ -139,7 +139,7 @@ a{color:inherit}
   border:1px solid var(--linha);
   color:var(--osso);
   cursor:pointer;
-  clip-path:polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+  border-radius:var(--raio);
 }
 .topo__alterna:hover{border-color:var(--aco)}
 .topo__icone{
@@ -186,7 +186,7 @@ a{color:inherit}
     background:var(--grafite);
     border:1px solid var(--linha);
     border-top:none;
-    clip-path:polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
+    border-radius:var(--raio);
   }
   html.js .topo.menu-aberto .topo__nav{display:flex}
 }
@@ -285,17 +285,16 @@ a{color:inherit}
 }
 /* Mesma moldura de duas camadas de .travas__item (task-3-report.md linha 56):
    um border comum some exatamente no corte de 45°, isto nao. */
+/* Uma camada só. O truque de duas camadas existia porque `border` comum
+   desaparece na diagonal de um clip-path — com raio, `border` funciona. */
 .card{
-  background:var(--linha);
-  padding:1px;
-  clip-path:polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 0 100%);
-}
-.card__corpo{
-  height:100%;
-  background:var(--grafite);
+  background:var(--sup);
+  border:1px solid var(--borda);
+  border-radius:var(--raio);
   padding:clamp(24px, 4vw, 32px);
-  clip-path:polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 0 100%);
+  transition:border-color var(--rapido) var(--saida), background var(--rapido) var(--saida);
 }
+.card:hover{border-color:var(--borda-forte); background:rgb(236 237 232 / .05)}
 .card .rotulo{margin:0 0 12px}
 .card .t3{margin:0 0 12px}
 .card p{margin:0}
