@@ -381,7 +381,8 @@ html:not(.js) .diag__laudo{display:none}
   align-items:center;
   gap:16px 24px;
 }
-.rodape__logo{display:block; color:var(--aco)}
+/* O fill do logo-mono.svg ja e aco: CSS de fora nao entra em <img>. */
+.rodape__logo{display:block}
 .rodape__assinatura,
 .rodape__ano{
   margin:0;

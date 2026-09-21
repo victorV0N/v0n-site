@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Case novo: acrescente um bloco de endereco aqui. cases/_modelo.html e img/og.html
+     NAO entram: um e ferramenta de trabalho, o outro e fonte de imagem.
+     _medir.html e dev.js tambem nao - nenhum dos dois vai pro ar. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://SEU-SITE.netlify.app/</loc>
+    <lastmod>2026-09-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>
