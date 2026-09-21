@@ -438,14 +438,23 @@ img{max-width:100%}
    em mais nada. Aqui ela e 1.25s - o Kaua pediu mais demorada depois de
    ver a .9s rodando. A abertura toda cabe em 6,25s.
 
-   Cor e da v0n, nao da referencia: carbono no fundo, MAIS em osso fino e
-   as palavras que revezam em ouro cheio. */
+   Cor tambem medida la, a pedido do Kaua: branco de verdade, nao o osso da
+   marca. O ouro fica so no quadrado do logo, no fim. */
 .intro{
   --batida:1.25s;
   position:fixed; inset:0; z-index:9999;
   background:var(--carbono);
   display:flex; align-items:center; justify-content:center;
   animation:intro-sai calc(var(--batida) * .4) cubic-bezier(.4, 0, .2, 1) calc(var(--batida) * 4.5) forwards;
+}
+
+/* O brilho da abertura do MazyOS nao vem de halo na letra: vem de um poco de
+   luz atras dela, branco a 7% numa elipse alta. E ele que faz o fundo parecer
+   iluminado em vez de preto chapado. Valores copiados do .intro-overlay::before
+   de la. */
+.intro::before{
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(ellipse 55% 45% at 50% 35%, rgb(255 255 255 / .07) 0%, transparent 70%);
 }
 html.intro-rodando{overflow:hidden}
 
@@ -456,7 +465,9 @@ html.intro-rodando{overflow:hidden}
   /* Caixa alta pede espaco positivo: o -.025em da referencia e de frase em
      caixa baixa e gruda as letras de MAIS AUTOMATICO. */
   letter-spacing:.02em; text-align:center;
-  color:var(--osso);
+  /* Branco a 94%, o mesmo da referencia. O osso (#ECEDE8) e quente e num
+     fundo carbono lê bege ao lado do branco puro da palavra em destaque. */
+  color:rgb(255 255 255 / .94);
 }
 
 /* "MAIS" fica parado; so a palavra da direita gira. A coluna da direita
@@ -471,18 +482,16 @@ html.intro-rodando{overflow:hidden}
   will-change:opacity, transform;
 }
 
-/* Neon fraco so no MAIS: dois halos largos e de alfa baixo. Ouro com halo
-   engorda a letra e come o desenho dela, entao a palavra que reveza e ouro
-   chapado - e o contraste entre fino com brilho e cheio sem brilho que faz
-   a troca ser lida. */
-.intro__fixo{
-  white-space:nowrap; font-weight:300;
-  text-shadow:0 0 18px rgb(236 237 232 / .35), 0 0 60px rgb(236 237 232 / .14);
-}
+/* O halo e o mesmo nos dois, a pedido do Kaua: um unico de 30px a 55%, o
+   valor que o MazyOS usa no <em> dele. Fica aqui na frase e nao em cada
+   span porque text-shadow e herdado - uma declaracao, os dois brilham
+   igual por construcao, sem chance de sairem de sincronia. */
+.intro__frase{text-shadow:0 0 30px rgb(255 255 255 / .55)}
+.intro__fixo{white-space:nowrap; font-weight:300}
 .intro__palavras{display:grid; grid-template-columns:1fr; grid-template-rows:1fr; justify-items:start; align-items:baseline}
 .intro__palavra{
   grid-column:1; grid-row:1;
-  font-weight:700; color:var(--ouro);
+  font-weight:700; color:#fff;
   opacity:0; transform:translateY(22%);
   animation:intro-palavra var(--batida) cubic-bezier(.33, 0, .2, 1) forwards;
   will-change:opacity, transform;
