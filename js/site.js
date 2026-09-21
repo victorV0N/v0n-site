@@ -51,25 +51,17 @@
   var intro = document.getElementById('intro')
   var menosMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-  var jaViu = false
-  try {
-    // Só nesta aba: quem volta na mesma visita não assiste de novo. Aba
-    // anônima com armazenamento bloqueado cai no catch e vê a abertura,
-    // que é o pior caso aceitável.
-    jaViu = sessionStorage.getItem('v0n-abertura') === 'visto'
-  } catch (e) { /* armazenamento indisponível */ }
-
   function tiraOverlay () {
     if (intro && intro.parentNode) intro.remove()
     document.documentElement.classList.remove('intro-rodando')
   }
 
-  if (intro && !menosMovimento && !jaViu) {
+  // Roda em toda recarga, a pedido do Kauã — não tem marca de "já viu".
+  if (intro && !menosMovimento) {
     document.documentElement.classList.add('intro-rodando')
     // A batida vem do CSS: mudar --batida lá muda a abertura e estes tempos
     // junto, sem números pra manter em sincronia na mão.
-    var batida = parseFloat(getComputedStyle(intro).getPropertyValue('--batida')) || 0.9
-    try { sessionStorage.setItem('v0n-abertura', 'visto') } catch (e) {}
+    var batida = parseFloat(getComputedStyle(intro).getPropertyValue('--batida')) || 1.25
     // A hero sobe quando o overlay COMEÇA a sumir (4,5 batidas, o mesmo
     // atraso do intro-sai no CSS), não quando ele sai: assim a logo dissolve
     // sobre uma hero já em movimento, em vez de piscar carbono vazio entre

@@ -435,12 +435,13 @@ img{max-width:100%}
    Esquema medido no styles.css do mazyos.com.br. A batida e a unidade de
    tudo: cada palavra dura uma batida e todos os atrasos sao multiplos
    dela. Mudar --batida encolhe ou estica a abertura inteira, sem tocar
-   em mais nada. Aqui ela e .9s porque o Kaua pediu palavra com menos de
-   1s - a abertura toda cabe em 4,5s.
+   em mais nada. Aqui ela e 1.25s - o Kaua pediu mais demorada depois de
+   ver a .9s rodando. A abertura toda cabe em 6,25s.
 
-   Cor e da v0n, nao da referencia: carbono no fundo, osso na letra. */
+   Cor e da v0n, nao da referencia: carbono no fundo, MAIS em osso fino e
+   as palavras que revezam em ouro cheio. */
 .intro{
-  --batida:.9s;
+  --batida:1.25s;
   position:fixed; inset:0; z-index:9999;
   background:var(--carbono);
   display:flex; align-items:center; justify-content:center;
@@ -456,10 +457,6 @@ html.intro-rodando{overflow:hidden}
      caixa baixa e gruda as letras de MAIS AUTOMATICO. */
   letter-spacing:.02em; text-align:center;
   color:var(--osso);
-  /* Neon fraco: dois halos largos e de alfa baixo. Forte demais engorda a
-     letra em vez de iluminar, que e o mesmo motivo de o titulo da hero
-     nao ter neon. */
-  text-shadow:0 0 18px rgb(236 237 232 / .35), 0 0 60px rgb(236 237 232 / .14);
 }
 
 /* "MAIS" fica parado; so a palavra da direita gira. A coluna da direita
@@ -469,16 +466,25 @@ html.intro-rodando{overflow:hidden}
   position:absolute; top:0; left:50%; white-space:nowrap;
   display:inline-grid; grid-template-columns:auto auto;
   align-items:baseline; column-gap:.24em;
-  opacity:0; transform:translate(-50%, 40%);
-  animation:intro-bloco calc(var(--batida) * 3) cubic-bezier(.65, 0, .35, 1) calc(var(--batida) * .08) forwards;
+  opacity:0; transform:translate(-50%, 22%);
+  animation:intro-bloco calc(var(--batida) * 3) cubic-bezier(.33, 0, .2, 1) calc(var(--batida) * .08) forwards;
   will-change:opacity, transform;
 }
-.intro__fixo{white-space:nowrap}
+
+/* Neon fraco so no MAIS: dois halos largos e de alfa baixo. Ouro com halo
+   engorda a letra e come o desenho dela, entao a palavra que reveza e ouro
+   chapado - e o contraste entre fino com brilho e cheio sem brilho que faz
+   a troca ser lida. */
+.intro__fixo{
+  white-space:nowrap; font-weight:300;
+  text-shadow:0 0 18px rgb(236 237 232 / .35), 0 0 60px rgb(236 237 232 / .14);
+}
 .intro__palavras{display:grid; grid-template-columns:1fr; grid-template-rows:1fr; justify-items:start; align-items:baseline}
 .intro__palavra{
   grid-column:1; grid-row:1;
-  opacity:0; transform:translateY(40%);
-  animation:intro-palavra var(--batida) cubic-bezier(.65, 0, .35, 1) forwards;
+  font-weight:700; color:var(--ouro);
+  opacity:0; transform:translateY(22%);
+  animation:intro-palavra var(--batida) cubic-bezier(.33, 0, .2, 1) forwards;
   will-change:opacity, transform;
 }
 .intro__palavra:nth-child(1){animation-delay:calc(var(--batida) * .08)}
@@ -502,7 +508,7 @@ html.intro-rodando{overflow:hidden}
   /* fill-box: a origem passa a ser o centro da propria peca, senao o
      scale do 0 e do quadrado gira em torno do canto do viewBox. */
   transform-box:fill-box; transform-origin:center;
-  animation-duration:calc(var(--batida) * .5);
+  animation-duration:calc(var(--batida) * .6);
   animation-timing-function:cubic-bezier(.22, 1, .36, 1);
   animation-fill-mode:both;
   will-change:opacity, transform;
@@ -512,32 +518,35 @@ html.intro-rodando{overflow:hidden}
 .intro__peca--n{animation-name:intro-n; animation-delay:calc(var(--batida) * 3.6)}
 .intro__peca--ponto{
   fill:var(--ouro);
-  animation-name:intro-o; animation-delay:calc(var(--batida) * 3.95);
-  animation-duration:calc(var(--batida) * .4);
+  animation-name:intro-o; animation-delay:calc(var(--batida) * 3.85);
+  animation-duration:calc(var(--batida) * .45);
 }
 
+/* Curso curto (22% da altura da letra, era 40%) e janela larga: a palavra
+   desliza durante 28% da batida em vez de 20%, entao anda menos e demora
+   mais - que e o que faz um movimento ser lido como suave. */
 @keyframes intro-palavra{
-  0%{opacity:0; transform:translateY(40%)}
-  20%{opacity:1; transform:translateY(0)}
-  80%{opacity:1; transform:translateY(0)}
-  100%{opacity:0; transform:translateY(-40%)}
+  0%{opacity:0; transform:translateY(22%)}
+  28%{opacity:1; transform:translateY(0)}
+  72%{opacity:1; transform:translateY(0)}
+  100%{opacity:0; transform:translateY(-22%)}
 }
 @keyframes intro-bloco{
-  0%{opacity:0; transform:translate(-50%, 40%)}
-  7%{opacity:1; transform:translate(-50%, 0)}
-  93%{opacity:1; transform:translate(-50%, 0)}
-  100%{opacity:0; transform:translate(-50%, -40%)}
+  0%{opacity:0; transform:translate(-50%, 22%)}
+  10%{opacity:1; transform:translate(-50%, 0)}
+  90%{opacity:1; transform:translate(-50%, 0)}
+  100%{opacity:0; transform:translate(-50%, -22%)}
 }
 @keyframes intro-o{
-  from{opacity:0; transform:scale(.4)}
+  from{opacity:0; transform:scale(.7)}
   to{opacity:1; transform:none}
 }
 @keyframes intro-v{
-  from{opacity:0; transform:translateX(-50%)}
+  from{opacity:0; transform:translateX(-32%)}
   to{opacity:1; transform:none}
 }
 @keyframes intro-n{
-  from{opacity:0; transform:translateX(50%)}
+  from{opacity:0; transform:translateX(32%)}
   to{opacity:1; transform:none}
 }
 @keyframes intro-sai{

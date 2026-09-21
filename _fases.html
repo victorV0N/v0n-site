@@ -21,10 +21,10 @@
 </style>
 <div class="fila" id="fila"></div>
 <script>
-  // Instantes em segundos. Com --batida .9s: as 3 palavras giram ate 2.77,
-  // o 0 entra em 2.83, o V em 3.10, o N em 3.24, o quadrado em 3.55 e o
-  // overlay comeca a sair em 4.05.
-  var instantes = (new URLSearchParams(location.search).get('t') || '0.4,1.3,2.2,3.0,3.4,3.9')
+  // Instantes em segundos. Com --batida 1.25s: as 3 palavras giram ate 3.85,
+  // o 0 entra em 3.94, o V em 4.31, o N em 4.50, o quadrado em 4.81 e o
+  // overlay comeca a sair em 5.63.
+  var instantes = (new URLSearchParams(location.search).get('t') || '0.6,1.9,3.1,4.1,4.6,5.3')
     .split(',').map(Number)
 
   var largura = Number(new URLSearchParams(location.search).get('w')) || 420
@@ -32,16 +32,11 @@
 
   var fila = document.getElementById('fila')
 
-  // O pai e os iframes dividem o mesmo sessionStorage, entao o primeiro
-  // iframe marca 'visto' e os seguintes pulam a abertura - a protecao de
-  // segunda visita funcionando contra a propria medicao. Limpar num
-  // setInterval vira corrida e perde. Um iframe por vez, limpando a marca
-  // entre um e outro, nao tem corrida nenhuma.
+  // Um iframe por vez: seis carregando juntos disputam CPU e o seek sai
+  // antes de a fonte assentar, o que muda a largura da frase no print.
   function proximo (i) {
     if (i >= instantes.length) { document.title = 'pronto · fases'; return }
     var t = instantes[i]
-
-    try { sessionStorage.removeItem('v0n-abertura') } catch (e) {}
 
     var fig = document.createElement('figure')
     var cap = document.createElement('figcaption')
