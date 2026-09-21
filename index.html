@@ -48,8 +48,8 @@
 
   <section class="secao">
     <div class="env">
-      <p class="rotulo ficha-eyebrow">01 / O QUE TRAVA</p>
-      <h2 class="t2">O que trava hoje</h2>
+      <p class="rotulo ficha-eyebrow entra-regua">01 / O QUE TRAVA</p>
+      <h2 class="t2 entra">O que trava hoje</h2>
       <div class="travas">
         <article class="travas__item">
           <div class="travas__caixa">
@@ -69,10 +69,10 @@
 
   <section class="secao">
     <div class="env">
-      <p class="rotulo ficha-eyebrow">02 / MÉTODO</p>
-      <h2 class="t2">Como eu trabalho</h2>
+      <p class="rotulo ficha-eyebrow entra-regua">02 / MÉTODO</p>
+      <h2 class="t2 entra">Como eu trabalho</h2>
       <ol class="passos" role="list">
-        <li class="passo">
+        <li class="passo entra" style="--i:0">
           <div class="passo__ficha" aria-hidden="true">
             <span class="rotulo">Etapa</span>
             <span class="passo__num">01</span>
@@ -80,7 +80,7 @@
           <h3 class="t3">Acho o gargalo</h3>
           <p>Olho seu negócio no Google como um cliente olharia.</p>
         </li>
-        <li class="passo">
+        <li class="passo entra" style="--i:1">
           <div class="passo__ficha" aria-hidden="true">
             <span class="rotulo">Etapa</span>
             <span class="passo__num">02</span>
@@ -88,7 +88,7 @@
           <h3 class="t3">Faço e te mostro funcionando</h3>
           <p>Prévia no ar. Não proposta em PDF.</p>
         </li>
-        <li class="passo">
+        <li class="passo entra" style="--i:2">
           <div class="passo__ficha" aria-hidden="true">
             <span class="rotulo">Etapa</span>
             <span class="passo__num">03</span>
@@ -112,10 +112,10 @@
 
   <section class="secao" id="trabalhos">
     <div class="env">
-      <p class="rotulo ficha-eyebrow">03 / TRABALHOS</p>
-      <h2 class="t2">Trabalhos</h2>
+      <p class="rotulo ficha-eyebrow entra-regua">03 / TRABALHOS</p>
+      <h2 class="t2 entra">Trabalhos</h2>
       <div class="cards">
-        <article class="card">
+        <article class="card entra" style="--i:0">
           <p class="rotulo">[Ramo do negócio]</p>
           <h3 class="t3">[Nome do negócio]</h3>
           <p>[Uma linha do que mudou - sem número inventado]</p>
@@ -129,18 +129,18 @@
 
   <section class="secao" id="servicos">
     <div class="env">
-      <p class="rotulo ficha-eyebrow">04 / SERVIÇOS</p>
-      <h2 class="t2">Serviços</h2>
+      <p class="rotulo ficha-eyebrow entra-regua">04 / SERVIÇOS</p>
+      <h2 class="t2 entra">Serviços</h2>
       <div class="cards">
-        <article class="card">
+        <article class="card entra" style="--i:0">
           <h3 class="t3">Sites e landing pages</h3>
           <p>O primeiro contato com o seu negócio acontece sem você estar na frente do celular.</p>
         </article>
-        <article class="card">
+        <article class="card entra" style="--i:1">
           <h3 class="t3">Google Meu Negócio</h3>
           <p>Quem procura por perto encontra seu negócio antes do concorrente.</p>
         </article>
-        <article class="card">
+        <article class="card entra" style="--i:2">
           <h3 class="t3">Automação com IA</h3>
           <p>O repetitivo sai da sua mão, sem trocar o que já funciona.</p>
         </article>
@@ -150,9 +150,9 @@
 
   <section class="secao" id="quem-faz">
     <div class="env">
-      <p class="rotulo ficha-eyebrow">05 / QUEM FAZ</p>
-      <h2 class="t2">Quem faz</h2>
-      <div class="quemfaz">
+      <p class="rotulo ficha-eyebrow entra-regua">05 / QUEM FAZ</p>
+      <h2 class="t2 entra">Quem faz</h2>
+      <div class="quemfaz entra-fade">
         <p class="rotulo">Kauã "v0n" Victor</p>
         <p class="quemfaz__texto">v0n cuida de tudo: design, código e entrega. Remoto, atende o Brasil inteiro.</p>
       </div>
@@ -160,7 +160,7 @@
   </section>
 
   <section class="secao" aria-label="Fecho">
-    <div class="env fecho">
+    <div class="env fecho entra">
       <p class="t2 fecho__texto">Seu tempo fica com o cliente. O site cuida do resto.</p>
       <a class="btn btn--ouro" href="#contato-pendente">Chamar no WhatsApp</a>
     </div>
@@ -174,16 +174,6 @@
     <a class="rodape__contato" href="#contato-pendente">Chamar no WhatsApp</a>
   </div>
 </footer>
-<script>
-(function(){
-  var alterna = document.querySelector('.topo__alterna');
-  var topo = document.querySelector('.topo');
-  alterna.addEventListener('click', function(){
-    var aberto = topo.classList.toggle('menu-aberto');
-    alterna.setAttribute('aria-expanded', aberto);
-    alterna.setAttribute('aria-label', aberto ? 'Fechar menu' : 'Abrir menu');
-  });
-})();
-</script>
+<script src="js/site.js" defer></script>
 </body>
 </html>

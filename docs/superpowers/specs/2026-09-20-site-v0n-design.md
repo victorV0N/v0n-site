@@ -204,17 +204,23 @@ Números medidos no `styles.css` do MazyOS, que é a referência do próprio Kau
 ```
 
 **Três variantes de entrada, e só três:** sobe-e-aparece (padrão), aparece
-(para texto longo, que subindo cansa) e abre-por-corte (`clip-path` animado,
-para régua e número). Cascata por `--i` no CSS, nunca por `setTimeout`.
+(para texto longo, que subindo cansa) e régua-se-desenha (o rótulo aparece por
+opacidade e a régua de 1px cresce por `scaleX` a partir da esquerda, para a
+etiqueta de seção). Cascata por `--i` no CSS, nunca por `setTimeout`.
+
+**Nenhuma variante usa `clip-path` pra esconder.** `IntersectionObserver`
+calcula a área de interseção **depois** de aplicar o recorte: um elemento
+escondido por `clip-path` tem área zero, o observer nunca dispara e o elemento
+nunca é revelado. Isso foi medido em 20/09 — a primeira versão da variante de
+régua travava com 1 de 16 alvos revelados. O que esconde é `opacity`, e só.
 
 **Um `IntersectionObserver` para a página inteira**, que acrescenta a classe
 `.visivel` e para de observar o elemento. Não é um observer por seção.
 
 **Orçamento de movimento, e é lei:**
 
-- Só `transform` e `opacity` animam. Nada de `blur`, `filter`, `width`,
-  `height`, `top` ou `box-shadow` em animação. (O `clip-path` da variante
-  abre-por-corte é a exceção medida: é composto na GPU nas engines atuais.)
+- Só `transform` e `opacity` animam, sem exceção. Nada de `blur`, `filter`,
+  `width`, `height`, `top`, `box-shadow` ou `clip-path` em animação.
 - Nenhum `@keyframes` em laço infinito, com exceção do pulso do estado ativo
   do Diagnóstico.
 - Sem campo de partícula, sem meteoro, sem orbe, sem 3D. O MazyOS tem porque é

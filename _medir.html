@@ -56,11 +56,19 @@
       }
     }
 
-    relato.className = estoura ? 'ruim' : ''
-    relato.textContent = largura + 'px  ·  scroll=' + d.scrollWidth + ' client=' + d.clientWidth +
-      ' altura=' + d.scrollHeight + '  ·  ' +
-      (estoura ? 'ESTOURA >> ' + culpados.slice(0, 5).join('  //  ') : 'sem rolagem horizontal') +
-      '  ·  ouro preenchido na pagina: ' + doc.querySelectorAll('.btn--ouro').length
+    // Entrada por rolagem: quantos alvos ja receberam .visivel. Medido meio
+    // segundo depois do load, que e mais que a duracao da transicao.
+    setTimeout(function () {
+      var alvos = doc.querySelectorAll('.entra, .entra-fade, .entra-regua')
+      var prontos = doc.querySelectorAll('.entra.visivel, .entra-fade.visivel, .entra-regua.visivel')
+
+      relato.className = estoura ? 'ruim' : ''
+      relato.textContent = largura + 'px  ·  scroll=' + d.scrollWidth + ' client=' + d.clientWidth +
+        ' altura=' + d.scrollHeight + '  ·  ' +
+        (estoura ? 'ESTOURA >> ' + culpados.slice(0, 5).join('  //  ') : 'sem rolagem horizontal') +
+        '  ·  ouro preenchido: ' + doc.querySelectorAll('.btn--ouro').length +
+        '  ·  entrada: ' + prontos.length + '/' + alvos.length + ' visiveis'
+    }, 500)
   })
 })()
 </script>

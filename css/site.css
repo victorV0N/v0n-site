@@ -72,7 +72,45 @@ a{color:inherit}
 
 @media (prefers-reduced-motion: reduce){
   *{animation:none !important; transition:none !important; scroll-behavior:auto !important}
+  /* Rede de segurança: se o JS não rodar, nada fica invisível esperando classe. */
+  .entra, .entra-fade, .entra-regua{opacity:1 !important; transform:none !important}
+  .entra-regua::after{transform:none !important}
 }
+
+/* ===== Entrada por rolagem =====
+   Estado inicial na classe, estado final em .visivel, e o navegador
+   interpola. Sem @keyframes: transition é mais barata e não precisa de nome.
+   Só transform e opacity animam — o clip-path da variante de corte é a
+   exceção medida do spec, composta na GPU.
+   A cascata é --i no CSS, nunca setTimeout no JS. */
+.entra, .entra-fade, .entra-regua{
+  transition-duration:var(--entra);
+  transition-timing-function:var(--saida);
+  transition-delay:calc(var(--i, 0) * 80ms);
+  transition-property:opacity, transform;
+}
+.entra{opacity:0; transform:translateY(18px)}
+.entra-fade{opacity:0}
+
+/* Etiqueta de seção: o rótulo aparece e a régua se desenha da esquerda.
+   NADA de clip-path aqui: elemento escondido por clip-path tem área de
+   interseção zero, o IntersectionObserver nunca dispara e ele nunca seria
+   revelado. Medido — a primeira versão desta regra travava em 1/16. */
+.entra-regua{opacity:0}
+.entra-regua::after{
+  transform:scaleX(0); transform-origin:left;
+  transition:transform var(--entra) var(--saida);
+  transition-delay:calc(var(--i, 0) * 80ms + 120ms);
+}
+.entra-regua.visivel::after{transform:scaleX(1)}
+
+.entra.visivel, .entra-fade.visivel, .entra-regua.visivel{opacity:1; transform:none}
+
+/* Sem JS, nada fica escondido esperando uma classe que nunca vem. */
+html:not(.js) .entra,
+html:not(.js) .entra-fade,
+html:not(.js) .entra-regua{opacity:1; transform:none}
+html:not(.js) .entra-regua::after{transform:none}
 
 /* ===== Botões ===== */
 .btn{
