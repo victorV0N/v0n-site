@@ -30,7 +30,7 @@ body{
   margin:0;
   background:var(--carbono);
   color:var(--osso);
-  font:400 17px/1.6 'Space Grotesk', system-ui, sans-serif;
+  font:400 17px/1.6 'Inter', system-ui, sans-serif;
   -webkit-font-smoothing:antialiased;
 }
 
@@ -40,10 +40,10 @@ body{
    lê menor que sans normal no mesmo px — por isso a escala SUBIU (64→76,
    44→52). Sem text-shadow: halo em traço de peso 200 engorda a letra em vez
    de iluminá-la. */
-.t1{font-family:'Barlow Condensed', 'Space Grotesk', system-ui, sans-serif;
+.t1{font-family:'Barlow Condensed', 'Inter', system-ui, sans-serif;
     font-size:clamp(44px, 8.5vw, 76px); font-weight:200; text-transform:uppercase;
     letter-spacing:-.02em; line-height:1; margin:0}
-.t2{font-family:'Barlow Condensed', 'Space Grotesk', system-ui, sans-serif;
+.t2{font-family:'Barlow Condensed', 'Inter', system-ui, sans-serif;
     font-size:clamp(34px, 5.6vw, 52px); font-weight:200; text-transform:uppercase;
     letter-spacing:-.02em; line-height:1; margin:0}
 .t3{font-size:28px; font-weight:700; letter-spacing:-.02em; line-height:1.15; margin:0}
@@ -117,7 +117,7 @@ html:not(.js) .entra-regua::after{transform:none}
   padding:14px 28px;
   border-radius:var(--raio-p);
   border:1.5px solid var(--ouro);
-  font:500 15px/1 'Space Grotesk', system-ui, sans-serif;
+  font:500 15px/1 'Inter', system-ui, sans-serif;
   color:var(--osso);
   background:transparent;
   text-decoration:none;
@@ -452,7 +452,7 @@ html.intro-rodando{overflow:hidden}
 .intro__palco{
   position:relative;
   width:min(90%, 900px); height:1.4em;
-  font:500 clamp(2rem, 5vw, 4rem)/1.2 'Space Grotesk', system-ui, sans-serif;
+  font:500 clamp(2rem, 5vw, 4rem)/1.2 'Inter', system-ui, sans-serif;
   /* Caixa alta pede espaco positivo: o -.025em da referencia e de frase em
      caixa baixa e gruda as letras de MAIS AUTOMATICO. */
   letter-spacing:.02em; text-align:center;
