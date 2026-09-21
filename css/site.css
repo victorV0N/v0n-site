@@ -1,9 +1,26 @@
 /* Tokens da identidade v0n. Fonte: MazyOS/identidade/design-guide.md */
 :root{
   --carbono:#121317;  --grafite:#1B1D23;
-  --linha:#2A2D35;    --aco:#8C96A3;   /* valor confirmado no Step 2 */
+  --linha:#2A2D35;    --aco:#8C96A3;   /* medido 6.19:1 sobre carbono */
   --osso:#ECEDE8;     --ouro:#FFC531;
   --sucesso:#3FBF7F;
+
+  /* Superfície translúcida. Mecanismo medido no MazyOS (branco a 3/8/16%),
+     escrito na cor da v0n. O grafite sobra pro painel que precisa ser opaco. */
+  --sup:rgb(236 237 232 / .03);
+  --borda:rgb(236 237 232 / .08);
+  --borda-forte:rgb(236 237 232 / .16);
+
+  --raio:14px;   /* cartão, painel, campo */
+  --raio-g:24px; /* bloco grande */
+  --raio-p:999px;/* botão em pílula */
+
+  /* Movimento. Números medidos no styles.css do MazyOS. */
+  --saida:cubic-bezier(.22, 1, .36, 1);
+  --rapido:.2s;  /* hover, foco, estado de botão */
+  --medio:.3s;   /* abrir e fechar */
+  --entra:.6s;   /* entrada de seção por rolagem */
+
   --env:1120px;
 }
 
@@ -19,11 +36,23 @@ body{
 
 .env{width:min(100% - 40px, var(--env)); margin-inline:auto}
 
-.t1{font-size:clamp(38px, 7vw, 64px); font-weight:700; letter-spacing:-.02em; line-height:1.05;
-    text-shadow:0 0 28px rgb(236 237 232 / .18); margin:0}
-.t2{font-size:clamp(28px, 4.4vw, 44px); font-weight:700; letter-spacing:-.02em; line-height:1.1;
-    text-shadow:0 0 22px rgb(236 237 232 / .14); margin:0}
+/* Título grande: Barlow Condensed 200, caixa alta. Condensada em caixa alta
+   lê menor que sans normal no mesmo px — por isso a escala SUBIU (64→76,
+   44→52). Sem text-shadow: halo em traço de peso 200 engorda a letra em vez
+   de iluminá-la. */
+.t1{font-family:'Barlow Condensed', 'Space Grotesk', system-ui, sans-serif;
+    font-size:clamp(44px, 8.5vw, 76px); font-weight:200; text-transform:uppercase;
+    letter-spacing:-.02em; line-height:1; margin:0}
+.t2{font-family:'Barlow Condensed', 'Space Grotesk', system-ui, sans-serif;
+    font-size:clamp(34px, 5.6vw, 52px); font-weight:200; text-transform:uppercase;
+    letter-spacing:-.02em; line-height:1; margin:0}
 .t3{font-size:28px; font-weight:700; letter-spacing:-.02em; line-height:1.15; margin:0}
+
+/* Peso 300 em tela pequena: traço de 200 a 360px fica frágil e some no sol,
+   e o público nº 1 do spec está na rua. */
+@media (max-width:599px){
+  .t1, .t2{font-weight:300}
+}
 
 .rotulo{font:500 13px/1 'IBM Plex Mono', ui-monospace, monospace;
         text-transform:uppercase; letter-spacing:.09em; color:var(--aco)}
@@ -32,8 +61,9 @@ body{
 .ficha-eyebrow{display:flex; align-items:center; gap:16px; margin:0 0 28px}
 .ficha-eyebrow::after{content:''; flex:1 1 auto; height:1px; background:var(--linha)}
 
-/* Caixa alta seletiva: uma palavra do título vira ficha, sem outro efeito. */
-.t1__marca{text-transform:uppercase}
+/* Uma palavra do título em ouro. O .t1 inteiro já é caixa alta agora, então
+   o que marca a palavra é a cor — e neon em ouro o spec permite, em osso não. */
+.t1__marca{color:var(--ouro); text-shadow:0 0 24px rgb(255 197 49 / .35)}
 
 p{max-width:65ch}
 

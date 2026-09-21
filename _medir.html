@@ -1,0 +1,68 @@
+<!doctype html>
+<!--
+  Regua de medicao. NAO vai pro ar - nao entra no sitemap e nao e pagina
+  do site. Abrir pelo dev.js: http://localhost:4173/_medir.html?w=360
+
+  Por que existe: o Chrome no Windows tem largura minima de janela, e
+  --window-size=360 entrega um viewport de 504px. Todo print "a 360px"
+  tirado direto era um recorte de 504 - inclusive os da v1. Um <iframe>
+  de largura exata nao tem esse piso, entao e ele que mede.
+
+  ?w=<largura>  largura do iframe em px  (padrao 360)
+  ?p=<caminho>  pagina a medir           (padrao /)
+
+  O relato no topo diz se algo estoura a largura e quem e o culpado.
+-->
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Régua da v0n</title>
+<style>
+  body{margin:0; background:#2A2D35; font:12px/1.4 ui-monospace, monospace}
+  #relato{background:#ECEDE8; color:#121317; padding:8px 10px; white-space:pre-wrap; word-break:break-word}
+  #relato.ruim{background:#FFC531}
+  iframe{display:block; border:0; background:#121317}
+</style>
+</head>
+<body>
+<div id="relato">medindo…</div>
+<iframe id="alvo" title="página medida"></iframe>
+<script>
+(function () {
+  var busca = new URLSearchParams(location.search)
+  var largura = Number(busca.get('w')) || 360
+  var altura = Number(busca.get('h')) || 2400
+  var pagina = busca.get('p') || '/'
+
+  var alvo = document.getElementById('alvo')
+  var relato = document.getElementById('relato')
+
+  alvo.width = largura
+  alvo.height = altura
+  alvo.src = pagina
+
+  alvo.addEventListener('load', function () {
+    var doc = alvo.contentDocument
+    var d = doc.documentElement
+    var estoura = d.scrollWidth > d.clientWidth + 1
+    var culpados = []
+
+    var todos = doc.querySelectorAll('body *')
+    for (var i = 0; i < todos.length; i++) {
+      var r = todos[i].getBoundingClientRect()
+      if (r.right > d.clientWidth + 1) {
+        culpados.push(todos[i].tagName + '.' + String(todos[i].className || '-').slice(0, 24) +
+                      ' w' + Math.round(r.width) + ' r' + Math.round(r.right))
+      }
+    }
+
+    relato.className = estoura ? 'ruim' : ''
+    relato.textContent = largura + 'px  ·  scroll=' + d.scrollWidth + ' client=' + d.clientWidth +
+      ' altura=' + d.scrollHeight + '  ·  ' +
+      (estoura ? 'ESTOURA >> ' + culpados.slice(0, 5).join('  //  ') : 'sem rolagem horizontal') +
+      '  ·  ouro preenchido na pagina: ' + doc.querySelectorAll('.btn--ouro').length
+  })
+})()
+</script>
+</body>
+</html>
