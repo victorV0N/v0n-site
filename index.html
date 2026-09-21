@@ -37,21 +37,31 @@
 <link rel="stylesheet" href="css/site.css">
 </head>
 <body>
-<!-- Abertura. Esquema medido no styles.css do mazyos.com.br: batida de
-     2.025s, cada frase entrando de +40% e saindo pra -40%. A copy e a
-     unica coisa que muda quando o Kaua quiser outra - esta toda aqui. -->
+<!-- Abertura. Esquema medido no styles.css do mazyos.com.br: batida unica,
+     palavra entrando de +40% e saindo pra -40%. A copy e a unica coisa que
+     muda quando o Kaua quiser outra - esta toda aqui.
+
+     A logo vem inline (e nao <img src="img/logo.svg">) porque cada peca
+     entra na sua vez: dentro de um <img> o SVG e uma imagem so, sem peca
+     pra animar. As pecas sao as mesmas do arquivo; o 0 e o N ganharam um
+     <g> em volta porque o translate deles era atributo, e transform de CSS
+     substitui o atributo em vez de somar - o 0 cairia em cima do V. -->
 <div class="intro" id="intro" aria-hidden="true">
   <div class="intro__palco">
-    <span class="intro__frase intro__frase--varia">
-      <span class="intro__fixo">Seu cliente</span>
+    <span class="intro__frase">
+      <span class="intro__fixo">MAIS</span>
       <span class="intro__palavras">
-        <span class="intro__palavra">procura.</span>
-        <span class="intro__palavra">compara.</span>
-        <span class="intro__palavra">escolhe.</span>
+        <span class="intro__palavra">VERSÁTIL</span>
+        <span class="intro__palavra">PRESENÇA</span>
+        <span class="intro__palavra">AUTOMÁTICO</span>
       </span>
     </span>
-    <span class="intro__frase">E decide antes de você atender.</span>
-    <img class="intro__logo" src="img/logo.svg" width="320" height="128" alt="">
+    <svg class="intro__logo" viewBox="0 0 320 128" width="320" height="128">
+      <path class="intro__peca intro__peca--v" d="M0 28 L20 28 L40 78 L60 28 L80 28 L40 128 Z"/>
+      <g transform="translate(98,0)"><path class="intro__peca intro__peca--o" fill-rule="evenodd" d="M0 28 L60 28 L88 56 L88 128 L28 128 L0 100 Z M20 48 L51.7 48 L68 64.3 L68 108 L36.3 108 L20 91.7 Z"/></g>
+      <g transform="translate(204,0)"><path class="intro__peca intro__peca--n" d="M0 128 L0 28 L20 28 L60 96 L60 20 L80 0 L80 128 L60 128 L20 60 L20 128 Z"/></g>
+      <rect class="intro__peca intro__peca--ponto" x="300" y="108" width="20" height="20"/>
+    </svg>
   </div>
 </div>
 

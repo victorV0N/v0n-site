@@ -433,16 +433,18 @@ img{max-width:100%}
 
 /* ===== Abertura =====
    Esquema medido no styles.css do mazyos.com.br. A batida e a unidade de
-   tudo: 2.025s no original, e todos os atrasos sao multiplos dela. Mudar
-   --batida encolhe ou estica a abertura inteira, sem tocar em mais nada.
+   tudo: cada palavra dura uma batida e todos os atrasos sao multiplos
+   dela. Mudar --batida encolhe ou estica a abertura inteira, sem tocar
+   em mais nada. Aqui ela e .9s porque o Kaua pediu palavra com menos de
+   1s - a abertura toda cabe em 4,5s.
 
    Cor e da v0n, nao da referencia: carbono no fundo, osso na letra. */
 .intro{
-  --batida:2.025s;
+  --batida:.9s;
   position:fixed; inset:0; z-index:9999;
   background:var(--carbono);
   display:flex; align-items:center; justify-content:center;
-  animation:intro-sai calc(var(--batida) * .4) cubic-bezier(.4, 0, .2, 1) calc(var(--batida) * 4.88) forwards;
+  animation:intro-sai calc(var(--batida) * .4) cubic-bezier(.4, 0, .2, 1) calc(var(--batida) * 4.5) forwards;
 }
 html.intro-rodando{overflow:hidden}
 
@@ -450,7 +452,9 @@ html.intro-rodando{overflow:hidden}
   position:relative;
   width:min(90%, 900px); height:1.4em;
   font:500 clamp(2rem, 5vw, 4rem)/1.2 'Space Grotesk', system-ui, sans-serif;
-  letter-spacing:-.025em; text-align:center;
+  /* Caixa alta pede espaco positivo: o -.025em da referencia e de frase em
+     caixa baixa e gruda as letras de MAIS AUTOMATICO. */
+  letter-spacing:.02em; text-align:center;
   color:var(--osso);
   /* Neon fraco: dois halos largos e de alfa baixo. Forte demais engorda a
      letra em vez de iluminar, que e o mesmo motivo de o titulo da hero
@@ -458,10 +462,15 @@ html.intro-rodando{overflow:hidden}
   text-shadow:0 0 18px rgb(236 237 232 / .35), 0 0 60px rgb(236 237 232 / .14);
 }
 
+/* "MAIS" fica parado; so a palavra da direita gira. A coluna da direita
+   tem a largura da palavra mais longa (AUTOMATICO), entao o bloco inteiro
+   nao se mexe quando a palavra troca - se mexesse, MAIS pularia. */
 .intro__frase{
   position:absolute; top:0; left:50%; white-space:nowrap;
+  display:inline-grid; grid-template-columns:auto auto;
+  align-items:baseline; column-gap:.24em;
   opacity:0; transform:translate(-50%, 40%);
-  animation:intro-ciclo var(--batida) cubic-bezier(.65, 0, .35, 1) forwards;
+  animation:intro-bloco calc(var(--batida) * 3) cubic-bezier(.65, 0, .35, 1) calc(var(--batida) * .08) forwards;
   will-change:opacity, transform;
 }
 .intro__fixo{white-space:nowrap}
@@ -472,34 +481,39 @@ html.intro-rodando{overflow:hidden}
   animation:intro-palavra var(--batida) cubic-bezier(.65, 0, .35, 1) forwards;
   will-change:opacity, transform;
 }
-
-/* O bloco "Seu cliente [palavra]" fica parado enquanto a palavra gira. */
-.intro__frase--varia{
-  display:inline-grid; grid-template-columns:auto auto;
-  align-items:baseline; column-gap:.24em;
-  animation:intro-bloco calc(var(--batida) * 3) cubic-bezier(.65, 0, .35, 1) calc(var(--batida) * .08) forwards;
-}
 .intro__palavra:nth-child(1){animation-delay:calc(var(--batida) * .08)}
 .intro__palavra:nth-child(2){animation-delay:calc(var(--batida) * 1.08)}
 .intro__palavra:nth-child(3){animation-delay:calc(var(--batida) * 2.08)}
 
-/* Frase 2 entra quando o bloco das palavras sai. */
-.intro__frase:nth-child(2){animation-delay:calc(var(--batida) * 3.08)}
-
-/* A logo e a ultima batida: entra e fica, e e ela que revela a hero. */
+/* A logo monta peca por peca quando a frase sai: o 0 primeiro, V e N
+   fechando em volta dele, o quadrado de ouro por ultimo. E ela que revela
+   a hero. overflow visivel porque V e N comecam fora do viewBox - dentro,
+   a borda do SVG cortaria os dois na entrada. */
 .intro__logo{
   position:absolute; top:50%; left:50%;
   width:min(320px, 62vw); height:auto;
-  opacity:0; transform:translate(-50%, -10%);
-  animation:intro-logo calc(var(--batida) * .48) cubic-bezier(.22, 1, .36, 1) calc(var(--batida) * 4.08) forwards;
+  transform:translate(-50%, -50%);
+  overflow:visible; fill:var(--osso);
+}
+.intro__peca{
+  opacity:0;
+  /* fill-box: a origem passa a ser o centro da propria peca, senao o
+     scale do 0 e do quadrado gira em torno do canto do viewBox. */
+  transform-box:fill-box; transform-origin:center;
+  animation-duration:calc(var(--batida) * .5);
+  animation-timing-function:cubic-bezier(.22, 1, .36, 1);
+  animation-fill-mode:both;
+  will-change:opacity, transform;
+}
+.intro__peca--o{animation-name:intro-o; animation-delay:calc(var(--batida) * 3.15)}
+.intro__peca--v{animation-name:intro-v; animation-delay:calc(var(--batida) * 3.45)}
+.intro__peca--n{animation-name:intro-n; animation-delay:calc(var(--batida) * 3.6)}
+.intro__peca--ponto{
+  fill:var(--ouro);
+  animation-name:intro-o; animation-delay:calc(var(--batida) * 3.95);
+  animation-duration:calc(var(--batida) * .4);
 }
 
-@keyframes intro-ciclo{
-  0%{opacity:0; transform:translate(-50%, 40%)}
-  20%{opacity:1; transform:translate(-50%, 0)}
-  80%{opacity:1; transform:translate(-50%, 0)}
-  100%{opacity:0; transform:translate(-50%, -40%)}
-}
 @keyframes intro-palavra{
   0%{opacity:0; transform:translateY(40%)}
   20%{opacity:1; transform:translateY(0)}
@@ -512,9 +526,17 @@ html.intro-rodando{overflow:hidden}
   93%{opacity:1; transform:translate(-50%, 0)}
   100%{opacity:0; transform:translate(-50%, -40%)}
 }
-@keyframes intro-logo{
-  from{opacity:0; transform:translate(-50%, -10%) scale(.96)}
-  to{opacity:1; transform:translate(-50%, -50%) scale(1)}
+@keyframes intro-o{
+  from{opacity:0; transform:scale(.4)}
+  to{opacity:1; transform:none}
+}
+@keyframes intro-v{
+  from{opacity:0; transform:translateX(-50%)}
+  to{opacity:1; transform:none}
+}
+@keyframes intro-n{
+  from{opacity:0; transform:translateX(50%)}
+  to{opacity:1; transform:none}
 }
 @keyframes intro-sai{
   0%{opacity:1}

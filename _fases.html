@@ -21,10 +21,10 @@
 </style>
 <div class="fila" id="fila"></div>
 <script>
-  // Instantes em segundos. Com --batida 2.025s: 3 palavras giram ate 6.24,
-  // a frase 2 vai de 6.24 a 8.26, a logo entra em 8.26 e o overlay comeca
-  // a sair em 9.88.
-  var instantes = (new URLSearchParams(location.search).get('t') || '0.5,2.5,4.5,7,8.8,10.1')
+  // Instantes em segundos. Com --batida .9s: as 3 palavras giram ate 2.77,
+  // o 0 entra em 2.83, o V em 3.10, o N em 3.24, o quadrado em 3.55 e o
+  // overlay comeca a sair em 4.05.
+  var instantes = (new URLSearchParams(location.search).get('t') || '0.4,1.3,2.2,3.0,3.4,3.9')
     .split(',').map(Number)
 
   var largura = Number(new URLSearchParams(location.search).get('w')) || 420

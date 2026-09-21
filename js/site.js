@@ -69,9 +69,10 @@
     document.documentElement.classList.add('intro-rodando')
     // A batida vem do CSS: mudar --batida lá muda a abertura e este tempo
     // junto, sem dois números pra manter em sincronia.
-    var batida = parseFloat(getComputedStyle(intro).getPropertyValue('--batida')) || 2.025
+    var batida = parseFloat(getComputedStyle(intro).getPropertyValue('--batida')) || 0.9
     try { sessionStorage.setItem('v0n-abertura', 'visto') } catch (e) {}
-    setTimeout(fechaAbertura, batida * 5.4 * 1000)
+    // 4,9 batidas e o fim do fade do overlay; 5 tira ele logo depois.
+    setTimeout(fechaAbertura, batida * 5 * 1000)
   } else {
     fechaAbertura()
   }
