@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+# Copia do site da Faccina, so pra rodar dentro do card de Trabalhos.
+Disallow: /demos/
 
 Sitemap: https://SEU-SITE.netlify.app/sitemap.xml
