@@ -4,15 +4,15 @@
 <meta charset="utf-8">
 <script>document.documentElement.classList.add('js')</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>v0n · Sites que vendem enquanto você atende</title>
-<meta name="description" content="Sites e landing pages para negócios que atendem cliente presencialmente. A gente acha o gargalo, faz e te mostra funcionando — só então fala de valor.">
+<title>v0n · Site, Google Meu Negócio e automação no WhatsApp</title>
+<meta name="description" content="Site, Google Meu Negócio e automação com IA para negócios que atendem cliente presencialmente. A gente acha o gargalo, faz, coloca no ar e te mostra funcionando — só então fala de valor.">
 <link rel="icon" href="img/selo.svg">
 
 <!-- Card do link no WhatsApp. SEU-SITE e marca de bloqueio: og:image e og:url
      exigem URL absoluta, e o endereco real so existe quando o site subir. -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="v0n · Sites que vendem enquanto você atende">
-<meta property="og:description" content="A gente acha o gargalo do seu negócio no digital, faz e te mostra funcionando. Só então fala de valor.">
+<meta property="og:title" content="v0n · Site, Google Meu Negócio e automação no WhatsApp">
+<meta property="og:description" content="Site, Google Meu Negócio e automação, feitos e no ar. A gente te mostra funcionando antes de falar de valor.">
 <meta property="og:image" content="https://SEU-SITE.netlify.app/img/og.png">
 <meta property="og:url" content="https://SEU-SITE.netlify.app/">
 <meta name="twitter:card" content="summary_large_image">
@@ -22,12 +22,12 @@
   "@context":"https://schema.org",
   "@type":"ProfessionalService",
   "name":"v0n",
-  "description":"Sites e landing pages para negócios que atendem cliente presencialmente.",
+  "description":"Site, Google Meu Negócio e automação com IA para negócios que atendem cliente presencialmente.",
   "url":"https://SEU-SITE.netlify.app/",
   "logo":"https://SEU-SITE.netlify.app/img/logo.svg",
   "areaServed":"BR",
   "founder":{"@type":"Person","name":"Kauã Victor"},
-  "telephone":"+55contato-pendente"
+  "telephone":"+5581981400996"
 }
 </script>
 
@@ -80,7 +80,7 @@
       <div class="hero__conteudo">
         <p class="rotulo rotulo--grande entra-fade" style="--i:0">Agência de webdesign e automações</p>
         <h1 class="t1 entra" style="--i:1">Quem te procura consegue te <span class="t1__marca">ver?</span></h1>
-        <p class="hero__texto entra" style="--i:2">Sites e landing pages para negócios que atendem cliente no presencial.</p>
+        <p class="hero__texto entra" style="--i:2">Site, Google, redes sociais e WhatsApp: pra quem te acha virar cliente.</p>
       </div>
       <!-- Decorativa: o recado esta no titulo, a foto so da clima. O fundo
            preto dela e o mesmo #000 da pagina, entao ela nao tem moldura. -->
@@ -96,17 +96,301 @@
       </div>
     </div>
   </section>
+
+  <!-- Trabalhamos com. Logo depois da hero: antes de mostrar a dor, mostra pra
+       quem é, numa linha só e grande — mesmo tamanho de fonte da abertura
+       (.intro__palco). "Trabalhamos com" (sem negrito, mais leve que o nicho)
+       não sai do lugar; só o nicho ao lado troca com a rolagem, até virar
+       "você" no fim. O nicho vive numa vaga com
+       o tamanho do maior deles (.nichos__medida, invisível, só pra medir): é
+       isso que dá à vaga uma altura de linha de verdade, com direito a
+       alinhamento de base — sem ela, a vaga só tinha os nichos por dentro
+       soltos em position:absolute, sem nenhum em fluxo normal pra dar altura à
+       caixa, e o texto ficava sem linha de base pra alinhar com o rótulo (o
+       desalinhamento do print). O GSAP prende o palco e toca a troca; sem ele,
+       ou com movimento reduzido, é uma frase só, corrida, listando todos os
+       nichos e terminando em "você" do mesmo jeito. -->
+  <section class="nichos" id="nichos" aria-label="Com quem a v0n trabalha">
+    <div class="nichos__palco">
+      <div class="nichos__fundo" aria-hidden="true"></div>
+      <h2 class="t1 nichos__titulo">
+        <span class="nichos__fixo">Trabalhamos com</span>
+        <span class="nichos__vaga">
+          <span class="nichos__medida" aria-hidden="true">Barbearias.</span>
+          <span class="nichos__n">Clínicas.</span>
+          <span class="nichos__n">Barbearias.</span>
+          <span class="nichos__n">Salões.</span>
+          <span class="nichos__n">Academias.</span>
+          <span class="nichos__n">Oficinas.</span>
+          <span class="nichos__n">Lojas.</span>
+          <span class="nichos__n"><span class="t1__marca">Você.</span></span>
+        </span>
+      </h2>
+    </div>
+  </section>
+
+  <!-- Portal: a entrada da seção de redes sociais. Efeito trazido do Glyph Portal
+       (© 2026 Christian Katzmann, MIT, ktzm.dk). A palavra é uma janela (clipPath
+       de texto) pra um mural de cópias dos slides do carrossel; a rolagem leva a
+       câmera pro miolo da letra mais grossa até o mural tomar a tela, e aí ele
+       apaga pro preto e emenda na seção seguinte. O site.js mede a tinta e monta
+       o mural. Sem GSAP, ou com movimento reduzido, fica o cartaz parado; sem JS,
+       a seção some. Decorativa: o título de verdade é o da seção seguinte. -->
+  <section class="portal" aria-hidden="true">
+    <div class="portal__palco">
+      <div class="portal__campo"><div class="portal__mural"></div></div>
+      <svg class="portal__svg" focusable="false">
+        <clipPath id="portal-clip" clipPathUnits="userSpaceOnUse"><text class="portal__glifo">POSTS</text></clipPath>
+      </svg>
+    </div>
+  </section>
+
+  <!-- Design pra redes sociais. Um carrossel 4:5 da mesma clínica fictícia do
+       celular, feito em HTML/CSS (sem imagem). Com o GSAP o palco fica preso e a
+       rolagem passa os slides pro lado; os pontos embaixo acompanham. Sem ele,
+       ou com movimento reduzido, é uma fileira que se arrasta com o dedo. -->
+  <section class="posts" id="posts" aria-labelledby="posts-titulo">
+    <div class="posts__palco">
+      <div class="env">
+        <p class="rotulo entra">Design para redes sociais</p>
+        <h2 class="t1 entra" id="posts-titulo" style="--i:1">Post que faz parar de <span class="t1__marca">rolar.</span></h2>
+        <p class="posts__sub entra" style="--i:2">Posts, carrosséis e stories com a cara do seu negócio. Você só posta.</p>
+      </div>
+      <div class="posts__janela" aria-hidden="true">
+        <ol class="posts__trilho">
+          <li class="post post--escuro">
+            <span class="post__pag">1/5</span>
+            <p class="post__h">3 sinais de que tá na hora do <span class="t1__marca">check-up.</span></p>
+            <p class="post__pe"><span>@seunegocio</span><span>Arrasta →</span></p>
+          </li>
+          <li class="post">
+            <span class="post__pag">2/5</span>
+            <span class="post__n">01</span>
+            <p class="post__h">Cansaço que não passa.</p>
+            <p class="post__p">Nem depois de uma noite inteira de sono.</p>
+            <p class="post__pe"><span>@seunegocio</span></p>
+          </li>
+          <li class="post">
+            <span class="post__pag">3/5</span>
+            <span class="post__n">02</span>
+            <p class="post__h">Dor que você já acostumou.</p>
+            <p class="post__p">Se virou rotina, virou sinal.</p>
+            <p class="post__pe"><span>@seunegocio</span></p>
+          </li>
+          <li class="post">
+            <span class="post__pag">4/5</span>
+            <span class="post__n">03</span>
+            <p class="post__h">Último exame faz mais de um ano.</p>
+            <p class="post__p">Prevenir sai mais barato que tratar.</p>
+            <p class="post__pe"><span>@seunegocio</span></p>
+          </li>
+          <li class="post post--escuro">
+            <span class="post__pag">5/5</span>
+            <p class="post__h">Agende pelo WhatsApp.</p>
+            <p class="post__p">Seg a sex · 8h às 18h</p>
+            <span class="post__btn">Chamar no WhatsApp</span>
+            <p class="post__pe"><span>@seunegocio</span></p>
+          </li>
+        </ol>
+      </div>
+      <div class="posts__pontos" aria-hidden="true"><i class="aceso"></i><i></i><i></i><i></i><i></i></div>
+      <p class="sr-only">Exemplo de carrossel pro Instagram de uma clínica: a capa "3 sinais de que tá na hora do check-up", um slide pra cada sinal e o último chamando pro WhatsApp.</p>
+    </div>
+  </section>
+
+  <!-- Procuraram no Google (o comparador). A mesma lista em duas camadas: por baixo, o
+       "sem"; por cima, o "com a v0n", cortada pela linha que se arrasta. O input
+       range invisível cobre a janela e dá o arrasto e o teclado. O parallax do
+       palco é o data-parallax (o GSAP lê). -->
+  <section class="secao comparar" id="comparar" aria-labelledby="comparar-titulo">
+    <div class="env">
+      <h2 class="t1 entra" id="comparar-titulo">Te procuraram. <span class="t1__marca">Quantos chegaram em você?</span></h2>
+      <p class="comparar__sub entra" style="--i:1">Arraste pra ver a mesma busca sem e com a v0n: site no ar, Google Meu Negócio completo e WhatsApp a um toque.</p>
+      <div class="comparar__palco" data-parallax="-0.04">
+        <div class="comparar__rotulos" aria-hidden="true"><span>Sem</span><span>Com a v0n</span></div>
+        <div class="comparar__janela">
+          <div class="comparar__camada" data-janela="sem" aria-hidden="true"></div>
+          <div class="comparar__camada comparar__camada--com" data-janela="com" aria-hidden="true"></div>
+          <span class="comparar__linha" aria-hidden="true"></span>
+          <input class="comparar__range" type="range" min="0" max="100" value="50" aria-label="Arraste para comparar a busca sem e com a v0n">
+        </div>
+        <p class="sr-only">Sem a v0n, o seu negócio aparece por último, sem nota e com o site fora do ar. Com a v0n, aparece no topo, com nota, horário e botão de WhatsApp.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Você vê antes de decidir. O celular se monta conforme a rolagem: esqueleto
+       (onde o cliente desiste), depois a marca, depois o site pronto. O
+       data-passo é escrito pelo site.js; no HTML ele já vem em 3, então sem JS
+       (ou com movimento reduzido) a seção é o celular pronto com as três frases
+       empilhadas. Todo o CSS dos estados está no site.css. O aparelho é um
+       iPhone 14 Pro real, de frente (img/iphone.webp, só a moldura, com um furo na
+       tela): o site anda por baixo dele e o GSAP vira o aparelho em 3D. -->
+  <section class="ve" id="ve" data-passo="3" aria-labelledby="ve-titulo">
+    <div class="ve__palco">
+      <h2 class="t1 ve__linhas" id="ve-titulo">
+        <span class="ve__l ve__l--1">Achamos onde o cliente <span class="t1__marca">desiste.</span></span>
+        <span class="ve__l ve__l--2">Fazemos com <span class="t1__marca">a sua marca.</span></span>
+        <span class="ve__l ve__l--3">Você vê pronto, <span class="t1__marca">no seu celular.</span></span>
+      </h2>
+      <div class="ve__cena" aria-hidden="true">
+        <span class="ve__brilho"></span>
+        <div class="ve__fone">
+          <div class="ve__tela pose__tela">
+              <div class="ve__dentro">
+                <div class="ve__topo"><span class="ve__logo"></span><span class="b">Seu Negócio</span><span class="ve__menu"><i></i><i></i><i></i></span></div>
+                <div class="ve__hero">
+                  <span class="b ve__aberto">Aberto hoje · até 18h</span>
+                  <h3 class="b ve__h">Agende pelo WhatsApp.</h3>
+                  <p class="b ve__p">Horário, endereço e como chegar, num toque.</p>
+                  <span class="ve__btn"><span class="b">Chamar no WhatsApp</span></span>
+                </div>
+                <div class="ve__mapa"></div>
+                <div class="ve__info">
+                  <div class="ve__linha"><span class="b ve__k">Horário</span><span class="b">Seg a sex · 8h às 18h</span></div>
+                  <div class="ve__linha"><span class="b ve__k">Endereço</span><span class="b">Rua do Exemplo, 100</span></div>
+                  <div class="ve__linha"><span class="b ve__k">Telefone</span><span class="b">(81) 90000-0000</span></div>
+                </div>
+              </div>
+          </div>
+          <div class="pose pose--f"><img class="pose__img" src="img/iphone.webp" width="738" height="1448" alt="" decoding="async"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- A página segue o caminho do cliente, a pedido do Kauã em 27/09: te vê no
+       Instagram (redes), te procura no Google (comparador), abre o site
+       (celular), te chama no WhatsApp (mãos) e o contato.
+
+       As mãos. Depois do site, antes do contato: a tela fica no preto e uma
+       luz nasce na fresta entre dois dedos — uma mão robótica (a v0n, a
+       automação) e uma humana (você) — e se espalha até a página inteira virar
+       papel claro, com as mãos quase se tocando. Arte gerada pra v0n (Higgsfield,
+       Nano Banana 2): render 3D realista em preto e branco, depois passado pra
+       pontilhado ordenado em 4 tons de cinza (a técnica da referência), cortado na fresta em duas
+       imagens, pra cada mão andar sozinha até o centro. A frase fica acima das
+       mãos e a nota da automação abaixo; as duas só entram depois que o papel
+       abriu. No fim a luz se recolhe na fresta e a tela volta pro preto, que
+       emenda no preto da seção seguinte. O GSAP prende o palco e toca
+       a transição; sem ele, ou com movimento reduzido, a seção já é a composição
+       final, parada. -->
+  <section class="maos" id="maos">
+    <div class="maos__palco">
+      <div class="maos__papel" role="img" aria-label="Uma mão robótica e uma mão humana, quase se tocando.">
+        <div class="maos__par">
+          <img class="maos__mao maos__mao--robo" src="img/maos/robo.png" width="400" height="185" alt="" decoding="async">
+          <img class="maos__mao maos__mao--humana" src="img/maos/humana.png" width="398" height="185" alt="" decoding="async">
+        </div>
+        <div class="maos__grao" aria-hidden="true"></div>
+      </div>
+      <h2 class="t1 maos__titulo">
+        <span class="maos__l maos__l--1">Automatização para <b>o seu negócio.</b></span>
+        <span class="maos__l maos__l--2">Seu negócio com atendimento 24h, sem descanso.</span>
+      </h2>
+      <p class="maos__nota">
+        <span class="rotulo maos__rotulo">Automação no seu negócio</span>
+        Responde no WhatsApp, confirma horário e lembra o cliente, sem você parar o que está fazendo. Montada pro jeito que você já atende.
+      </p>
+    </div>
+  </section>
+
+  <!-- TRABALHOS: tirado da página por enquanto, a pedido do Kauã em 26/09/2026.
+       Pra voltar: apague o marcador de abertura de comentário do começo deste bloco e o
+       de fechamento do fim dele. O CSS (.vt) e o JS (vitrine, poses) continuam no
+       lugar, sem efeito enquanto não houver o HTML. Prints antigos: img/trabalhos.
+       Antes de voltar, o vercel.json da Faccina precisa liberar o iframe (frame-ancestors).
+       Como era: Trabalhos. Uma vitrine por projeto: o site do cliente aberto AO VIVO, numa
+       janela de navegador (1280 px, encolhida pelo site.js até caber) e no celular
+       (390 px, a tela do aparelho). São iframes do endereço real, então as animações
+       da página rodam de verdade. O site do cliente só aceita ser embutido se o
+       vercel.json dele liberar (frame-ancestors): a Faccina libera este site.
+       A janela fica com pointer-events desligados até o clique ("Clique para
+       navegar"), senão a roda do mouse sobre ela rolaria a página do cliente e não
+       esta. O celular é só de olhar. O aparelho é um iPhone 14 Pro real
+       (mockups-design.com, licença livre pra portfólio): img/iphone.webp é só a
+       moldura, com um furo na tela, e gira em 3D com a rolagem (GSAP). No celular a
+       janela some e sobra só o aparelho. A frase de cada projeto tem sempre três
+       linhas: o número, o problema, o que virou.
+  <section class="secao trabalhos" id="trabalhos" aria-labelledby="trabalhos-titulo">
+    <div class="env">
+      <p class="rotulo entra">Trabalhos</p>
+      <h2 class="t1 entra" id="trabalhos-titulo" style="--i:1">Do Google <span class="t1__marca">ao WhatsApp.</span></h2>
+
+      <article class="vt">
+        <div class="vt__topo">
+          <div>
+            <p class="rotulo">Clínica · Santa Cruz do Capibaribe, PE</p>
+            <h3 class="vt__nome">Faccina</h3>
+          </div>
+          <p class="vt__frase">
+            <span class="vt__fato">Nota 4,8 no Google.</span>
+            <span class="vt__antes">O botão “Site” dava erro.</span>
+            <span class="vt__agora">Agora abre, explica e chama no WhatsApp.</span>
+          </p>
+        </div>
+        <div class="vt__visual">
+          <div class="vt__janela">
+            <div class="vt__barra" aria-hidden="true"><i></i><i></i><i></i></div>
+            <div class="vt__tela">
+              <iframe class="vt__vivo" src="https://clinica-faccina.vercel.app/" title="Site da Faccina, aberto ao vivo" width="1280" height="752" loading="lazy"></iframe>
+              <button class="vt__toque" type="button"><span class="rotulo">Clique para navegar</span></button>
+            </div>
+          </div>
+          <div class="vt__fone" data-parallax="-0.12" aria-hidden="true">
+            <div class="vt__tela pose__tela">
+              <iframe class="vt__vivo" src="https://clinica-faccina.vercel.app/" title="" width="390" height="837" loading="lazy" tabindex="-1" scrolling="no"></iframe>
+            </div>
+            <div class="pose pose--f"><img class="pose__img" src="img/iphone.webp" width="738" height="1448" alt="" decoding="async"></div>
+          </div>
+        </div>
+        <p class="sr-only">O site novo da Faccina, aberto ao vivo no computador e no celular: página inicial, especialidades, depoimentos e como chegar.</p>
+      </article>
+    </div>
+  </section>
+  -->
+
+  <!-- Contato. Um botão só, direto pro WhatsApp com a mensagem já escrita. Ao
+       lado, uma conversa de exemplo, em balões soltos que flutuam: o cliente
+       pede orçamento, diz que quer aparecer mais na internet, e a v0n
+       responde "Pode deixar". O GSAP
+       toca a conversa uma vez, quando ela entra na tela; sem ele, ou com
+       movimento reduzido, ela aparece inteira. O fundo é um shader (js/fundo.js). -->
+  <section class="secao contato" id="contato" aria-labelledby="contato-titulo">
+    <canvas class="contato__fundo" aria-hidden="true"></canvas>
+    <div class="env contato__grade">
+      <h2 class="t1 entra" id="contato-titulo">Vai continuar <span class="t1__marca">invisível?</span></h2>
+      <p class="contato__sub entra" style="--i:1">No Google, ganha quem aparece.</p>
+      <div class="zap" data-parallax="-0.04" role="img" aria-label="Exemplo de conversa no WhatsApp: um cliente pede orçamento, a v0n pergunta o que ele precisa, ele diz que quer aparecer mais na internet e fortalecer a marca, e a v0n responde: pode deixar.">
+        <div class="zap__item zap__item--eu">
+          <p class="zap__msg zap__msg--eu">Oi! Queria fazer um orçamento.<span class="zap__check">✓✓</span></p>
+        </div>
+        <div class="zap__item zap__item--v0n">
+          <img class="zap__av" src="img/selo.svg" width="32" height="32" alt="">
+          <span class="zap__dots"><i></i><i></i><i></i></span>
+          <p class="zap__msg zap__msg--v0n">Oi! Claro. O que você precisa?</p>
+        </div>
+        <div class="zap__item zap__item--eu">
+          <p class="zap__msg zap__msg--eu">Quero aparecer mais na internet, deixar minha marca mais forte.<span class="zap__check">✓✓</span></p>
+        </div>
+        <div class="zap__item zap__item--v0n">
+          <img class="zap__av" src="img/selo.svg" width="32" height="32" alt="">
+          <span class="zap__dots"><i></i><i></i><i></i></span>
+          <p class="zap__msg zap__msg--v0n">Pode deixar.</p>
+        </div>
+      </div>
+      <p class="contato__acao entra" style="--i:3"><a class="btn btn--ouro" href="https://wa.me/5581981400996?text=Oi%2C%20v0n!%20Quero%20ver%20como%20o%20meu%20neg%C3%B3cio%20aparece%20no%20Google%20e%20como%20ficaria%20o%20site." target="_blank" rel="noopener">Quero aparecer</a></p>
+      <p class="contato__assina rotulo entra" style="--i:5">v0n · Agência de webdesign e automações</p>
+    </div>
+  </section>
 </main>
-<footer class="rodape">
-  <div class="env rodape__conteudo">
-    <img class="rodape__logo entra-fade" src="img/logo-mono.svg" width="120" height="54" alt="v0n">
-    <p class="rodape__assinatura entra-fade" style="--i:1">— v0n · sites e landing pages</p>
-    <p class="rodape__ano entra-fade" style="--i:2">© 2026</p>
-  </div>
-</footer>
-<!-- Rolagem suave: o mesmo Lenis, na mesma versao, que o hermes-agent usa.
-     defer nos dois mantem a ordem: o Lenis existe quando o site.js roda. -->
+<!-- GSAP e ScrollTrigger (parallax e cenas presas à rolagem) e o Lenis (rolagem
+     suave, o mesmo do hermes-agent). defer nos quatro mantem a ordem: tudo existe
+     quando o site.js roda. -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.23/dist/lenis.min.js" defer></script>
 <script src="js/site.js" defer></script>
+<script src="js/fundo.js" defer></script>
 </body>
 </html>

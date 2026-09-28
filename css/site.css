@@ -24,6 +24,10 @@
   --entra:.6s;   /* entrada de seção por rolagem */
 
   --env:1120px;
+
+  /* Peso do texto corrido do site: Inter Medium, a pedido do Kauã em 27/09
+     (era 400, Inter Regular; pra voltar, é só trocar aqui). */
+  --peso-texto:500;
 }
 
 *{box-sizing:border-box}
@@ -32,7 +36,7 @@ body{
   margin:0;
   background:var(--carbono);
   color:var(--osso);
-  font:400 17px/1.6 'Inter', system-ui, sans-serif;
+  font:var(--peso-texto) 17px/1.6 'Inter', system-ui, sans-serif;
   -webkit-font-smoothing:antialiased;
 }
 
@@ -56,7 +60,7 @@ body{
 }
 
 .rotulo{font:500 13px/1 'IBM Plex Mono', ui-monospace, monospace;
-        text-transform:uppercase; letter-spacing:.09em; color:var(--aco)}
+        text-transform:uppercase; letter-spacing:.09em; color:var(--ouro)}
 
 /* Etiqueta de seção encostada numa régua de 1px — ficha técnica, não menu. */
 .ficha-eyebrow{display:flex; align-items:center; gap:16px; margin:0 0 28px}
@@ -149,10 +153,106 @@ html:not(.js) .entra-regua::after{transform:none}
 .topo__logo{display:inline-flex; line-height:0}
 .topo__logo img{display:block}
 
-/* Desktop: a logo no centro, medida no Hermes. */
+.topo__nav{
+  display:flex;
+  align-items:center;
+  gap:32px;
+}
+.topo__menu{
+  display:flex;
+  align-items:center;
+  gap:28px;
+  list-style:none;
+  margin:0; padding:0;
+  font:500 13px/1 'IBM Plex Mono', ui-monospace, monospace;
+  text-transform:uppercase;
+  letter-spacing:.09em;
+}
+.topo__menu a:not(.btn){color:var(--osso); opacity:.8; text-decoration:none}
+.topo__menu a:not(.btn):hover{opacity:1}
+
+/* Desktop: grade 1fr auto 1fr com a logo no meio, medida no Hermes. O nav
+   vira display:contents pra que os dois <ul> caiam direto nas colunas da
+   grade. Cada item tem flex:1, entao os links se espalham em colunas
+   iguais em vez de se amontoar perto da logo. */
 @media (min-width:720px){
   .topo{border-bottom:none}
-  .topo__barra{justify-content:center; padding-block:40px 20px}
+  .topo__barra{
+    display:grid; grid-template-columns:1fr auto 1fr; column-gap:24px;
+    width:min(100% - 2 * max(24px, min(6vw, 80px)), 1080px);
+    padding-block:40px 20px;
+  }
+  .topo__nav{display:contents}
+  .topo__logo{grid-column:2; grid-row:1}
+  .topo__menu--esq{grid-column:1; grid-row:1}
+  .topo__menu--dir{grid-column:3; grid-row:1}
+  .topo__menu{gap:24px; font-size:14px; letter-spacing:.1em}
+  .topo__menu li{flex:1; white-space:nowrap}
+  /* Espelho do lado esquerdo: la os itens encostam na borda esquerda de cada
+     coluna, aqui na direita. Sem isso o botao, largo, empurra "Quem faz"
+     pra colar na logo. */
+  .topo__menu--dir li{text-align:right}
+}
+
+.topo__alterna{
+  display:none;
+  width:40px; height:40px;
+  align-items:center;
+  justify-content:center;
+  padding:0;
+  background:transparent;
+  border:1px solid var(--linha);
+  color:var(--osso);
+  cursor:pointer;
+  border-radius:var(--raio);
+}
+.topo__alterna:hover{border-color:var(--aco)}
+.topo__icone{
+  position:relative;
+  display:block;
+  width:18px; height:2px;
+  background:currentColor;
+}
+.topo__icone::before,
+.topo__icone::after{
+  content:'';
+  position:absolute;
+  left:0;
+  width:18px; height:2px;
+  background:currentColor;
+  transition:transform .15s ease, top .15s ease;
+}
+.topo__icone::before{top:-6px}
+.topo__icone::after{top:6px}
+.topo__alterna[aria-expanded="true"] .topo__icone{background:transparent}
+.topo__alterna[aria-expanded="true"] .topo__icone::before{top:0; transform:rotate(45deg)}
+.topo__alterna[aria-expanded="true"] .topo__icone::after{top:0; transform:rotate(-45deg)}
+
+@media (max-width:719px){
+  /* Sem JS: o nav (links + CTA) fica visível, só empilhado. Nada aqui depende de script. */
+  .topo__barra{flex-wrap:wrap; row-gap:20px}
+  .topo__nav{
+    flex-direction:column;
+    align-items:stretch;
+    gap:20px;
+    width:100%;
+  }
+  .topo__menu{flex-direction:column; align-items:flex-start; gap:16px}
+
+  /* Com JS: a classe .js (aplicada no <html> antes da pintura) autoriza o colapso. */
+  html.js .topo__alterna{display:inline-flex}
+  html.js .topo__nav{
+    display:none;
+    position:absolute;
+    inset-inline:0;
+    top:100%;
+    padding:24px 20px 28px;
+    background:var(--grafite);
+    border:1px solid var(--linha);
+    border-top:none;
+    border-radius:var(--raio);
+  }
+  html.js .topo.menu-aberto .topo__nav{display:flex}
 }
 
 /* ===== Hero ===== */
@@ -223,10 +323,523 @@ html:not(.js) .entra-regua::after{transform:none}
   padding-block:clamp(64px, 10vw, 120px);
 }
 
+/* ===== Rótulo grande (usado na hero) ===== */
 /* Rótulo em cima de todo título: ouro com o mesmo neon da palavra marcada
    (.t1__marca), a pedido do Kauã em 22/09. */
 .rotulo--grande{margin:0 0 16px; font-size:clamp(15px, 1.6vw, 18px); font-weight:700;
   color:var(--ouro); text-shadow:0 0 24px rgb(255 197 49 / .35)}
+
+/* ===== Simulação de busca =====
+   A janela de resultados do comparador ("Procuraram no Google").
+   Uma ilustração feita com a paleta da marca: grafite, linha fina, zero sombra.
+   O ouro só aparece no botão de WhatsApp do "seu negócio" já resolvido. */
+.sr-only{position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap}
+
+.campo{
+  display:flex; align-items:center; gap:12px; padding:14px 20px; margin:0 0 14px;
+  border:1px solid var(--borda-forte); border-radius:var(--raio-p); background:rgb(236 237 232 / .04);
+  font:500 clamp(16px, 1.7vw, 19px)/1.2 'Inter', system-ui, sans-serif; color:var(--osso);
+}
+.campo svg{flex:none; width:20px; height:20px; color:var(--aco)}
+.lista{list-style:none; margin:0; padding:0; display:grid; gap:10px}
+
+/* Todas as linhas têm a mesma altura (min-height maior que o conteúdo): o
+   comparador empilha duas listas em ordens diferentes e elas têm que alinhar. */
+.res{
+  display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:4px 16px;
+  min-height:92px; padding:14px 16px;
+  border:1px solid var(--borda); border-radius:var(--raio); background:var(--sup);
+}
+.res__av{
+  width:44px; height:44px; border-radius:50%; display:grid; place-items:center;
+  background:var(--carbono); border:1px solid var(--linha);
+  font:700 18px/1 'Inter', system-ui, sans-serif; color:var(--osso);
+}
+.res__info{min-width:0}
+.res__info p{margin:0; max-width:none}
+.res__nome{font:700 16px/1.3 'Inter', system-ui, sans-serif; color:var(--osso)}
+.res__meta, .res__hora{font:400 13px/1.45 'Inter', system-ui, sans-serif; color:var(--aco)}
+.res__nota{color:var(--osso); font-weight:500}
+.res__hora b{color:var(--sucesso); font-weight:500}
+.res__acoes{display:flex; gap:8px}
+.res__btn{
+  display:inline-flex; align-items:center; padding:7px 14px; white-space:nowrap;
+  border:1px solid var(--borda-forte); border-radius:var(--raio-p);
+  font:500 12px/1 'Inter', system-ui, sans-serif; color:var(--osso);
+}
+.res__btn--ouro{background:var(--ouro); border-color:var(--ouro); color:var(--carbono); font-weight:700}
+.res--sumido{border-style:dashed; background:transparent}
+.res--sumido .res__av{border-style:dashed; color:var(--aco)}
+.res--sumido .res__nome{color:var(--aco)}
+.res__erro{display:flex; align-items:center; gap:8px; font:500 12px/1.3 'IBM Plex Mono', ui-monospace, monospace; color:var(--aco)}
+.res__erro::before{content:""; flex:none; width:8px; height:8px; border-radius:50%; background:#E5484D}
+.res--seu{border-color:var(--borda-forte); background:rgb(236 237 232 / .06)}
+
+@media (max-width:599px){
+  /* Sem espaço pro botão ao lado: ele desce pra baixo do texto, e a linha ganha altura. */
+  .res{grid-template-columns:auto 1fr; min-height:124px}
+  .res__acoes{grid-column:2}
+}
+
+/* ===== Trabalhamos com =====
+   Numa linha só, no tamanho da abertura (mesmo clamp do .intro__palco).
+   Sem .nichos--anima (sem JS, sem GSAP ou com movimento reduzido) é uma frase
+   corrida: .nichos__vaga não gera caixa própria (display:contents) e
+   .nichos__medida (a régua de medida) fica fora do fluxo, então sobra só o
+   rótulo seguido de cada nicho, na mesma frase.
+   Com ela, "Trabalhamos com:" e a vaga viram os dois itens de uma linha (flex,
+   nowrap: não quebra) e só a vaga troca de conteúdo. .nichos__medida entra em
+   fluxo dentro da vaga (invisível, mas ocupando espaço) com o maior nicho,
+   "Barbearias.": é ela quem dá à vaga uma linha de verdade, com largura e
+   linha de base — os nichos reais empilham por cima, em position:absolute,
+   exatamente onde a régua está. Sem a régua, a vaga só teria filhos fora do
+   fluxo, sem base pra alinhar com o rótulo (o desalinhamento do print). */
+.nichos{position:relative; background:var(--carbono)}
+.nichos__palco{
+  position:relative; display:flex; flex-direction:column; align-items:center;
+  padding:clamp(64px, 10vw, 120px) 20px; overflow:hidden;
+}
+.nichos__fundo{
+  position:absolute; inset:-25% 0; pointer-events:none;
+  background:radial-gradient(ellipse 55% 40% at 50% 50%, rgb(255 255 255 / .07) 0%, transparent 70%);
+}
+.nichos__titulo{
+  position:relative; width:min(100%, 1000px); text-align:center;
+  font-size:clamp(2.2rem, 6vw, 5.5rem); letter-spacing:-.01em;
+}
+/* Só o nicho é negrito (o .t1 já é 700); "Trabalhamos com" fica mais leve, de propósito. */
+.nichos__fixo{font-weight:300}
+.nichos__vaga{display:contents}
+.nichos__medida{display:none}
+.nichos__n{display:inline}
+
+.nichos--anima .nichos__palco{height:100vh; justify-content:center; padding-block:0}
+.nichos--anima .nichos__titulo{
+  display:flex; flex-wrap:nowrap; white-space:nowrap;
+  justify-content:center; align-items:baseline; column-gap:.28em;
+}
+.nichos--anima .nichos__vaga{position:relative; display:inline-block; text-align:left}
+.nichos--anima .nichos__medida{display:inline-block; visibility:hidden}
+.nichos--anima .nichos__n{position:absolute; left:0; top:0; display:block; margin:0}
+
+/* Igual à abertura: em tela estreita a fonte encolhe pra continuar numa linha
+   só, em vez de quebrar. */
+@media (max-width:899px){
+  .nichos--anima .nichos__titulo{font-size:clamp(1.5rem, 7.6vw, 2.6rem)}
+}
+@media (max-width:420px){
+  .nichos--anima .nichos__titulo{font-size:5.8vw}
+}
+
+/* ===== As mãos =====
+   Três camadas: o palco é preto (o blackout); por cima, o papel (#f4f3ef, o tom
+   quente pedido na referência, com trama pontilhada), que só aparece dentro
+   de uma máscara de luz — uma elipse centrada na fresta entre os dedos, de raio
+   --r; e dentro do papel, as mãos em multiply (o branco da imagem vira a cor do
+   papel, só o ponto preto fica). O GSAP anima --r, a opacidade do papel e da
+   textura, e as mãos chegando ao centro. Sem ele, os valores de repouso abaixo
+   já são a cena final: papel inteiro, textura, mãos no lugar.
+   Mãos e textura são pontilhado ordenado (Bayer 8x8) em 4 tons de cinza — a
+   mesma técnica da referência, vista de perto: o ponto é cinza, não preto chapado. Os arquivos são pequenos de propósito (cada ponto é um
+   pixel) e a tela sempre amplia: pixelated amplia sem suavizar, e o ponto
+   continua ponto em vez de virar borrão cinza.
+   As duas imagens têm a mesma altura (185 px), então as duas usam a mesma
+   altura no CSS e ficam na mesma escala; a de robô encosta pela direita no
+   centro e a humana pela esquerda — a fresta cai exatamente no meio da tela.
+   --altura das mãos: 23,1vw é o que dá 50vw pra cada mão (a composição da
+   referência, de ponta a ponta); em tela alta e estreita (celular, tablet em
+   pé) o 19vh ganha, as mãos crescem e os braços saem pelas bordas, mas as
+   pontas dos dedos continuam no centro. Fica no papel porque a textura também
+   usa: um ponto da textura tem o tamanho de um ponto das mãos. */
+/* Sem fundo próprio: o preto é o do body. Assim, quando a cena anima, a seção
+   sobe meia tela por cima do fim do celular (margem negativa), e a luz nasce
+   enquanto ele sai, sem uma tela inteira de preto vazio no meio. Sem animação
+   não há encavalamento. */
+.maos{position:relative}
+.ve--anima + .maos{margin-top:-50vh}
+.maos__palco{position:relative; height:100vh; overflow:hidden}
+.maos__papel{
+  --r:140%; --cy:54%; --altura:max(23.1vw, 19vh);
+  position:absolute; inset:0; background:#f4f3ef;
+  -webkit-mask-image:radial-gradient(ellipse 62% 56% at 50% var(--cy), #000 var(--r), transparent calc(var(--r) + 28%));
+          mask-image:radial-gradient(ellipse 62% 56% at 50% var(--cy), #000 var(--r), transparent calc(var(--r) + 28%));
+}
+/* O multiply fica no par, não em cada imagem: o GSAP mexe no par (transform) e
+   transform cria um grupo isolado — dentro dele a imagem não enxerga o papel. O
+   par inteiro, sim, se mistura com o papel. As duas imagens não se sobrepõem,
+   então dentro do grupo não há o que misturar. A margem negativa sobe o par até
+   as pontas dos dedos (a 45% da altura da imagem) caírem em --cy; é margem, e
+   não translate, porque o GSAP assume o translate de quem ele anima. */
+.maos__par{
+  position:absolute; left:0; right:0; top:var(--cy, 54%); height:var(--altura);
+  margin-top:calc(var(--altura) * -.45); mix-blend-mode:multiply;
+}
+.maos__mao{position:absolute; top:0; height:100%; width:auto; max-width:none; image-rendering:pixelated; will-change:transform}
+.maos__mao--robo{right:50%}
+.maos__mao--humana{left:50%}
+/* Trama do papel, como o fundo da referência: uma grade de pontos cinza-claros
+   no papel todo e nuvens mais densas por cima. Ladrilho de 512 pontos que emenda
+   sem costura, no mesmo tamanho de ponto das mãos (a --altura é de 185 pontos),
+   com os tons já prontos (por isso opacidade 1). Some num clarão em volta da
+   fresta entre os dedos, como na referência: é a luz entre as duas mãos. */
+.maos__grao{
+  position:absolute; inset:0; pointer-events:none; mix-blend-mode:multiply;
+  background:url(../img/maos/papel-trama.png) 50% 50% / calc(var(--altura) * 512 / 185) auto;
+  image-rendering:pixelated;
+  -webkit-mask-image:radial-gradient(ellipse 18% 26% at 50% var(--cy), transparent 30%, #000 100%);
+          mask-image:radial-gradient(ellipse 18% 26% at 50% var(--cy), transparent 30%, #000 100%);
+}
+/* A frase, no papel limpo acima das mãos. Fica fora do .maos__papel porque ele
+   é role="img" e esconderia o título do leitor de tela. Ouro no papel claro dá
+   ~1,4:1 e não lê, então o destaque é o peso, como em "Trabalhamos com": a
+   primeira linha fina, a segunda em 700. */
+.maos__titulo{
+  position:absolute; left:0; right:0; top:12%; padding-inline:16px;
+  text-align:center; color:var(--grafite); font-size:clamp(1.9rem, 5vw, 4.25rem); text-wrap:balance;
+}
+.maos__l{display:block}
+/* Título em cima, fino, com só o destaque em negrito; slogan pequeno embaixo,
+   todo em negrito (a pedido do Kauã em 27/09). */
+.maos__l--1{font-weight:300}
+.maos__l--1 b{font-weight:700}
+.maos__l--2{margin-top:14px; font:700 clamp(16px, 1.6vw, 20px)/1.4 'Inter', system-ui, sans-serif; text-transform:none; letter-spacing:0}
+/* A nota da automação, no papel abaixo das mãos. O rótulo sai do aço pro
+   grafite: aço no papel claro dá ~2,7:1, pouco pra letra de 13px. */
+.maos__nota{
+  position:absolute; left:0; right:0; bottom:9%; margin:0 auto; padding-inline:16px;
+  max-width:calc(46ch + 32px); text-align:center; color:var(--grafite); text-wrap:balance;
+  font-weight:700;
+}
+.maos__rotulo{display:block; margin-bottom:10px; color:inherit}
+
+/* ===== Comparador: Procuraram no Google =====
+   A camada "com" fica por cima e é cortada pela linha (--x, escrita pelo JS a
+   cada movimento do input). O input cobre a janela e é invisível. */
+/* Título e texto no centro, no eixo da janela do comparador (a pedido do Kauã em 27/09). */
+.comparar .t1{margin-bottom:16px; font-size:clamp(2.75rem, 6vw, 5rem); text-align:center}
+.comparar__sub{margin:0 auto; color:var(--aco); font-weight:500; text-align:center}
+.comparar__palco{margin-top:clamp(32px, 4vw, 56px)}
+.comparar__rotulos{
+  display:flex; justify-content:space-between; width:min(100%, 760px); margin:0 auto 12px;
+  font:500 13px/1 'IBM Plex Mono', ui-monospace, monospace; text-transform:uppercase; letter-spacing:.09em; color:var(--aco);
+}
+.comparar__rotulos span:last-child{color:var(--ouro)}
+.comparar__janela{
+  --x:50%; position:relative; width:min(100%, 760px); margin:0 auto; overflow:hidden;
+  border:1px solid var(--borda); border-radius:var(--raio-g); background:var(--grafite); touch-action:pan-y;
+}
+.comparar__camada{padding:16px}
+.comparar__camada--com{position:absolute; inset:0; background:var(--grafite); clip-path:inset(0 0 0 var(--x))}
+.comparar__linha{position:absolute; top:0; bottom:0; left:var(--x); width:2px; margin-left:-1px; background:var(--osso); pointer-events:none}
+.comparar__linha::after{
+  content:"↔"; position:absolute; top:50%; left:50%; width:44px; height:44px; margin:-22px 0 0 -22px;
+  display:grid; place-items:center; border-radius:50%; background:var(--carbono); border:2px solid var(--osso);
+  font:500 18px/1 'Inter', system-ui, sans-serif; color:var(--osso);
+}
+.comparar__range{position:absolute; inset:0; width:100%; height:100%; margin:0; opacity:0; cursor:ew-resize}
+.comparar__janela:has(.comparar__range:focus-visible){outline:2px solid var(--ouro); outline-offset:3px}
+
+/* ===== Celular (poses) =====
+   O celular é um iPhone 14 Pro real. O mockup traz cada ângulo como uma imagem,
+   só a moldura, com fundo transparente e um furo na tela, e girar uma imagem
+   chapada em 3D dá cara de folha. Então o celular gira trocando de pose: a tela
+   (o site num quadro de 390 x 837, em px do site) é uma só, e as molduras ficam
+   por cima dela. .pose--f (de frente, 738 x 1448, o tamanho nativo da imagem) é a
+   que vem no HTML; o site.js copia ela pras outras (5 = inclinado, 3 = quase de
+   lado, 3m = o mesmo, do outro lado). A tela mede 645 x 1384 na moldura de frente,
+   começando em 35,37: essa é a matrix3d de repouso. Com o GSAP rodando, o site.js
+   refaz o transform da tela e o de cada moldura a cada quadro, pra tela caber no
+   quadrilátero do momento (os cantos da tela de cada ângulo vêm do PSD). */
+.pose{position:absolute; left:0; top:0; transform-origin:0 0}
+.pose__tela{
+  position:absolute; left:0; top:0; width:390px; height:837px; border-radius:46px; overflow:hidden; transform-origin:0 0;
+  transform:matrix3d(1.653846,0,0,0,0,1.653524,0,0,0,0,1,0,35,37,0,1);
+}
+.pose__img{position:absolute; inset:0; width:100%; height:100%; display:block; pointer-events:none}
+.pose--f{width:738px; height:1448px}
+.pose--5{width:827px; height:1497px}
+.pose--3, .pose--3m{width:673px; height:1652px}
+.pose--3m .pose__img{scale:-1 1}
+/* ===== Você vê antes de decidir =====
+   O celular tem um site só, e o data-passo (1, 2, 3) muda como ele se
+   apresenta: 1 = esqueleto (o texto vira barra cinza, a cor some), 2 = a marca
+   entra (fundo claro, ouro no botão), 3 = pronto. O texto de cada .b vira
+   barra por color:transparent + background: a barra tem a largura do texto.
+   As variáveis mudam na hora e as transições (color, background) animam. */
+.ve{position:relative; background:var(--carbono)}
+.ve__palco{
+  position:relative; display:grid; gap:clamp(24px, 4vw, 64px); align-items:center;
+  padding:clamp(64px, 10vw, 120px) max(20px, calc((100% - var(--env)) / 2));
+  overflow:hidden;
+}
+.ve__linhas{font-size:clamp(2.5rem, 5.6vw, 4.75rem); text-wrap:balance}
+.ve__l{display:block}
+.ve__l + .ve__l{margin-top:.45em}
+
+.ve__cena{position:relative; display:grid; place-items:center}
+.ve__brilho{
+  position:absolute; width:min(100%, 560px); aspect-ratio:1; border-radius:50%; pointer-events:none;
+  background:radial-gradient(circle, rgb(255 255 255 / .08), transparent 65%);
+}
+.ve__fone{position:relative; width:738px; height:1448px; zoom:.43}
+.ve__tela{
+  --fundo:var(--osso); --barra:transparent; --txt:#0b0c0e; --tinta:#0b0c0e;
+  --blocos:#d3d5cd; --btn:var(--ouro); --mapa:1;
+  container-type:inline-size; background:var(--fundo); transition:background-color .5s;
+}
+/* Faixa da barra de status: o site rola por baixo dela, sem aparecer ao lado da ilha. */
+.ve__tela::after{content:""; position:absolute; inset:0 0 auto; height:50px; background:var(--fundo); transition:background-color .5s}
+@media (max-width:899px){.ve__fone{zoom:.38}}
+@media (max-height:760px){.ve__fone{zoom:.32}}
+[data-passo="1"] .ve__tela{--fundo:#14161b; --barra:#262a33; --txt:transparent; --tinta:#333844; --blocos:#1c1f26; --btn:#262a33; --mapa:0}
+[data-passo="2"] .ve__tela{--barra:rgb(11 12 14 / .12); --txt:transparent; --tinta:rgb(11 12 14 / .3)}
+
+.ve__dentro{font-size:4.7cqw; line-height:1.3; color:var(--txt)}
+.b{
+  display:block; width:fit-content; max-width:100%; border-radius:.35em;
+  color:var(--txt); background-color:var(--barra); transition:color .5s, background-color .5s;
+}
+[data-passo="1"] .b{animation:ve-pulsa 1.4s ease-in-out infinite}
+@keyframes ve-pulsa{50%{opacity:.5}}
+
+.ve__topo{display:flex; align-items:center; gap:.7em; padding:2.9em 1.1em 1em; font-weight:700}
+.ve__logo{flex:none; width:2em; height:2em; border-radius:50%; background:var(--ouro); transition:background-color .5s}
+[data-passo="1"] .ve__logo{background:#262a33}
+.ve__menu{margin-left:auto; display:grid; gap:.3em; width:1.5em}
+.ve__menu i{height:2px; background:var(--tinta); transition:background-color .5s}
+
+.ve__hero{padding:.6em 1.1em 0}
+.ve__aberto{font-size:.8em; font-weight:500}
+.ve__h{margin:.5em 0 .4em; font:700 2.3em/1.02 'Barlow Condensed', 'Inter', system-ui, sans-serif; text-transform:uppercase; letter-spacing:-.01em}
+.ve__p{margin:0 0 1.1em; font-size:.95em}
+.ve__btn{display:inline-block; padding:.85em 1.4em; border-radius:var(--raio-p); background:var(--btn); font-weight:700; transition:background-color .5s}
+.ve__btn .b{background:none}
+
+.ve__mapa{
+  position:relative; margin:1.4em 1.1em; aspect-ratio:16 / 10; border-radius:.9em; overflow:hidden;
+  background:var(--blocos); transition:background-color .5s;
+}
+.ve__mapa::before{
+  content:""; position:absolute; inset:0; opacity:var(--mapa); transition:opacity .5s;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 22%, rgb(11 12 14 / .12) 22% calc(22% + 2px)),
+    repeating-linear-gradient(0deg, transparent 0 30%, rgb(11 12 14 / .12) 30% calc(30% + 2px));
+}
+.ve__mapa::after{
+  content:""; position:absolute; top:44%; left:56%; width:1.3em; height:1.3em; translate:-50% -50%;
+  border-radius:50%; background:var(--ouro); border:.3em solid #0b0c0e; opacity:var(--mapa); transition:opacity .5s;
+}
+.ve__info{display:grid; padding:0 1.1em 2.4em}
+.ve__linha{display:grid; gap:.25em; padding:.85em 0; border-top:1px solid var(--tinta); transition:border-color .5s}
+.ve__k{font-size:.72em; font-weight:500; text-transform:uppercase; letter-spacing:.08em}
+.ve__linha .b:last-child{font-weight:600}
+
+@media (min-width:900px){
+  .ve__palco{grid-template-columns:1.2fr 1fr}
+}
+
+/* Com o GSAP (classe posta pelo JS): o palco tem a altura da tela, é preso e as
+   três frases dividem o mesmo lugar, uma de cada vez. */
+.ve--anima .ve__palco{height:100vh; align-content:center; padding-block:24px}
+.ve--anima .ve__linhas{display:grid}
+.ve--anima .ve__l{
+  grid-area:1 / 1; margin:0; opacity:0; translate:0 .5em;
+  transition:opacity .5s var(--saida), translate .5s var(--saida);
+}
+.ve--anima[data-passo="1"] .ve__l--1,
+.ve--anima[data-passo="2"] .ve__l--2,
+.ve--anima[data-passo="3"] .ve__l--3{opacity:1; translate:0 0}
+.ve--anima[data-passo="2"] .ve__l--1,
+.ve--anima[data-passo="3"] .ve__l--1,
+.ve--anima[data-passo="3"] .ve__l--2{translate:0 -.5em}
+
+/* ===== Portal (entrada das redes sociais) =====
+   O mural só aparece por dentro das letras: o clip-path do campo aponta pro
+   clipPath de texto do SVG, que o site.js escala e move. É a exceção à regra
+   do clip-path: aqui nada depende do IntersectionObserver. O mural cresce 16%
+   enquanto a câmera entra. Sem JS a seção some: sem a medição, o mural
+   apareceria inteiro, sem palavra. */
+html:not(.js) .portal{display:none}
+.portal__palco{position:relative; height:100vh; overflow:hidden}
+/* Sobe meia tela por cima do fim do "Trabalhamos com você" (o palco não tem
+   fundo, fora da palavra é transparente): a palavra entra enquanto o "você"
+   sai, sem uma tela de preto vazio entre as duas. */
+.nichos--anima + .portal{margin-top:-50vh}
+.portal__svg{position:absolute; width:0; height:0}
+.portal__glifo{font:700 100px 'Barlow Condensed', 'Inter', system-ui, sans-serif; font-kerning:none; letter-spacing:0}
+.portal__campo{position:absolute; inset:0; clip-path:url(#portal-clip)}
+.portal__mural{position:absolute; inset:0; display:grid; grid-template-columns:repeat(auto-fill, 180px); gap:16px; place-content:center}
+.portal__mural .post{--w:180px}
+
+/* ===== Design pra redes sociais =====
+   O carrossel: uma fileira de slides 4:5 (.post) dentro de uma janela que corta
+   nas bordas da tela. O trilho começa e termina no alinhamento do .env. Sem o
+   GSAP a janela rola pro lado com o dedo, parando slide a slide. O texto dos
+   slides é em cqw: cresce e encolhe com o slide, que tem a largura limitada
+   pela altura da tela pra caber inteiro quando o palco fica preso. */
+.posts__palco{padding-block:clamp(64px, 10vw, 120px)}
+.posts .rotulo{margin:0 0 16px}
+.posts .t1{margin-bottom:16px; text-wrap:balance}
+.posts__sub{margin:0; color:var(--aco)}
+.posts__janela{
+  margin-top:clamp(28px, 4vw, 48px); overflow-x:auto; scroll-snap-type:x mandatory;
+  scroll-padding-inline:max(20px, calc((100% - var(--env)) / 2));
+}
+.posts__trilho{
+  display:flex; gap:clamp(12px, 2vw, 24px); width:max-content; margin:0; list-style:none;
+  padding:0 max(20px, calc((100% - var(--env)) / 2));
+}
+.post{
+  --w:max(200px, min(78vw, 360px, (100svh - 320px) * .8));
+  position:relative; flex:none; display:flex; flex-direction:column; justify-content:flex-end; scroll-snap-align:start;
+  width:var(--w); aspect-ratio:4 / 5; padding:calc(var(--w) * .16) calc(var(--w) * .08) calc(var(--w) * .07);
+  border-radius:var(--raio); container-type:inline-size; background:var(--osso); color:#0b0c0e;
+}
+.post--escuro{background:var(--grafite); color:var(--osso); border:1px solid var(--borda-forte)}
+.post__pag{
+  position:absolute; top:6cqw; right:6cqw; padding:.5em .9em; border-radius:var(--raio-p);
+  font:500 3.4cqw/1 'IBM Plex Mono', ui-monospace, monospace; background:rgb(11 12 14 / .7); color:var(--osso);
+}
+.post__n{margin-bottom:auto; font:700 22cqw/1 'Barlow Condensed', 'Inter', system-ui, sans-serif; color:rgb(11 12 14 / .2)}
+.post__h{margin:0; font:700 12cqw/.95 'Barlow Condensed', 'Inter', system-ui, sans-serif; text-transform:uppercase; letter-spacing:-.01em}
+.post--escuro:first-child .post__h{font-size:15cqw}
+.post__p{margin:.7em 0 0; font-size:4.8cqw; line-height:1.35; opacity:.7}
+.post__btn{
+  align-self:flex-start; margin-top:7cqw; padding:.9em 1.3em; border-radius:var(--raio-p);
+  font:700 4.4cqw/1 'Inter', system-ui, sans-serif; background:var(--ouro); color:#0b0c0e;
+}
+.post__pe{
+  display:flex; justify-content:space-between; margin:10cqw 0 0; opacity:.6;
+  font:500 3.4cqw/1 'IBM Plex Mono', ui-monospace, monospace; text-transform:uppercase; letter-spacing:.09em;
+}
+.posts__pontos{display:none; justify-content:center; gap:8px; margin-top:20px}
+.posts__pontos i{width:6px; height:6px; border-radius:50%; background:var(--osso); opacity:.25; transition:opacity var(--rapido)}
+.posts__pontos .aceso{opacity:1}
+
+/* Com o GSAP (classe posta pelo JS): o palco tem a altura da tela e é preso; a
+   janela não rola mais, quem anda é o trilho. */
+.posts--anima .posts__palco{height:100vh; display:grid; align-content:center; padding-block:24px}
+.posts--anima .posts__janela{overflow:hidden}
+.posts--anima .posts__pontos{display:flex}
+
+/* ===== Trabalhos =====
+   A vitrine: janela de navegador grande com o print do site do cliente e, por
+   cima dela, o celular. O print é a página inteira, mais alta que a moldura
+   (overflow:hidden); o GSAP anda com ele. A moldura tem proporção fixa, então
+   o quanto o print precisa subir é sempre o mesmo em porcentagem. */
+.trabalhos .rotulo{margin:0 0 16px}
+.trabalhos .t1{margin-bottom:0}
+.vt{display:grid; gap:clamp(24px, 3vw, 40px); margin-top:clamp(56px, 8vw, 104px)}
+.vt__topo{display:grid; gap:20px 48px; align-items:end}
+.vt__topo .rotulo{margin:0 0 10px}
+.vt__nome{margin:0; font:700 clamp(2.75rem, 6vw, 4.5rem)/1 'Barlow Condensed', 'Inter', system-ui, sans-serif; text-transform:uppercase; letter-spacing:-.02em}
+.vt__frase{margin:0; font-size:clamp(17px, 1.6vw, 20px); line-height:1.45; color:var(--aco)}
+.vt__frase span{display:block}
+.vt__frase .vt__fato{color:var(--osso); font-weight:700}
+.vt__frase .vt__agora{margin-top:.6em; color:var(--osso)}
+.vt__antes::before{content:""; display:inline-block; width:8px; height:8px; margin-right:10px; border-radius:50%; background:#E5484D}
+@media (min-width:900px){
+  .vt__topo{grid-template-columns:1fr 1fr}
+}
+
+.vt__visual{position:relative; margin-bottom:clamp(0px, 4vw, 56px)}
+.vt__janela{border:1px solid var(--borda-forte); border-radius:var(--raio-g); overflow:hidden; background:var(--grafite)}
+.vt__barra{display:flex; gap:7px; align-items:center; height:34px; padding-inline:16px; border-bottom:1px solid var(--borda)}
+.vt__barra i{width:9px; height:9px; border-radius:50%; background:rgb(236 237 232 / .2)}
+.vt__tela{overflow:hidden}
+.vt__janela .vt__tela{position:relative; aspect-ratio:16 / 9.4}
+/* O site do cliente ao vivo: 1280 px de largura na janela (encolhido por --k, que o
+   site.js mede) e 390 no celular. Sem clique, ele não recebe mouse nem roda. */
+.vt__vivo{position:absolute; left:0; top:0; border:0; background:var(--osso); transform-origin:0 0; pointer-events:none}
+.vt__janela .vt__vivo{width:1280px; height:752px; scale:var(--k, .875)}
+.vt__fone .vt__vivo{width:390px; height:837px}
+.vt__toque{position:absolute; inset:0; display:flex; align-items:flex-end; justify-content:center; padding:0 0 18px; border:0; background:transparent; cursor:pointer}
+.vt__toque .rotulo{padding:9px 16px; border-radius:var(--raio-p); background:rgb(0 0 0 / .72); color:var(--osso)}
+.vt__janela--ativa .vt__vivo{pointer-events:auto}
+.vt__janela--ativa .vt__toque{display:none}
+
+/* O celular é o mesmo da seção anterior (poses, acima): o print do celular, num
+   quadro de 390 x 837, por baixo da moldura. */
+.vt__fone{position:absolute; right:2%; bottom:-9%; width:738px; height:1448px; zoom:.37}
+.vt__fone .vt__tela{background:var(--osso)}
+/* Celular: a janela grande não cabe legível, então sobra só o aparelho, no meio. */
+@media (max-width:699px){
+  .vt__janela{display:none}
+  .vt__fone{position:relative; inset:auto; margin-inline:auto; zoom:.4}
+}
+
+/* ===== Contato =====
+   No celular é uma
+   coluna só, com a conversa entre o texto e o botão (ela explica o que o botão
+   faz antes de ele aparecer); a partir de 900 px a conversa vai pra direita,
+   ocupando a altura toda, e o texto fica centrado na vertical ao lado dela. */
+/* A seção cobre a tela inteira e o fundo (shader, js/fundo.js) cobre a seção
+   inteira, de ponta a ponta, a pedido do Kauã em 27/09 (antes uma máscara
+   apagava os 30% de cima). A grade cresce até o fim da seção, então as linhas
+   1fr dela centram o conteúdo na altura. */
+.contato{position:relative; min-height:100vh; display:flex; flex-direction:column}
+.contato__fundo{position:absolute; inset:0; display:block; width:100%; height:100%; pointer-events:none}
+.contato__grade{position:relative; flex:1}
+.contato .t1{margin-bottom:20px}
+.contato__sub{margin:0; max-width:52ch; color:var(--aco); font-size:clamp(17px, 1.7vw, 20px)}
+.contato__acao{margin:clamp(28px, 4vw, 44px) 0 0}
+.contato__acao .btn{padding:19px 34px; font-size:16px}
+.contato__assina{margin:clamp(56px, 8vw, 96px) 0 0}
+@media (min-width:900px){
+  .contato__grade{
+    display:grid; grid-template-columns:minmax(0, 1fr) minmax(0, 440px); column-gap:clamp(48px, 7vw, 112px);
+    grid-template-rows:1fr auto auto auto 1fr auto;
+    grid-template-areas:
+      ".      zap"
+      "titulo zap"
+      "sub    zap"
+      "acao   zap"
+      ".      zap"
+      "assina assina";
+  }
+  .contato__grade > .t1{grid-area:titulo}
+  .contato__sub{grid-area:sub}
+  .contato__acao{grid-area:acao}
+  .contato__assina{grid-area:assina}
+  .zap{grid-area:zap; margin:0}
+}
+
+/* A conversa, em balões soltos que flutuam na página. Na paleta da marca, não
+   nas cores do WhatsApp: o balão de quem chama é osso, o da v0n é grafite com
+   borda (zero sombra), e os tiques de enviado são cinza (o azul do lido é cor
+   proibida). Três movimentos, cada um num elemento, pra não brigarem pelo
+   transform: o bloco inteiro anda com a rolagem (data-parallax, GSAP); cada
+   item boia sozinho (CSS, fases diferentes); e cada balão/avatar/"digitando"
+   entra em pop (GSAP, site.js). Os balões ocupam o lugar deles mesmo
+   invisíveis, então nada empurra nada enquanto a conversa acontece. Sem JS o
+   "digitando" fica escondido e os balões aparecem prontos. */
+.zap{
+  display:flex; flex-direction:column; justify-content:center; gap:14px;
+  width:min(100%, 440px); margin:clamp(32px, 5vw, 48px) 0;
+  font:var(--peso-texto) 15px/1.45 'Inter', system-ui, sans-serif;
+}
+.zap p{margin:0; max-width:none}
+.zap__item{position:relative; display:flex; align-items:flex-end; gap:10px; animation:zap-boia 5.2s ease-in-out infinite}
+.zap__item:nth-child(3n+2){animation-duration:6.1s; animation-delay:-2.2s}
+.zap__item:nth-child(3n+3){animation-duration:5.6s; animation-delay:-3.8s}
+@keyframes zap-boia{50%{translate:0 -7px}}
+.zap__item--eu{justify-content:flex-end; padding-left:14%}
+.zap__item--v0n{padding-right:10%}
+.zap__item--v0n + .zap__item--v0n{margin-left:5%}
+.zap__av{flex:none; width:32px; height:32px; border-radius:50%}
+.zap__msg{padding:12px 16px; border-radius:20px}
+.zap__msg--eu{background:var(--osso); color:var(--carbono); border-bottom-right-radius:6px}
+.zap__msg--v0n{background:var(--grafite); color:var(--osso); border:1px solid var(--borda-forte); border-bottom-left-radius:6px}
+.zap__check{margin-left:8px; font-size:11px; letter-spacing:-.15em; color:rgb(0 0 0 / .4); white-space:nowrap}/* "Digitando": três pontos num balão pequeno, no lugar onde a resposta vai nascer. */
+.zap__dots{
+  position:absolute; left:42px; bottom:0; display:flex; gap:5px; padding:15px 16px;
+  border:1px solid var(--borda-forte); border-radius:20px; border-bottom-left-radius:6px; background:var(--grafite);
+  opacity:0; visibility:hidden;
+}
+.zap__dots i{width:7px; height:7px; border-radius:50%; background:var(--aco); animation:zap-pula 1.2s ease-in-out infinite}
+.zap__dots i:nth-child(2){animation-delay:.15s}
+.zap__dots i:nth-child(3){animation-delay:.3s}
+@keyframes zap-pula{0%, 60%, 100%{translate:0 0; opacity:.5} 30%{translate:0 -4px; opacity:1}}
 
 /* ===== Como eu trabalho ===== */
 .passos{
