@@ -5,17 +5,19 @@
             --window-size=1200,630 --hide-scrollbars \
             http://localhost:4173/img/og.html
      Sem --default-background-color: transparência num card de WhatsApp
-     vira fundo branco na conversa, e o card é carbono de propósito. -->
+     vira fundo branco na conversa, e o card é carbono de propósito.
+     Frase igual ao h1 do site (index.html): quem clica no link vê a mesma
+     coisa que já leu no card. -->
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
 <title>og · v0n</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@200&family=IBM+Plex+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=IBM+Plex+Mono:wght@500&display=swap">
 <style>
   *{box-sizing:border-box}
   body{
     margin:0; width:1200px; height:630px; overflow:hidden;
-    background:#121317; color:#ECEDE8;
+    background:#000; color:#ECEDE8;
     display:flex; flex-direction:column; justify-content:space-between;
     padding:72px 80px;
   }
@@ -25,10 +27,10 @@
     text-transform:uppercase; letter-spacing:.09em; color:#8C96A3; margin:0;
   }
   h1{
-    font:200 108px/1 'Barlow Condensed', sans-serif;
-    text-transform:uppercase; letter-spacing:-.02em; margin:24px 0 0; max-width:15ch;
+    font:700 100px/1.05 'Barlow Condensed', sans-serif;
+    text-transform:uppercase; letter-spacing:-.02em; margin:24px 0 0; max-width:16ch;
   }
-  .ouro{color:#FFC531}
+  .ouro{color:#FFC531; text-shadow:0 0 24px rgb(255 197 49 / .35)}
   .regua{height:3px; background:#FFC531; width:120px}
 </style>
 </head>
@@ -36,8 +38,8 @@
   <img class="marca" src="logo.svg" alt="v0n">
   <div>
     <div class="regua"></div>
-    <h1>Sites que <span class="ouro">vendem</span> enquanto você atende</h1>
+    <h1>Quem te procura consegue te <span class="ouro">ver?</span></h1>
   </div>
-  <p class="rotulo">v0n · sites e landing pages · Brasil, remoto</p>
+  <p class="rotulo">v0n · agência de webdesign e automações</p>
 </body>
 </html>
