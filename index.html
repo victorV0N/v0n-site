@@ -179,22 +179,22 @@
           <li class="post">
             <span class="post__pag">2/5</span>
             <span class="post__n">01</span>
-            <p class="post__h">Cansaço que não passa.</p>
-            <p class="post__p">Nem depois de uma noite inteira de sono.</p>
+            <p class="post__h">Você acorda <span class="t1__marca">cansado?</span></p>
+            <p class="post__p">Mesmo depois de dormir a noite inteira.</p>
             <p class="post__pe"><span>@seunegocio</span></p>
           </li>
           <li class="post">
             <span class="post__pag">3/5</span>
             <span class="post__n">02</span>
-            <p class="post__h">Dor que você já acostumou.</p>
-            <p class="post__p">Se virou rotina, virou sinal.</p>
+            <p class="post__h">Aquela dor virou <span class="t1__marca">rotina?</span></p>
+            <p class="post__p">Se você já nem repara mais, é sinal.</p>
             <p class="post__pe"><span>@seunegocio</span></p>
           </li>
           <li class="post">
             <span class="post__pag">4/5</span>
             <span class="post__n">03</span>
-            <p class="post__h">Último exame faz mais de um ano.</p>
-            <p class="post__p">Prevenir sai mais barato que tratar.</p>
+            <p class="post__h">Quando foi seu <span class="t1__marca">último exame?</span></p>
+            <p class="post__p">Mais de um ano? Prevenir sai mais barato que tratar.</p>
             <p class="post__pe"><span>@seunegocio</span></p>
           </li>
           <li class="post post--escuro">
@@ -211,10 +211,16 @@
     </div>
   </section>
 
-  <!-- Procuraram no Google (o comparador). A mesma lista em duas camadas: por baixo, o
-       "sem"; por cima, o "com a v0n", cortada pela linha que se arrasta. O input
-       range invisível cobre a janela e dá o arrasto e o teclado. O parallax do
-       palco é o data-parallax (o GSAP lê). -->
+  <!-- COMPARADOR: tirado da página por enquanto, a pedido do Kauã em 28/09/2026.
+       Pra voltar: apague o marcador de abertura de comentário do começo deste bloco
+       e o de fechamento do fim dele. O CSS (.comparar) e o JS (a lista fictícia, o
+       arrasto do range, a demo automática) continuam no lugar, sem efeito enquanto
+       não houver o HTML — as variáveis já são defensivas (`janela`, `faixa`) pra
+       não quebrar com a seção ausente.
+       Como era: Procuraram no Google (o comparador). A mesma lista em duas camadas:
+       por baixo, o "sem"; por cima, o "com a v0n", cortada pela linha que se
+       arrasta. O input range invisível cobre a janela e dá o arrasto e o teclado.
+       O parallax do palco é o data-parallax (o GSAP lê).
   <section class="secao comparar" id="comparar" aria-labelledby="comparar-titulo">
     <div class="env">
       <h2 class="t1 entra" id="comparar-titulo">Te procuraram. <span class="t1__marca">Quantos chegaram em você?</span></h2>
@@ -231,6 +237,7 @@
       </div>
     </div>
   </section>
+  -->
 
   <!-- Você vê antes de decidir. O celular se monta conforme a rolagem: esqueleto
        (onde o cliente desiste), depois a marca, depois o site pronto. O
