@@ -5,7 +5,8 @@
 <script>document.documentElement.classList.add('js')</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>v0n · Site, Google Meu Negócio, redes sociais e WhatsApp</title>
-<meta name="description" content="Site, Google Meu Negócio, redes sociais e automação no WhatsApp pra negócios que atendem cliente presencialmente. A gente acha o gargalo, faz, coloca no ar e mostra funcionando — só então fala de valor.">
+<meta name="description" content="Site, Google Meu Negócio, redes sociais e WhatsApp automático pra quem atende presencialmente. Veja funcionando antes de decidir — peça sua prévia.">
+<link rel="canonical" href="https://v0n-site.vercel.app/">
 <link rel="icon" href="img/selo.svg">
 
 <!-- Card do link no WhatsApp/Google. Endereço real: v0n-site.vercel.app até
@@ -26,9 +27,20 @@
   "description":"Site, Google Meu Negócio, redes sociais e automação no WhatsApp para negócios que atendem cliente presencialmente.",
   "url":"https://v0n-site.vercel.app/",
   "logo":"https://v0n-site.vercel.app/img/logo.svg",
+  "image":"https://v0n-site.vercel.app/img/og.png",
   "areaServed":"BR",
   "founder":{"@type":"Person","name":"Kauã Victor"},
-  "telephone":"+5581981400996"
+  "telephone":"+5581981400996",
+  "hasOfferCatalog":{
+    "@type":"OfferCatalog",
+    "name":"Serviços",
+    "itemListElement":[
+      {"@type":"Offer","itemOffered":{"@type":"Service","name":"Site e landing page"}},
+      {"@type":"Offer","itemOffered":{"@type":"Service","name":"Google Meu Negócio"}},
+      {"@type":"Offer","itemOffered":{"@type":"Service","name":"Design para redes sociais"}},
+      {"@type":"Offer","itemOffered":{"@type":"Service","name":"Automação com IA no WhatsApp"}}
+    ]
+  }
 }
 </script>
 
@@ -242,7 +254,7 @@
                 <div class="ve__topo"><span class="ve__logo"></span><span class="b">Seu Negócio</span><span class="ve__menu"><i></i><i></i><i></i></span></div>
                 <div class="ve__hero">
                   <span class="b ve__aberto">Aberto hoje · até 18h</span>
-                  <h3 class="b ve__h">Agende pelo WhatsApp.</h3>
+                  <p class="b ve__h">Agende pelo WhatsApp.</p>
                   <p class="b ve__p">Horário, endereço e como chegar, num toque.</p>
                   <span class="ve__btn"><span class="b">Chamar no WhatsApp</span></span>
                 </div>
