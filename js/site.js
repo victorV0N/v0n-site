@@ -77,6 +77,23 @@
     if (menosMovimento || typeof Lenis === 'undefined') return
     var lenis = new Lenis({ anchors: true, autoRaf: true, lerp: 0.13, wheelMultiplier: 1.2 })
     if (gs) lenis.on('scroll', ScrollTrigger.update)
+    ligaDemo(lenis)
+  }
+
+  // ---- Demo: rolagem sozinha pra apresentação ----------------------------
+  // Só liga com ?demo na URL (?demo=90 muda a duração, em segundos; 120 é o
+  // padrão) — nunca liga sozinha. Desce pelo próprio Lenis (um scrollTo
+  // nativo brigaria com o dele) do topo ao fim, uma vez; F5 recomeça. Rolar
+  // na mão cancela, é o Lenis quem faz isso sozinho num scrollTo em curso.
+  function ligaDemo (lenis) {
+    var p = new URLSearchParams(location.search)
+    if (!p.has('demo')) return
+    var segundos = Number(p.get('demo')) || 120
+    setTimeout(function () {
+      if (gs) ScrollTrigger.refresh()
+      var alvo = document.documentElement.scrollHeight - innerHeight
+      lenis.scrollTo(alvo, { duration: segundos, easing: function (t) { return t } })
+    }, 1200)
   }
 
   // Mede onde a logo da abertura está e onde a do cabeçalho mora, e move uma
@@ -412,25 +429,59 @@
       // Design pra redes sociais. O palco fica preso por 250% da tela e a rolagem
       // passa o carrossel pro lado, do primeiro slide até o último encostar na
       // margem direita. O ponto aceso é o do slide mais perto da vez.
+      //
+      // Fileira reta de cards do mesmo tamanho é chata de ver: o card do meio
+      // manda na cena e os vizinhos recuam — escala menor, giro em Y (a janela
+      // tem perspective), descem um pouco e desbotam. Quem está lendo sempre
+      // tem um card só em foco. Como o efeito é transform, não mexe no layout:
+      // o container query do card continua medindo a largura de verdade e o
+      // texto não reflui.
       var posts = document.querySelector('.posts')
       var restauraPosts = null
       if (posts) {
         var janelaPosts = posts.querySelector('.posts__janela')
         var trilho = posts.querySelector('.posts__trilho')
         var pontos = posts.querySelectorAll('.posts__pontos i')
+        var cards = Array.prototype.slice.call(posts.querySelectorAll('.posts__trilho .post'))
         posts.classList.add('posts--anima')
+
+        // Lê todos os retângulos antes de escrever qualquer transform: ler e
+        // escrever alternado força o navegador a recalcular layout a cada card.
+        var ajusta = function (el, v) { gsap.set(el, v) }
+        function profundidade () {
+          var caixa = janelaPosts.getBoundingClientRect()
+          var meio = caixa.left + caixa.width / 2
+          var medidas = cards.map(function (c) {
+            var r = c.getBoundingClientRect()
+            return (r.left + r.width / 2 - meio) / (r.width * 1.3)
+          })
+          cards.forEach(function (c, i) {
+            var d = Math.max(-1.6, Math.min(1.6, medidas[i]))
+            var t = Math.min(1, Math.abs(d))
+            // Pouco fade: card claro desbotado sobre preto vira cinza sujo. Quem
+            // tira o vizinho de foco é a escala e o giro, não a transparência.
+            ajusta(c, { scale: 1 - t * 0.19, rotateY: -d * 19, y: t * 34, opacity: 1 - t * 0.2 })
+          })
+        }
+
         gsap.to(trilho, {
           x: function () { return -(trilho.offsetWidth - janelaPosts.clientWidth) },
           ease: 'none',
           scrollTrigger: {
             trigger: posts.querySelector('.posts__palco'), start: 'top top', end: '+=250%', pin: true, scrub: 0.8, invalidateOnRefresh: true,
+            onRefresh: profundidade,
             onUpdate: function (self) {
+              profundidade()
               var k = Math.round(self.progress * (pontos.length - 1))
               pontos.forEach(function (p, i) { p.classList.toggle('aceso', i === k) })
             }
           }
         })
-        restauraPosts = function () { posts.classList.remove('posts--anima') }
+        profundidade()
+        restauraPosts = function () {
+          posts.classList.remove('posts--anima')
+          gsap.set(cards, { clearProps: 'transform,opacity' })
+        }
       }
 
       // Você vê antes de decidir. O palco fica preso por 300% da tela. O passo

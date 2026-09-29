@@ -677,6 +677,9 @@ html:not(.js) .portal{display:none}
    GSAP a janela rola pro lado com o dedo, parando slide a slide. O texto dos
    slides é em cqw: cresce e encolhe com o slide, que tem a largura limitada
    pela altura da tela pra caber inteiro quando o palco fica preso. */
+/* A largura do card mora na seção porque o trilho também precisa dela: é ela
+   que centraliza o primeiro e o último (padding de meia janela menos meio card). */
+.posts{--w:max(200px, min(78vw, 360px, (100svh - 320px) * .8))}
 .posts__palco{padding-block:clamp(64px, 10vw, 120px)}
 .posts .rotulo{margin:0 0 16px}
 .posts .t1{margin-bottom:16px; text-wrap:balance}
@@ -684,14 +687,15 @@ html:not(.js) .portal{display:none}
 .posts__janela{
   margin-top:clamp(28px, 4vw, 48px); overflow-x:auto; scroll-snap-type:x mandatory;
   scroll-padding-inline:max(20px, calc((100% - var(--env)) / 2));
+  /* O giro em Y dos cards (site.js) só tem volume com perspectiva aqui. */
+  perspective:1600px;
 }
 .posts__trilho{
   display:flex; gap:clamp(12px, 2vw, 24px); width:max-content; margin:0; list-style:none;
-  padding:0 max(20px, calc((100% - var(--env)) / 2));
+  padding:0 calc(50% - var(--w) / 2);
 }
 .post{
-  --w:max(200px, min(78vw, 360px, (100svh - 320px) * .8));
-  position:relative; flex:none; display:flex; flex-direction:column; justify-content:flex-end; scroll-snap-align:start;
+  position:relative; flex:none; display:flex; flex-direction:column; justify-content:flex-end; scroll-snap-align:center;
   width:var(--w); aspect-ratio:4 / 5; padding:calc(var(--w) * .16) calc(var(--w) * .08) calc(var(--w) * .07);
   border-radius:var(--raio); container-type:inline-size; background:var(--osso); color:#0b0c0e;
 }
