@@ -700,18 +700,45 @@ html:not(.js) .portal{display:none}
   position:absolute; top:6cqw; right:6cqw; padding:.5em .9em; border-radius:var(--raio-p);
   font:500 3.4cqw/1 'IBM Plex Mono', ui-monospace, monospace; background:rgb(11 12 14 / .7); color:var(--osso);
 }
-.post__n{margin-bottom:auto; font:700 22cqw/1 'Barlow Condensed', 'Inter', system-ui, sans-serif; color:rgb(11 12 14 / .2)}
-.post__h{margin:0; font:700 12cqw/.95 'Barlow Condensed', 'Inter', system-ui, sans-serif; text-transform:uppercase; letter-spacing:-.01em}
-.post--escuro:first-child .post__h{font-size:15cqw}
+/* Selo da marca na capa e no CTA — o design-guide manda a marca aparecer nesses dois. */
+.post__selo{position:absolute; top:6cqw; left:6cqw; width:8cqw; height:auto; display:block; z-index:1}
+/* Na capa e no CTA o selo já ocupa o canto: o número desce um pouco pra não brigar. */
+.post__selo ~ .post__n{top:17cqw}
+/* O contraste da identidade: título grande com kerning apertado, etiqueta mono
+   pequena com kerning aberto. É esse par que faz o card parecer desenhado. */
+.post__kicker{
+  font:500 3.1cqw/1 'IBM Plex Mono', ui-monospace, monospace;
+  text-transform:uppercase; letter-spacing:.22em; opacity:.6;
+}
+.post__regua{display:block; width:13cqw; height:.8cqw; margin:2.6cqw 0 3.6cqw; background:var(--ouro); border-radius:99px}
+/* O número vira elemento gráfico, no vazio do topo (o texto mora embaixo):
+   preenche a composição sem nunca encostar na leitura. */
+.post__n{
+  position:absolute; top:9cqw; left:6cqw; margin:0; pointer-events:none;
+  font:700 30cqw/.78 'Barlow Condensed', 'Inter', system-ui, sans-serif; opacity:.1;
+}
+.post__h{margin:0; font:700 12cqw/.95 'Barlow Condensed', 'Inter', system-ui, sans-serif; text-transform:uppercase; letter-spacing:-.035em}
+.post--escuro:first-child .post__h{font-size:13.5cqw}
+/* Palavra marcada não quebra no meio: "CHECK-" numa linha e "UP." na outra é
+   erro de diagramação, não estilo. */
+.post__h .t1__marca{white-space:nowrap}
+/* Ouro em texto só sobre fundo escuro. No card claro vira marca-texto (tinta
+   escura sobre ouro): ouro sobre osso dá ~1,4:1 e o guia proíbe. */
+.post:not(.post--escuro) .post__h .t1__marca{
+  color:#0b0c0e; background:var(--ouro); padding:0 .1em;
+  box-decoration-break:clone; -webkit-box-decoration-break:clone; text-shadow:none;
+}
 .post__p{margin:.7em 0 0; font-size:4.8cqw; line-height:1.35; opacity:.7}
 .post__btn{
   align-self:flex-start; margin-top:7cqw; padding:.9em 1.3em; border-radius:var(--raio-p);
   font:700 4.4cqw/1 'Inter', system-ui, sans-serif; background:var(--ouro); color:#0b0c0e;
 }
 .post__pe{
-  display:flex; justify-content:space-between; margin:10cqw 0 0; opacity:.6;
+  display:flex; justify-content:space-between; margin:6cqw 0 0; padding-top:3.4cqw;
+  border-top:1px solid rgb(11 12 14 / .16); opacity:.6;
   font:500 3.4cqw/1 'IBM Plex Mono', ui-monospace, monospace; text-transform:uppercase; letter-spacing:.09em;
 }
+.post--escuro .post__pe{border-top-color:rgb(236 237 232 / .18)}
 .posts__pontos{display:none; justify-content:center; gap:8px; margin-top:20px}
 .posts__pontos i{width:6px; height:6px; border-radius:50%; background:var(--osso); opacity:.25; transition:opacity var(--rapido)}
 .posts__pontos .aceso{opacity:1}
