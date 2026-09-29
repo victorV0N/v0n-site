@@ -225,7 +225,11 @@
     var campo = sec.querySelector('.portal__campo')
     var mural = sec.querySelector('.portal__mural')
     var clip = sec.querySelector('clipPath')
-    var glifo = sec.querySelector('.portal__glifo')
+    var glifo = clip.querySelector('.portal__glifo')
+    // O contorno é a mesma palavra num <g> à parte: leva a mesma escala e o
+    // mesmo deslocamento, então o traço cai em cima da borda do recorte.
+    var lente = sec.querySelector('.portal__lente')
+    var contorno = sec.querySelector('.portal__contorno')
     var palavra = glifo.textContent
     var slides = document.querySelectorAll('.posts__trilho .post')
     // Cópias que bastam pra cobrir a tela inteira (slide de 180 + 16), mesmo com a
@@ -276,8 +280,14 @@
       var s = Math.exp(Math.log(s0) + Math.log(s1 / s0) * e)
       var mix = s1 === s0 ? 0 : (1 / s - 1 / s0) / (1 / s1 - 1 / s0)
       var cx = centro.x + (alvo.x - centro.x) * mix, cy = centro.y + (alvo.y - centro.y) * mix
+      var desloca = 'translate(' + (W / 2 / s - cx) + ' ' + ((H * 0.46 + H * 0.04 * e) / s - cy) + ')'
       clip.setAttribute('transform', 'scale(' + s + ')')
-      glifo.setAttribute('transform', 'translate(' + (W / 2 / s - cx) + ' ' + ((H * 0.46 + H * 0.04 * e) / s - cy) + ')')
+      glifo.setAttribute('transform', desloca)
+      lente.setAttribute('transform', 'scale(' + s + ')')
+      contorno.setAttribute('transform', desloca)
+      // Some cedo: o contorno é pra ser visto com a palavra inteira na tela,
+      // antes de a câmera entrar na letra.
+      lente.style.opacity = 1 - suave(0.08, 0.3, p)
       campo.style.clipPath = t >= 1 ? 'none' : ''
       campo.style.opacity = 1 - suave(0.88, 1, p)
       mural.style.transform = 'scale(' + (1 + 0.16 * suave(0, 0.82, p)) + ')'

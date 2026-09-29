@@ -668,6 +668,12 @@ html:not(.js) .portal{display:none}
 .portal__svg{position:absolute; width:0; height:0}
 .portal__glifo{font:700 100px 'Barlow Condensed', 'Inter', system-ui, sans-serif; font-kerning:none; letter-spacing:0}
 .portal__campo{position:absolute; inset:0; clip-path:url(#portal-clip)}
+/* O contorno: a mesma palavra, no mesmo lugar, só que traçada por cima do
+   mural. Acende quando a seção entra e apaga quando a câmera começa a andar —
+   ouro esticado na tela inteira vira parede. non-scaling-stroke segura o fio
+   fino: sem ele o traço engorda junto com o zoom e tapa a palavra. */
+.portal__traco{position:absolute; inset:0; width:100%; height:100%; pointer-events:none}
+.portal__contorno{fill:none; stroke:var(--ouro); stroke-width:2px}
 .portal__mural{position:absolute; inset:0; display:grid; grid-template-columns:repeat(auto-fill, 180px); gap:16px; place-content:center}
 .portal__mural .post{--w:180px}
 
