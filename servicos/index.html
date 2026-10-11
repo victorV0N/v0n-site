@@ -181,15 +181,17 @@
   /* Sites: cartão com o print da página inicial. O cartão inteiro é o link (o link do rodapé
      se estica por cima dele) e acende na cor de cada site (--cor). */
   .sites{display:grid; gap:24px; grid-template-columns:repeat(2, 1fr); margin-top:clamp(32px, 5vw, 56px)}
-  .site{position:relative; display:flex; flex-direction:column; overflow:hidden; border:1px solid var(--borda); border-radius:var(--raio); background:rgb(236 237 232 / .04);
+  .site{position:relative; display:flex; flex-direction:column; overflow:hidden; border:1px solid var(--borda); border-radius:var(--raio); background:color-mix(in srgb, var(--osso) 4%, #000);
     transition:border-color .25s, background-color .25s, box-shadow .25s}
   .site:hover, .site:focus-within{border-color:var(--cor); background:color-mix(in srgb, var(--cor) 14%, #000); box-shadow:0 0 0 1px var(--cor), 0 20px 55px -14px color-mix(in srgb, var(--cor) 70%, transparent)}
   .site__img{aspect-ratio:16 / 10; overflow:hidden; border-bottom:1px solid var(--borda)}
   .site__img img{display:block; width:100%; height:100%; object-fit:cover; object-position:top}
   .site__corpo{display:flex; flex-direction:column; gap:10px; flex:1; padding:22px 24px 26px}
   .site__corpo .rotulo, .site__corpo .t3, .site__corpo p{margin:0}
+  /* O rótulo quebra em duas linhas no celular: sem folga entre elas a etiqueta amarela ficava por cima do texto. */
+  .site__corpo .rotulo{line-height:1.9}
   .site__corpo p:not(.rotulo){color:var(--aco)}
-  .site__previa{padding:1px 7px; border-radius:999px; background:var(--ouro); color:#000}
+  .site__previa{display:inline-block; padding:3px 8px; border-radius:999px; background:var(--ouro); color:#000; line-height:1.2; white-space:nowrap}
   .site__chips{display:flex; flex-wrap:wrap; gap:8px; margin:4px 0 0; padding:0; list-style:none}
   .site__chips li{padding:5px 11px; border:1px solid var(--borda-forte); border-radius:999px; font:500 12px/1 'IBM Plex Mono', monospace; color:var(--osso)}
   .site__link{align-self:start; margin-top:auto; padding-top:10px; color:var(--ouro); font-weight:700; text-decoration:none}
