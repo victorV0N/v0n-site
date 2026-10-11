@@ -70,7 +70,7 @@
      desde o começo (opacity, não display), então a página não pula. Sem suporte a :has,
      o nome fica sempre visível. */
   @supports selector(:has(*)){
-    .nicho__nome{margin:0; text-align:center; color:var(--ouro); opacity:0; transform:translateY(8px); transition:opacity .5s var(--saida) .15s, transform .5s var(--saida) .15s}
+    .nicho__nome{margin:0; text-align:center; text-transform:uppercase; color:var(--ouro); opacity:0; transform:translateY(8px); transition:opacity .5s var(--saida) .15s, transform .5s var(--saida) .15s}
     .nicho:has(.pilha:hover) .nicho__nome, .nicho:has(.pilha:focus-within) .nicho__nome{opacity:1; transform:none}
   }
   /* Pilha de três peças. Em repouso as de trás espiam pelos lados da de cima; no
@@ -250,7 +250,7 @@
       </article>
 
       <article class="nicho" id="moda-intima" aria-labelledby="moda-intima-titulo">
-        <h3 class="t3 nicho__nome" id="moda-intima-titulo">Moda íntima</h3>
+        <h3 class="t3 nicho__nome" id="moda-intima-titulo">Moda íntima feminina</h3>
         <!-- Quatro peças: .pilha--quatro. Da esquerda pra direita ao abrir: p1, p2 (a da frente), p3, p4. -->
         <div class="pilha pilha--quatro entra" tabindex="0" role="group" aria-label="Peças da Bella Isabella. Passe o mouse ou toque para abrir.">
           <img class="pilha__peca p1" src="../img/design/moda-intima/isabella-comprar-bem.webp" width="800" height="1000" alt="Post da Bella Isabella: comprar barato é a mesma coisa que comprar bem?" loading="lazy">
