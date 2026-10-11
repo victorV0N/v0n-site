@@ -129,6 +129,53 @@
   [data-ascii]{position:relative}
   .ascii{position:absolute; inset:0; width:100%; height:100%; pointer-events:none}
   [data-ascii] > .env{position:relative; z-index:1}
+  /* Fecho (CTA): texto e botão de um lado, celular com a conversa do outro. */
+  .cta__grade{display:grid; gap:clamp(40px, 6vw, 96px); align-items:center}
+  @media (min-width:900px){.cta__grade{grid-template-columns:minmax(0, 1fr) auto}}
+  .cta .t1{margin-bottom:20px}
+  /* Título em frase longa: tamanho menor que o padrão dos títulos, senão passa da tela no celular. */
+  #cta-titulo{font-size:clamp(1.9rem, 8vw, 3.4rem)}
+  @media (min-width:900px){#cta-titulo{font-size:clamp(2.4rem, 4.4vw, 62px)}}
+  .cta__sub{margin:0 0 32px; color:var(--aco); font-size:clamp(1.05rem, 2vw, 1.3rem)}
+  .cta .btn{height:56px; padding-inline:34px; font-size:16px}
+  .fone{justify-self:center; translate:0 var(--py, 0)}
+  /* Moldura: foto real de iPhone Pro de frente, só o aparelho, com a janela da tela vazada. A tela (conversa)
+     fica por baixo e a moldura por cima, então os cantos arredondados e a ilha dinâmica vêm da imagem.
+     Tudo aqui dentro mede em cqw, a largura do aparelho, pra a conversa escalar junto com ele. */
+  .fone__corpo{position:relative; width:min(86vw, 330px); aspect-ratio:1311 / 2708; container-type:inline-size; animation:fone-flutua 7s ease-in-out infinite; filter:drop-shadow(0 40px 50px rgb(0 0 0 / .7)) drop-shadow(0 0 40px rgb(255 197 49 / .1))}
+  @keyframes fone-flutua{50%{translate:0 -10px; rotate:-.6deg}}
+  .fone__moldura{position:absolute; inset:0; width:100%; height:100%; display:block; pointer-events:none}
+  .fone__tela{position:absolute; left:4.12%; top:1.62%; width:91.8%; height:96.75%; overflow:hidden; border-radius:12cqw; background:#0b0c0e; display:flex; flex-direction:column; padding:0 3.4cqw}
+  .fone__status{display:flex; align-items:center; justify-content:space-between; padding:4.2cqw 6.5cqw 0; font:600 3.7cqw/1 'Inter', sans-serif; color:var(--osso)}
+  .fone__bateria{width:6.2cqw; height:2.9cqw; border-radius:.9cqw; border:.3cqw solid rgb(236 237 232 / .6); background:linear-gradient(90deg, var(--osso) 78%, transparent 78%)}
+  .fone__topo{display:flex; align-items:center; gap:2.8cqw; margin-top:9.4cqw; padding:0 2cqw 2.8cqw; border-bottom:1px solid var(--borda)}
+  .fone__av{flex:none; width:8cqw; height:8cqw; border-radius:50%}
+  .fone__topo .fone__av{width:10cqw; height:10cqw}
+  .fone__nome{display:flex; flex-direction:column; gap:.6cqw; font:700 4.4cqw/1.1 'Inter', sans-serif; color:var(--osso)}
+  .fone__nome small{font:500 2.9cqw/1.1 'IBM Plex Mono', monospace; letter-spacing:.08em; text-transform:uppercase; color:var(--aco)}
+  .fone__chat{display:flex; flex-direction:column; gap:3.2cqw; padding:5cqw 1cqw 0; font:400 3.9cqw/1.4 'Inter', system-ui, sans-serif}
+  .fone__linha{position:relative; display:flex; align-items:flex-end; gap:2.2cqw}
+  .fone__linha--eu{justify-content:flex-end; padding-left:12%}
+  .fone__linha--v0n{padding-right:8%}
+  .fone__msg{margin:0; padding:2.8cqw 3.8cqw; border-radius:5cqw}
+  .fone__msg--eu{background:var(--osso); color:var(--carbono); border-bottom-right-radius:1.4cqw}
+  .fone__msg--v0n{background:var(--grafite); color:var(--osso); border:1px solid var(--borda-forte); border-bottom-left-radius:1.4cqw}
+  .fone__check{margin-left:2cqw; font-size:2.8cqw; letter-spacing:-.15em; color:rgb(0 0 0 / .4); white-space:nowrap}
+  .fone__entrada{position:absolute; left:3.4cqw; right:3.4cqw; bottom:4.6cqw; display:flex; align-items:center; height:10.5cqw; padding:0 4.4cqw; border-radius:99px; border:1px solid var(--borda-forte); background:var(--grafite); font:400 3.8cqw/1 'Inter', sans-serif; color:var(--aco)}
+  /* "Digitando": fica no lugar da resposta, escondido até a vez dela. */
+  .fone__digita{position:absolute; left:10.4cqw; bottom:0; display:none; gap:1.5cqw; padding:3.4cqw 4cqw; border-radius:5cqw; border-bottom-left-radius:1.4cqw; background:var(--grafite); border:1px solid var(--borda-forte)}
+  .fone__digita i{width:2cqw; height:2cqw; border-radius:50%; background:var(--aco); animation:zap-pula 1.2s ease-in-out infinite}
+  .fone__digita i:nth-child(2){animation-delay:.15s}
+  .fone__digita i:nth-child(3){animation-delay:.3s}
+  @keyframes zap-pula{0%, 60%, 100%{translate:0 0; opacity:.5} 30%{translate:0 -4px; opacity:1}}
+  /* A conversa só começa escondida quando o JS vai tocá-la (.fone--espera). Os balões ocupam o lugar mesmo invisíveis. */
+  .fone--espera .fone__msg, .fone--espera .fone__linha > .fone__av{opacity:0; scale:.85; transition:opacity .3s, scale .35s cubic-bezier(.34, 1.56, .64, 1)}
+  .fone--espera .fone__msg--eu{transform-origin:100% 100%}
+  .fone--espera .fone__msg--v0n{transform-origin:0 100%}
+  .fone--espera .fone__linha.fala > .fone__msg, .fone--espera .fone__linha.fala > .fone__av{opacity:1; scale:1}
+  .fone--espera .fone__linha.digita > .fone__digita{display:flex}
+  .fone--espera .fone__linha.digita > .fone__av{opacity:1; scale:1}
+  @media (prefers-reduced-motion:reduce){.fone__corpo{animation:none}}
   /* Paralaxe: o js/servicos.js move estes elementos pela variável --py. */
   .nuvens, .hero__conteudo, .secao h2, .pilha{translate:0 var(--py, 0)}
   /* Sites: cartão com o print da página inicial. O cartão inteiro é o link (o link do rodapé
@@ -363,6 +410,34 @@
             <ul class="site__chips"><li>Remotion</li><li>React</li></ul>
           </div>
         </article>
+      </div>
+    </div>
+  </section>
+  <!-- Fecho: chamada pro WhatsApp e um celular onde a conversa acontece sozinha quando ele entra na
+       tela (js/servicos.js). A conversa é a mesma do fecho da home. Sem JS, ou com movimento
+       reduzido, as mensagens já aparecem prontas. -->
+  <section class="secao cta" id="contato" aria-labelledby="cta-titulo">
+    <div class="env cta__grade">
+      <div class="cta__texto">
+        <h2 class="t1 entra" id="cta-titulo">Quer ver sua empresa com um desses serviços como prévia? <span class="t1__marca">Fale com a gente aqui.</span></h2>
+        <p class="cta__sub entra" style="--i:1">No Google, ganha quem aparece.</p>
+        <p class="entra" style="--i:2"><a class="btn btn--ouro" href="https://wa.me/5581981400996?text=Oi%2C%20v0n!%20Vi%20a%20p%C3%A1gina%20de%20servi%C3%A7os%20e%20quero%20conversar." target="_blank" rel="noopener">Chamar no WhatsApp</a></p>
+      </div>
+      <div class="fone" role="img" aria-label="Exemplo de conversa no WhatsApp: um cliente pede orçamento, a v0n pergunta o que ele precisa, ele diz que quer aparecer mais na internet e fortalecer a marca, e a v0n responde: pode deixar.">
+        <div class="fone__corpo" aria-hidden="true">
+          <div class="fone__tela">
+          <div class="fone__status"><b>9:41</b><span class="fone__bateria"></span></div>
+          <div class="fone__topo"><img class="fone__av" src="../img/selo.svg" width="34" height="34" alt=""><span class="fone__nome">v0n<small>online</small></span></div>
+          <div class="fone__chat">
+        <div class="fone__linha fone__linha--eu"><p class="fone__msg fone__msg--eu">Oi! Queria fazer um orçamento.<span class="fone__check">✓✓</span></p></div>
+        <div class="fone__linha fone__linha--v0n"><img class="fone__av" src="../img/selo.svg" width="28" height="28" alt=""><span class="fone__digita"><i></i><i></i><i></i></span><p class="fone__msg fone__msg--v0n">Oi! Claro. O que você precisa?</p></div>
+        <div class="fone__linha fone__linha--eu"><p class="fone__msg fone__msg--eu">Quero aparecer mais na internet, deixar minha marca mais forte.<span class="fone__check">✓✓</span></p></div>
+        <div class="fone__linha fone__linha--v0n"><img class="fone__av" src="../img/selo.svg" width="28" height="28" alt=""><span class="fone__digita"><i></i><i></i><i></i></span><p class="fone__msg fone__msg--v0n">Pode deixar.</p></div>
+          </div>
+          <div class="fone__entrada"><span>Mensagem</span></div>
+          </div>
+          <img class="fone__moldura" src="../img/iphone-16.webp" width="800" height="1653" alt="">
+        </div>
       </div>
     </div>
   </section>

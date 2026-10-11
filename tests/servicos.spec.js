@@ -44,3 +44,13 @@ test('a logo leva da /servicos pra home e o cabeçalho da home leva pra /servico
   await page.locator('.topo__menu a', { hasText: 'Serviços' }).click()
   await expect(page).toHaveURL(/\/servicos\/$/)
 })
+
+test('o fecho tem o botão do WhatsApp e a conversa do celular, que aparece inteira', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto('/servicos/')
+  await expect(page.locator('#contato a.btn')).toHaveAttribute('href', /^https:\/\/wa\.me\/\d+\?text=/)
+  await page.locator('#contato').scrollIntoViewIfNeeded()
+  await expect(page.locator('#contato .fone__linha')).toHaveCount(4)
+  // a conversa se desenrola sozinha: ao fim, a última resposta da v0n está visível
+  await expect(page.locator('#contato .fone__linha').last().locator('.fone__msg')).toHaveCSS('opacity', '1', { timeout: 15000 })
+})

@@ -14,6 +14,25 @@
     // Boas-vindas: as nuvens sobem mais rápido que a página e o texto fica pra trás.
     anda('.nuvens', 30, -90, '.hero', 'top top')
     anda('.hero__conteudo', 0, 50, '.hero', 'top top')
+    // Fecho: o celular anda em outra velocidade que o texto.
+    anda('.fone', 40, -40, '.cta')
+    // A conversa do celular acontece sozinha quando ele entra na tela: o cliente fala, a v0n
+    // "digita" e responde. Os balões já ocupam o lugar deles (escondidos), então nada pula.
+    var fone = document.querySelector('.fone')
+    if (fone) {
+      var linhas = Array.from(fone.querySelectorAll('.fone__linha'))
+      var espera = function (ms) { return new Promise(function (ok) { setTimeout(ok, ms) }) }
+      fone.classList.add('fone--espera')
+      ScrollTrigger.create({ trigger: fone, start: 'top 75%', once: true, onEnter: async function () {
+        await espera(500)
+        for (var i = 0; i < linhas.length; i++) {
+          var l = linhas[i]
+          if (l.classList.contains('fone__linha--v0n')) { l.classList.add('digita'); await espera(1300); l.classList.remove('digita') } else await espera(500)
+          l.classList.add('fala')
+          await espera(900)
+        }
+      } })
+    }
     // Títulos de seção sobem um pouco mais rápido que a página.
     gsap.utils.toArray('.secao h2').forEach(function (t) { anda(t, 16, -16) })
     // Cada pilha de design anda por conta própria, em outra velocidade que o título.
