@@ -668,6 +668,12 @@ html:not(.js) .portal{display:none}
 .portal__svg{position:absolute; width:0; height:0}
 .portal__glifo{font:700 100px 'Barlow Condensed', 'Inter', system-ui, sans-serif; font-kerning:none; letter-spacing:0}
 .portal__campo{position:absolute; inset:0; clip-path:url(#portal-clip)}
+/* O contorno: a mesma palavra, no mesmo lugar, só que traçada por cima do
+   mural. Acende quando a seção entra e apaga quando a câmera começa a andar —
+   ouro esticado na tela inteira vira parede. non-scaling-stroke segura o fio
+   fino: sem ele o traço engorda junto com o zoom e tapa a palavra. */
+.portal__traco{position:absolute; inset:0; width:100%; height:100%; pointer-events:none}
+.portal__contorno{fill:none; stroke:var(--ouro); stroke-width:2px}
 .portal__mural{position:absolute; inset:0; display:grid; grid-template-columns:repeat(auto-fill, 180px); gap:16px; place-content:center}
 .portal__mural .post{--w:180px}
 
@@ -700,6 +706,16 @@ html:not(.js) .portal{display:none}
   border-radius:var(--raio); container-type:inline-size; background:var(--osso); color:#0b0c0e;
 }
 .post--escuro{background:var(--grafite); color:var(--osso); border:1px solid var(--borda-forte)}
+/* Capa e CTA levam foto, e cada um diz qual em --foto (no HTML, com caminho
+   absoluto: url() dentro de variável resolve a partir deste .css, não da
+   página). O degradê escurece de cima pra baixo pra sobrar contraste embaixo,
+   onde mora o título. Sem ele o texto some na luz da imagem. */
+.post--foto{
+  background:
+    linear-gradient(to bottom, rgb(11 12 14 / .15) 0%, rgb(11 12 14 / .35) 40%, rgb(11 12 14 / .9) 70%, rgb(11 12 14 / .97) 100%),
+    var(--foto, none) center / cover no-repeat,
+    var(--grafite);
+}
 .post__pag{
   position:absolute; top:6cqw; right:6cqw; padding:.5em .9em; border-radius:var(--raio-p);
   font:500 3.4cqw/1 'IBM Plex Mono', ui-monospace, monospace; background:rgb(11 12 14 / .7); color:var(--osso);
