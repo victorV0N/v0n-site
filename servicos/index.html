@@ -1,0 +1,454 @@
+<!doctype html>
+<!--
+  /servicos: página dividida por serviço, nesta ordem: 1 Design, 2 Sistemas e
+  automações, 3 Sites. Só a estrutura; o conteúdo de cada serviço entra aqui
+  dentro da sua <section>, um de cada vez, começando por Design.
+  Usa css/site.css (.secao, .env, .t1, .rotulo) e js/entradas.js (entrada na rolagem).
+-->
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<script>document.documentElement.classList.add('js')</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>v0n · Design, sistemas e automações, sites</title>
+<link rel="icon" href="../img/selo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@200;300;700&family=Inter:wght@300;400;500;700&family=IBM+Plex+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../css/site.css">
+<style>
+  /* Design por nicho: cada nicho é um título e uma grade de peças. As peças ficam
+     em 4:5 (formato de feed) e a imagem inteira aparece, sem corte. */
+  /* O título da boas-vindas é uma frase longa: fica menor que o padrão dos títulos de hero. */
+  #boas-vindas-titulo{font-size:clamp(2.6rem, 11.5vw, 4.4rem)}
+  @media (min-width:900px){#boas-vindas-titulo{font-size:clamp(3rem, 5.4vw, 76px)}}
+  /* Nuvens de notificação no lugar da foto: três cartões de vidro inclinados em 3D que
+     "pipocam" um depois do outro e ficam flutuando. Pop usa scale/opacity e a flutuação usa
+     translate (propriedades separadas), então as duas animações não se atropelam. */
+  .nuvens{display:grid; gap:18px; perspective:1100px; padding:12px 0; position:relative}
+  .nuvens::before{content:""; position:absolute; inset:10% 5%; background:radial-gradient(closest-side, rgba(255,197,49,.16), transparent); filter:blur(30px); pointer-events:none}
+  .nuvem{position:relative; display:flex; align-items:center; gap:16px; padding:20px 22px; border-radius:30px; border:1px solid var(--borda-forte);
+    background:linear-gradient(145deg, rgba(255,255,255,.12), rgba(255,255,255,.03)); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+    box-shadow:0 34px 50px -22px #000, 0 0 44px rgba(255,197,49,.08), inset 0 1px 0 rgba(255,255,255,.18);
+    --rep:translate(calc(var(--rx, 0) * 1px), calc(var(--ry, 0) * 1px)); transform:var(--rep) rotateY(-12deg) rotateX(5deg); opacity:0; scale:.7}
+  /* Embaralhadas: cada nuvem tem posição, giro e trajetória de flutuação próprios. */
+  .nuvem:nth-child(1){margin-right:14%; --dx:10px; --dy:-16px; --r:-1.5deg; --t:7s}
+  .nuvem:nth-child(2){margin-left:12%; transform:var(--rep) rotateY(-8deg) rotateX(4deg); --dx:-14px; --dy:-10px; --r:1.8deg; --t:8.5s}
+  .nuvem:nth-child(3){margin-right:2%; transform:var(--rep) rotateY(-15deg) rotateX(6deg); --dx:8px; --dy:-18px; --r:-1deg; --t:6.2s}
+  .nuvem:nth-child(4){margin-left:6%; transform:var(--rep) rotateY(-10deg) rotateX(4deg); --dx:-9px; --dy:-14px; --r:1.2deg; --t:7.6s}
+  @media (min-width:900px){
+    .nuvens{display:block; height:clamp(520px, 47vw, 600px)}
+    .nuvem{position:absolute; width:min(78%, 400px); margin:0 !important}
+    .nuvem:nth-child(1){top:0; left:0; rotate:-3deg}
+    .nuvem:nth-child(2){top:24%; right:0; rotate:2.5deg; z-index:2}
+    .nuvem:nth-child(3){top:51%; left:6%; rotate:-1.5deg; z-index:1}
+    .nuvem:nth-child(4){bottom:0; right:3%; rotate:2deg; z-index:2}
+  }
+  .nuvem__icone{flex:none; width:56px; height:56px; border-radius:18px; display:grid; place-items:center; color:#1a1200; background:linear-gradient(145deg,#ffe08a,#FFC531 50%,#d99a00); box-shadow:0 0 22px rgba(255,197,49,.45), inset 0 1.5px 0 rgba(255,255,255,.55), inset 0 -3px 6px rgba(120,70,0,.35)}
+  .nuvem__icone svg{width:30px; height:30px}
+  .nuvem__origem{display:block; margin-bottom:4px; font:500 11px/1 'IBM Plex Mono', monospace; letter-spacing:.14em; text-transform:uppercase; color:var(--aco)}
+  .nuvem__texto{margin:0; font-size:clamp(.9rem, 1.3vw, 1.05rem); font-weight:600; line-height:1.3; letter-spacing:.02em; text-transform:uppercase; color:var(--osso)}
+  .nuvem::after{content:""; position:absolute; top:14px; right:16px; width:10px; height:10px; border-radius:50%; background:var(--ouro); box-shadow:0 0 12px var(--ouro)}
+  .nuvens.visivel .nuvem{opacity:1; scale:1; animation:nuvem-pop .8s cubic-bezier(.34,1.56,.64,1) backwards, nuvem-flutua var(--t) ease-in-out infinite;
+    animation-delay:calc(var(--n) * .45s + .3s), calc(var(--n) * -2.3s)}
+  .nuvens.visivel .nuvem::after{animation:nuvem-ping 1.8s ease-in-out infinite}
+  .nuvens.visivel .nuvem__icone{animation:nuvem-brilho 3s ease-in-out infinite}
+  @keyframes nuvem-pop{from{opacity:0; scale:.6; translate:0 40px}}
+  /* flutua deriva em duas direções e balança de leve (translate + rotate, sem tocar no transform 3D) */
+  @keyframes nuvem-flutua{25%{translate:var(--dx) var(--dy); rotate:var(--r)} 50%{translate:0 calc(var(--dy) * -.4)} 75%{translate:calc(var(--dx) * -1) calc(var(--dy) * .6); rotate:calc(var(--r) * -1)}}
+  @keyframes nuvem-ping{50%{scale:1.5; opacity:.5}}
+  @keyframes nuvem-brilho{50%{box-shadow:0 0 36px rgba(255,197,49,.8)}}
+  @media (prefers-reduced-motion:reduce){.nuvem{opacity:1; scale:1}.nuvens.visivel .nuvem,.nuvens.visivel .nuvem::after,.nuvens.visivel .nuvem__icone{animation:none}}
+  /* Título de uma linha só, centralizado. O texto tem ~14,1 vezes o tamanho da letra de largura, então o tamanho segue a tela pra sempre caber. */
+  /* Título longo: com palavras como PERSONALIZADOS e EXCLUSIVAMENTE, o tamanho padrão estoura a tela do celular. */
+  #videos-titulo{font-size:clamp(1.9rem, 8.4vw, 4.6rem)}
+  @media (min-width:900px){#videos-titulo{font-size:clamp(3rem, 6vw, 84px)}}
+  #design-titulo{text-align:center; white-space:nowrap; font-size:clamp(19px, calc((100vw - 40px) / 14.5), 64px); margin-bottom:clamp(32px, 5vw, 56px)}
+  .nicho + .nicho{margin-top:clamp(72px, 9vw, 112px)}
+  .nicho{margin-top:clamp(28px, 4vw, 48px); overflow-x:clip}
+  /* O nome do nicho só surge quando a pilha abre (hover, foco ou toque). Ocupa o lugar
+     desde o começo (opacity, não display), então a página não pula. Sem suporte a :has,
+     o nome fica sempre visível. */
+  @supports selector(:has(*)){
+    .nicho__nome{margin:0; text-align:center; text-transform:uppercase; color:var(--ouro); opacity:0; transform:translateY(8px); transition:opacity .5s var(--saida) .15s, transform .5s var(--saida) .15s}
+    .nicho:has(.pilha:hover) .nicho__nome, .nicho:has(.pilha:focus-within) .nicho__nome{opacity:1; transform:none}
+  }
+  /* Pilha de três peças. Em repouso as de trás espiam pelos lados da de cima; no
+     hover, no foco (teclado) e no toque elas deslizam pra fora e as três aparecem. */
+  .pilha{position:relative; width:min(100%, 1120px); margin:40px auto 0; aspect-ratio:3.2 / 1.25; outline-offset:6px; cursor:pointer}
+  .pilha__peca{position:absolute; top:0; left:50%; width:32%; height:auto; margin-left:-16%; border:1px solid var(--borda); border-radius:var(--raio); box-shadow:0 18px 50px -18px rgb(0 0 0 / .8);
+    transition:transform .7s var(--saida)}
+  .pilha__peca--frente{z-index:3}
+  .pilha__peca--esq{z-index:1; transform:translateX(-9%) rotate(-3.5deg) scale(.96)}
+  .pilha__peca--dir{z-index:2; transform:translateX(9%) rotate(3.5deg) scale(.96)}
+  .pilha:hover .pilha__peca--esq, .pilha:focus-within .pilha__peca--esq{transform:translateX(-106%) rotate(-2deg)}
+  .pilha:hover .pilha__peca--dir, .pilha:focus-within .pilha__peca--dir{transform:translateX(106%) rotate(2deg)}
+  /* Dica de como abrir, no lugar certo pro aparelho. */
+  .pilha::after{content:'Passe o mouse'; position:absolute; left:0; right:0; bottom:-34px; text-align:center; font:500 12px/1 'IBM Plex Mono', ui-monospace, monospace; text-transform:uppercase; letter-spacing:.09em; color:var(--aco); transition:opacity .3s}
+  @media (hover:none){.pilha::after{content:'Toque'}}
+  .pilha:hover::after, .pilha:focus-within::after{opacity:0}
+  /* Pilha dupla: o par se abre simétrico em volta do centro. */
+  .pilha--dupla .pilha__peca--dir{transform:translateX(7%) rotate(3deg) scale(.96)}
+  .pilha--dupla:hover .pilha__peca--frente, .pilha--dupla:focus-within .pilha__peca--frente{transform:translateX(-54%)}
+  .pilha--dupla:hover .pilha__peca--dir, .pilha--dupla:focus-within .pilha__peca--dir{transform:translateX(54%) rotate(2deg)}
+  /* Pilha de quatro: fileira de quatro ao abrir; a p2 é a da frente, em repouso no centro. */
+  .pilha--quatro{aspect-ratio:3.33 / 1}
+  .pilha--quatro .pilha__peca{width:24%; margin-left:-12%}
+  .pilha--quatro .p1{z-index:1; transform:translateX(-14%) rotate(-5deg) scale(.96)}
+  .pilha--quatro .p4{z-index:1; transform:translateX(27%) rotate(7deg) scale(.96)}
+  .pilha--quatro .p3{z-index:2; transform:translateX(14%) rotate(3.5deg) scale(.96)}
+  .pilha--quatro .p2{z-index:3}
+  .pilha--quatro:hover .p1, .pilha--quatro:focus-within .p1{transform:translateX(-162%) rotate(-2deg)}
+  .pilha--quatro:hover .p2, .pilha--quatro:focus-within .p2{transform:translateX(-54%) rotate(1deg)}
+  .pilha--quatro:hover .p3, .pilha--quatro:focus-within .p3{transform:translateX(54%) rotate(-1deg)}
+  .pilha--quatro:hover .p4, .pilha--quatro:focus-within .p4{transform:translateX(162%) rotate(2deg)}
+  /* Stories 9:16: mesma fileira de quatro, com peças mais estreitas pra altura não estourar. */
+  .pilha--story{aspect-ratio:2.5 / 1}
+  .pilha--story .pilha__peca{width:22%; margin-left:-11%}
+  /* Celular: não cabem três
+ lado a lado, então abrem em leque e se sobrepõem. */
+  @media (max-width:719px){
+    .pilha{aspect-ratio:auto; height:auto; margin-bottom:56px}
+    .pilha__peca{width:54%; margin-left:-27%}
+    .pilha__peca--frente{position:relative; left:50%}
+    .pilha:hover .pilha__peca--esq, .pilha:focus-within .pilha__peca--esq{transform:translateX(-52%) rotate(-5deg)}
+    .pilha:hover .pilha__peca--dir, .pilha:focus-within .pilha__peca--dir{transform:translateX(52%) rotate(5deg)}
+  }
+  @media (max-width:719px){
+    .pilha--quatro{aspect-ratio:auto}
+    .pilha--quatro .pilha__peca{width:46%; margin-left:-23%}
+    .pilha--quatro:hover .p1, .pilha--quatro:focus-within .p1{transform:translateX(-58%) rotate(-4deg)}
+    .pilha--quatro:hover .p2, .pilha--quatro:focus-within .p2{transform:translateX(-19%) rotate(-1deg)}
+    .pilha--quatro:hover .p3, .pilha--quatro:focus-within .p3{transform:translateX(19%) rotate(1deg)}
+    .pilha--quatro:hover .p4, .pilha--quatro:focus-within .p4{transform:translateX(58%) rotate(4deg)}
+    .pilha--dupla:hover .pilha__peca--frente, .pilha--dupla:focus-within .pilha__peca--frente{transform:translateX(-47%)}
+    .pilha--dupla:hover .pilha__peca--dir, .pilha--dupla:focus-within .pilha__peca--dir{transform:translateX(47%) rotate(2deg)}
+  }
+  @media (prefers-reduced-motion:reduce){.pilha__peca{transition:none}}
+  /* Fundo ASCII (js/ascii.js): só nas seções com data-ascii. O canvas fica atrás e o conteúdo (.env) por cima. */
+  [data-ascii]{position:relative}
+  .ascii{position:absolute; inset:0; width:100%; height:100%; pointer-events:none}
+  [data-ascii] > .env{position:relative; z-index:1}
+  /* Fecho (CTA): texto e botão de um lado, celular com a conversa do outro. */
+  .cta__grade{display:grid; gap:clamp(40px, 6vw, 96px); align-items:center}
+  @media (min-width:900px){.cta__grade{grid-template-columns:minmax(0, 1fr) auto}}
+  .cta .t1{margin-bottom:20px}
+  /* Título em frase longa: tamanho menor que o padrão dos títulos, senão passa da tela no celular. */
+  #cta-titulo{font-size:clamp(1.9rem, 8vw, 3.4rem)}
+  @media (min-width:900px){#cta-titulo{font-size:clamp(2.4rem, 4.4vw, 62px)}}
+  .cta__sub{margin:0 0 32px; color:var(--aco); font-size:clamp(1.05rem, 2vw, 1.3rem)}
+  .cta .btn{height:56px; padding-inline:34px; font-size:16px}
+  .fone{justify-self:center; translate:0 var(--py, 0)}
+  /* Moldura: foto real de iPhone Pro de frente, só o aparelho, com a janela da tela vazada. A tela (conversa)
+     fica por baixo e a moldura por cima, então os cantos arredondados e a ilha dinâmica vêm da imagem.
+     Tudo aqui dentro mede em cqw, a largura do aparelho, pra a conversa escalar junto com ele. */
+  .fone__corpo{position:relative; width:min(86vw, 330px); aspect-ratio:1311 / 2708; container-type:inline-size; animation:fone-flutua 7s ease-in-out infinite; filter:drop-shadow(0 40px 50px rgb(0 0 0 / .7)) drop-shadow(0 0 40px rgb(255 197 49 / .1))}
+  @keyframes fone-flutua{50%{translate:0 -10px; rotate:-.6deg}}
+  .fone__moldura{position:absolute; inset:0; width:100%; height:100%; display:block; pointer-events:none}
+  .fone__tela{position:absolute; left:4.12%; top:1.62%; width:91.8%; height:96.75%; overflow:hidden; border-radius:12cqw; background:#0b0c0e; display:flex; flex-direction:column; padding:0 3.4cqw}
+  .fone__status{display:flex; align-items:center; justify-content:space-between; padding:4.2cqw 6.5cqw 0; font:600 3.7cqw/1 'Inter', sans-serif; color:var(--osso)}
+  .fone__bateria{width:6.2cqw; height:2.9cqw; border-radius:.9cqw; border:.3cqw solid rgb(236 237 232 / .6); background:linear-gradient(90deg, var(--osso) 78%, transparent 78%)}
+  .fone__topo{display:flex; align-items:center; gap:2.8cqw; margin-top:9.4cqw; padding:0 2cqw 2.8cqw; border-bottom:1px solid var(--borda)}
+  .fone__av{flex:none; width:8cqw; height:8cqw; border-radius:50%}
+  .fone__topo .fone__av{width:10cqw; height:10cqw}
+  .fone__nome{display:flex; flex-direction:column; gap:.6cqw; font:700 4.4cqw/1.1 'Inter', sans-serif; color:var(--osso)}
+  .fone__nome small{font:500 2.9cqw/1.1 'IBM Plex Mono', monospace; letter-spacing:.08em; text-transform:uppercase; color:var(--aco)}
+  .fone__chat{display:flex; flex-direction:column; gap:3.2cqw; padding:5cqw 1cqw 0; font:400 3.9cqw/1.4 'Inter', system-ui, sans-serif}
+  .fone__linha{position:relative; display:flex; align-items:flex-end; gap:2.2cqw}
+  .fone__linha--eu{justify-content:flex-end; padding-left:12%}
+  .fone__linha--v0n{padding-right:8%}
+  .fone__msg{margin:0; padding:2.8cqw 3.8cqw; border-radius:5cqw}
+  .fone__msg--eu{background:var(--osso); color:var(--carbono); border-bottom-right-radius:1.4cqw}
+  .fone__msg--v0n{background:var(--grafite); color:var(--osso); border:1px solid var(--borda-forte); border-bottom-left-radius:1.4cqw}
+  .fone__check{margin-left:2cqw; font-size:2.8cqw; letter-spacing:-.15em; color:rgb(0 0 0 / .4); white-space:nowrap}
+  .fone__entrada{position:absolute; left:3.4cqw; right:3.4cqw; bottom:4.6cqw; display:flex; align-items:center; height:10.5cqw; padding:0 4.4cqw; border-radius:99px; border:1px solid var(--borda-forte); background:var(--grafite); font:400 3.8cqw/1 'Inter', sans-serif; color:var(--aco)}
+  /* "Digitando": fica no lugar da resposta, escondido até a vez dela. */
+  .fone__digita{position:absolute; left:10.4cqw; bottom:0; display:none; gap:1.5cqw; padding:3.4cqw 4cqw; border-radius:5cqw; border-bottom-left-radius:1.4cqw; background:var(--grafite); border:1px solid var(--borda-forte)}
+  .fone__digita i{width:2cqw; height:2cqw; border-radius:50%; background:var(--aco); animation:zap-pula 1.2s ease-in-out infinite}
+  .fone__digita i:nth-child(2){animation-delay:.15s}
+  .fone__digita i:nth-child(3){animation-delay:.3s}
+  @keyframes zap-pula{0%, 60%, 100%{translate:0 0; opacity:.5} 30%{translate:0 -4px; opacity:1}}
+  /* A conversa só começa escondida quando o JS vai tocá-la (.fone--espera). Os balões ocupam o lugar mesmo invisíveis. */
+  .fone--espera .fone__msg, .fone--espera .fone__linha > .fone__av{opacity:0; scale:.85; transition:opacity .3s, scale .35s cubic-bezier(.34, 1.56, .64, 1)}
+  .fone--espera .fone__msg--eu{transform-origin:100% 100%}
+  .fone--espera .fone__msg--v0n{transform-origin:0 100%}
+  .fone--espera .fone__linha.fala > .fone__msg, .fone--espera .fone__linha.fala > .fone__av{opacity:1; scale:1}
+  .fone--espera .fone__linha.digita > .fone__digita{display:flex}
+  .fone--espera .fone__linha.digita > .fone__av{opacity:1; scale:1}
+  @media (prefers-reduced-motion:reduce){.fone__corpo{animation:none}}
+  /* Paralaxe: o js/servicos.js move estes elementos pela variável --py. */
+  .nuvens, .hero__conteudo, .secao h2, .pilha{translate:0 var(--py, 0)}
+  /* Sites: cartão com o print da página inicial. O cartão inteiro é o link (o link do rodapé
+     se estica por cima dele) e acende na cor de cada site (--cor). */
+  .sites{display:grid; gap:24px; grid-template-columns:repeat(2, 1fr); margin-top:clamp(32px, 5vw, 56px)}
+  .site{position:relative; display:flex; flex-direction:column; overflow:hidden; border:1px solid var(--borda); border-radius:var(--raio); background:color-mix(in srgb, var(--osso) 4%, #000);
+    transition:border-color .25s, background-color .25s, box-shadow .25s}
+  .site:hover, .site:focus-within{border-color:var(--cor); background:color-mix(in srgb, var(--cor) 14%, #000); box-shadow:0 0 0 1px var(--cor), 0 20px 55px -14px color-mix(in srgb, var(--cor) 70%, transparent)}
+  .site__img{aspect-ratio:16 / 10; overflow:hidden; border-bottom:1px solid var(--borda)}
+  .site__img img{display:block; width:100%; height:100%; object-fit:cover; object-position:top}
+  .site__corpo{display:flex; flex-direction:column; gap:10px; flex:1; padding:22px 24px 26px}
+  .site__corpo .rotulo, .site__corpo .t3, .site__corpo p{margin:0}
+  /* O rótulo quebra em duas linhas no celular: sem folga entre elas a etiqueta amarela ficava por cima do texto. */
+  .site__corpo .rotulo{line-height:1.9}
+  .site__corpo p:not(.rotulo){color:var(--aco)}
+  .site__previa{display:inline-block; padding:3px 8px; border-radius:999px; background:var(--ouro); color:#000; line-height:1.2; white-space:nowrap}
+  .site__chips{display:flex; flex-wrap:wrap; gap:8px; margin:4px 0 0; padding:0; list-style:none}
+  .site__chips li{padding:5px 11px; border:1px solid var(--borda-forte); border-radius:999px; font:500 12px/1 'IBM Plex Mono', monospace; color:var(--osso)}
+  .site__link{align-self:start; margin-top:auto; padding-top:10px; color:var(--ouro); font-weight:700; text-decoration:none}
+  .site__link::after{content:""; position:absolute; inset:0}
+  .site__link:focus-visible{outline:2px solid var(--ouro); outline-offset:4px}
+  .site__link--off{color:var(--aco); font-weight:500}
+  /* Um cartão só: print de um lado, texto do outro. */
+  @media (min-width:821px){.sites--um .site{flex-direction:row; align-items:stretch} .sites--um .site__img{flex:1.35; aspect-ratio:auto; border-bottom:0; border-right:1px solid var(--borda)} .sites--um{grid-template-columns:1fr} .sites--um .site__corpo{flex:1; justify-content:center; padding:32px}}
+  .site video{display:block; width:100%; aspect-ratio:9 / 16; object-fit:cover; background:#000; border-bottom:1px solid var(--borda)}
+  .sites--videos{max-width:780px}
+  @media (max-width:820px){.sites{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="topo">
+  <div class="topo__barra env">
+    <a class="topo__logo" href="../index.html" aria-label="v0n — início">
+      <img src="../img/logo.svg" width="140" height="56" alt="v0n">
+    </a>
+    <nav class="topo__nav" aria-label="Principal">
+      <ul class="topo__menu topo__menu--dir"><li><a href="./" aria-current="page">Serviços</a></li></ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- Boas-vindas. Mesma estrutura da hero da home: texto à esquerda, à direita os
+       serviços como notificações em 3D; empilha no celular. -->
+  <section class="hero" data-ascii aria-labelledby="boas-vindas-titulo">
+    <div class="env hero__grade">
+      <div class="hero__conteudo">
+        <h1 class="t1 entra" id="boas-vindas-titulo" style="--i:1">Aqui é onde o seu negócio digital <span class="t1__marca">ganha vida.</span></h1>
+        <p class="hero__texto entra" style="--i:2">Veja o que a gente já fez: design, sites, sistemas, automações, vídeos criativos</p>
+      </div>
+      <div class="hero__foto nuvens entra-fade">
+        <div class="nuvem" style="--n:0"><span class="nuvem__icone" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="15" height="15" rx="4" fill="currentColor" fill-opacity=".2"/><circle cx="8.3" cy="9" r="1.6"/><path d="m3.5 16 4.6-4.4 3.6 3.4 2.2-2 3.6 3.4"/><path d="M19 2.2l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z" fill="currentColor" stroke-width="1"/></svg></span><div><span class="nuvem__origem">v0n · agora</span><p class="nuvem__texto">Designs profissionais para o seu feed e redes sociais</p></div></div>
+        <div class="nuvem" style="--n:1"><span class="nuvem__icone" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="19" height="16" rx="3.2" fill="currentColor" fill-opacity=".2"/><path d="M2.5 9h19"/><circle cx="5.6" cy="6.5" r=".7" fill="currentColor" stroke-width="1"/><circle cx="8.2" cy="6.5" r=".7" fill="currentColor" stroke-width="1"/><rect x="5.5" y="11.8" width="7" height="5.4" rx="1.4" fill="currentColor" fill-opacity=".35"/><path d="M15.5 12.5h3M15.5 15h3M15.5 17.2h1.8"/></svg></span><div><span class="nuvem__origem">v0n · agora</span><p class="nuvem__texto">Sites com identidade visual rica e responsivos</p></div></div>
+        <div class="nuvem" style="--n:2"><span class="nuvem__icone" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.4 7.5l-4.6 1.5 1.5-4.4A8.5 8.5 0 1 1 20.5 11.5Z" fill="currentColor" fill-opacity=".2"/><path d="M12 7.2l1.3 3 3 1.3-3 1.3-1.3 3-1.3-3-3-1.3 3-1.3z" fill="currentColor" stroke-width="1.2"/></svg></span><div><span class="nuvem__origem">v0n · agora</span><p class="nuvem__texto">IA que atende o seu WhatsApp 24h, marca e agenda clientes</p></div></div>
+        <div class="nuvem" style="--n:3"><span class="nuvem__icone" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4.5" width="19" height="15" rx="3.2" fill="currentColor" fill-opacity=".2"/><path d="M10 9.2v5.6l4.8-2.8z" fill="currentColor"/><path d="M6 2.5v2M12 2.5v2M18 2.5v2M6 19.5v2M12 19.5v2M18 19.5v2" stroke-width="1.4"/></svg></span><div><span class="nuvem__origem">v0n · agora</span><p class="nuvem__texto">Vídeos interativos feitos para o seu negócio de forma criativa</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao" id="design" aria-labelledby="design-titulo">
+    <div class="env">
+      <h2 class="t1 entra" id="design-titulo">Design e categorias que <span class="t1__marca">já atendemos</span></h2>
+      <!-- Design é separado por nicho: um <article class="nicho"> por nicho, na ordem em
+           que entram. Peça nova = um <li> na lista do nicho (imagem em img/design/<nicho>/). -->
+      <article class="nicho" id="moda-fitness" aria-labelledby="moda-fitness-titulo">
+        <h3 class="t3 nicho__nome" id="moda-fitness-titulo">Moda fitness</h3>
+        <!-- Três peças empilhadas. Ao passar o mouse (ou tocar), as duas de trás se abrem
+             uma pra cada lado e as três ficam à mostra. A de cima é a primeira do HTML. -->
+        <div class="pilha entra" tabindex="0" role="group" aria-label="Peças de moda fitness da BKA Fit. Passe o mouse ou toque para abrir.">
+          <img class="pilha__peca pilha__peca--esq" src="../img/design/moda-fitness/bka-caderno.webp" width="800" height="1000" alt="Post em formato de caderno para a BKA Fit: seu cliente deseja, sua loja precisa ter" loading="lazy">
+          <img class="pilha__peca pilha__peca--dir" src="../img/design/moda-fitness/bka-320g.webp" width="800" height="1000" alt="Post da BKA Fit sobre a poliamida 320g: sua cliente não sabe o que é 320g, e tá tudo bem" loading="lazy">
+          <img class="pilha__peca pilha__peca--frente" src="../img/design/moda-fitness/bka-revista.webp" width="800" height="1000" alt="Capa de revista para a BKA Fit: the pieces to watch, moda fitness feminina" loading="lazy">
+        </div>
+      </article>
+
+      <article class="nicho" id="moda-intima" aria-labelledby="moda-intima-titulo">
+        <h3 class="t3 nicho__nome" id="moda-intima-titulo">Moda íntima feminina</h3>
+        <!-- Quatro peças: .pilha--quatro. Da esquerda pra direita ao abrir: p1, p2 (a da frente), p3, p4. -->
+        <div class="pilha pilha--quatro entra" tabindex="0" role="group" aria-label="Peças da Bella Isabella. Passe o mouse ou toque para abrir.">
+          <img class="pilha__peca p1" src="../img/design/moda-intima/isabella-comprar-bem.webp" width="800" height="1000" alt="Post da Bella Isabella: comprar barato é a mesma coisa que comprar bem?" loading="lazy">
+          <img class="pilha__peca p4" src="../img/design/moda-intima/isabella-microfibra.webp" width="800" height="1000" alt="Post da Bella Isabella sobre microfibra: leve, macia e com boa elasticidade" loading="lazy">
+          <img class="pilha__peca p3" src="../img/design/moda-intima/isabella-vai-vender.webp" width="800" height="1000" alt="Post da Bella Isabella: não quero investir muito sem saber se vai vender" loading="lazy">
+          <img class="pilha__peca pilha__peca--frente p2" src="../img/design/moda-intima/isabella-200.webp" width="800" height="1000" alt="Post da Bella Isabella: imagina começar a vender investindo apenas R$200" loading="lazy">
+        </div>
+      </article>
+
+      <article class="nicho" id="moda-intima-masculina" aria-labelledby="moda-intima-masculina-titulo">
+        <h3 class="t3 nicho__nome" id="moda-intima-masculina-titulo">Moda íntima masculina</h3>
+        <div class="pilha entra" tabindex="0" role="group" aria-label="Peças da Kelvin Kros. Passe o mouse ou toque para abrir.">
+          <img class="pilha__peca pilha__peca--esq" src="../img/design/moda-intima-masculina/kelvin-kit-infantil.webp" width="800" height="1000" alt="Post da Kelvin Kros: kit infantil liso com 4 peças" loading="lazy">
+          <img class="pilha__peca pilha__peca--dir" src="../img/design/moda-intima-masculina/kelvin-dia-do-cliente.webp" width="800" height="1000" alt="Post de Dia do Cliente da Kelvin Kros, com duas sacolas de papel sobre fundo azul" loading="lazy">
+          <img class="pilha__peca pilha__peca--frente" src="../img/design/moda-intima-masculina/kelvin-gira.webp" width="800" height="1000" alt="Post da Kelvin Kros: o produto que mais gira na sua loja é roupa íntima" loading="lazy">
+        </div>
+      </article>
+
+      <article class="nicho" id="moda-praia-masculina" aria-labelledby="moda-praia-masculina-titulo">
+        <h3 class="t3 nicho__nome" id="moda-praia-masculina-titulo">Moda praia masculina</h3>
+        <div class="pilha pilha--quatro entra" tabindex="0" role="group" aria-label="Posts da Calor do Verão. Passe o mouse ou toque para abrir.">
+          <img class="pilha__peca p1" src="../img/design/moda-praia-masculina/calor-costura.webp" width="800" height="1000" alt="Post da Calor do Verão sobre a conferência das peças depois da costura: retirada de linhas, etiquetagem e só depois a embalagem" loading="lazy">
+          <img class="pilha__peca p4" src="../img/design/moda-praia-masculina/calor-versatil.webp" width="800" height="1000" alt="Post da Calor do Verão: o short chimpa, que não fica preso a uma única ocasião" loading="lazy">
+          <img class="pilha__peca p3" src="../img/design/moda-praia-masculina/calor-barato-vender.webp" width="800" height="1000" alt="Post da Calor do Verão: barato mesmo é o que você consegue vender, com quatro shorts em um cabideiro" loading="lazy">
+          <img class="pilha__peca pilha__peca--frente p2" src="../img/design/moda-praia-masculina/calor-short-chimpa.webp" width="800" height="1000" alt="Post da Calor do Verão: short chimpa, nem todo short precisa parecer o mesmo" loading="lazy">
+        </div>
+      </article>
+
+      <article class="nicho" id="barbearia" aria-labelledby="barbearia-titulo">
+        <h3 class="t3 nicho__nome" id="barbearia-titulo">Barbearia</h3>
+        <!-- Três peças empilhadas. Ao passar o mouse (ou tocar), as duas de trás se abrem
+             uma pra cada lado e as três ficam à mostra. A de cima é a primeira do HTML. -->
+        <div class="pilha entra" tabindex="0" role="group" aria-label="Peças da Pitstop Barbearia. Passe o mouse ou toque para abrir.">
+          <img class="pilha__peca pilha__peca--esq" src="../img/design/barbearia/pitstop-curso.webp" width="800" height="1000" alt="Post da Pitstop Barbearia para o curso profissional de barbeiro, do básico ao avançado" loading="lazy">
+          <img class="pilha__peca pilha__peca--dir" src="../img/design/barbearia/pitstop-ano-novo.webp" width="800" height="1000" alt="Post de ano novo da Pitstop Barbearia, com taças de champanhe e estrelas douradas" loading="lazy">
+          <img class="pilha__peca pilha__peca--frente" src="../img/design/barbearia/pitstop-cadeira.webp" width="800" height="1000" alt="Post da Pitstop Barbearia com uma cadeira de barbeiro e o botão de WhatsApp para marcar horário" loading="lazy">
+        </div>
+      </article>
+
+      <article class="nicho" id="confeitaria" aria-labelledby="confeitaria-titulo">
+        <h3 class="t3 nicho__nome" id="confeitaria-titulo">Confeitaria</h3>
+        <!-- A Confeitaria tem duas peças: pilha dupla, o par se abre simétrico (.pilha--dupla). -->
+        <div class="pilha pilha--dupla entra" tabindex="0" role="group" aria-label="Peças da Sabor e Arte. Passe o mouse ou toque para abrir.">
+          <img class="pilha__peca pilha__peca--dir" src="../img/design/confeitaria/sabor-encanto.webp" width="800" height="1000" alt="Post da Sabor e Arte: primeiro o encanto, depois a lembrança, assim nasce a arte em forma de doce" loading="lazy">
+          <img class="pilha__peca pilha__peca--frente" src="../img/design/confeitaria/sabor-doces.webp" width="800" height="1000" alt="Post da Sabor e Arte: doces gourmet para a sua festa, faça seu pedido" loading="lazy">
+        </div>
+      </article>
+
+      <article class="nicho" id="trilhas-ecologicas" aria-labelledby="trilhas-ecologicas-titulo">
+        <h3 class="t3 nicho__nome" id="trilhas-ecologicas-titulo">Trilhas ecológicas</h3>
+        <!-- Quatro stories em 9:16: .pilha--quatro com .pilha--story (peças mais altas e mais estreitas). -->
+        <div class="pilha pilha--quatro pilha--story entra" tabindex="0" role="group" aria-label="Stories das Trilhas do Jatobá. Passe o mouse ou toque para abrir.">
+          <img class="pilha__peca p1" src="../img/design/trilhas-ecologicas/trilha-cabaceiras.webp" width="720" height="1280" alt="Story das Trilhas do Jatobá: expedição Roliúde Nordestina em Cabaceiras, Paraíba, dia 22 de agosto" loading="lazy">
+          <img class="pilha__peca p4" src="../img/design/trilhas-ecologicas/trilha-ecologica-cultural.webp" width="720" height="1280" alt="Story da trilha ecológica cultural em Sobrado, Jataúba, na Virada Cultural Amazônia de Pé 2026" loading="lazy">
+          <img class="pilha__peca p3" src="../img/design/trilhas-ecologicas/trilha-por-do-sol.webp" width="720" height="1280" alt="Story das Trilhas do Jatobá: pôr do sol na Serra do Pará, Santa Cruz do Capibaribe" loading="lazy">
+          <img class="pilha__peca pilha__peca--frente p2" src="../img/design/trilhas-ecologicas/trilha-ipanema.webp" width="720" height="1280" alt="Story das Trilhas do Jatobá: trilha Vale do Ipanéma, em Pesqueira, Pernambuco" loading="lazy">
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="secao" id="sistemas" data-ascii aria-labelledby="sistemas-titulo">
+    <div class="env">
+      <h2 class="t1 entra" id="sistemas-titulo" style="--i:1">Sistemas e automações</h2>
+      <!-- Um cartão .site por sistema. Os prints do painel usam só dados inventados: nada de cliente real. -->
+      <div class="sites sites--um">
+        <article class="site" style="--cor:#C98A80">
+          <div class="site__img"><img src="../img/sistemas/ellas-agenda.webp" width="1280" height="800" alt="Agenda da semana do painel do Ellas Studio, com horários marcados de clientes de exemplo" loading="lazy" decoding="async"></div>
+          <div class="site__corpo">
+            <p class="rotulo">Sistema · Estúdio de beleza · <span class="site__previa">Dados de exemplo</span></p>
+            <h3 class="t3">Ellas Studio</h3>
+            <p>Painel com login só pra dona: agenda da semana, clientes, financeiro e as visitas do site. Os dados ficam num banco com cópia automática todo dia.</p>
+            <ul class="site__chips"><li>Supabase</li><li>Playwright</li><li>Vercel</li></ul>
+            <a class="site__link" href="https://ellas-studio.vercel.app/" target="_blank" rel="noopener">Ver o site do Ellas</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao" id="sites" aria-labelledby="sites-titulo">
+    <div class="env">
+      <h2 class="t1 entra" id="sites-titulo" style="--i:1">Sites feitos para <span class="t1__marca">prender a atenção</span></h2>
+      <div class="sites">
+      <article class="site" style="--cor:#C98A80">
+        <div class="site__img"><img src="../img/sites/ellas.webp" width="1280" height="800" alt="Página inicial do site do Ellas Studio" decoding="async"></div>
+        <div class="site__corpo">
+          <p class="rotulo">Site e sistema · Estúdio de beleza</p>
+          <h3 class="t3">Ellas Studio</h3>
+          <p>Site do estúdio e um painel com login pra dona: agenda, clientes, visitas e financeiro.</p>
+          <ul class="site__chips"><li>HTML e CSS</li><li>Supabase</li><li>Playwright</li><li>Vercel</li></ul>
+          <a class="site__link" href="https://ellas-studio.vercel.app/" target="_blank" rel="noopener">Abrir o site</a>
+        </div>
+      </article>
+      <article class="site" style="--cor:#1B2F9E">
+        <div class="site__img"><img src="../img/sites/primefix.webp" width="1280" height="800" alt="Página inicial do site da PrimeFix" decoding="async"></div>
+        <div class="site__corpo">
+          <p class="rotulo">Site e catálogo · Estruturas solares · <span class="site__previa">Prévia</span></p>
+          <h3 class="t3">PrimeFix</h3>
+          <p>Página principal com palco em 3D, páginas internas e um catálogo de kits e peças. O pedido de cotação sai pronto pro WhatsApp, e cada peça avulsa abre num visor 3D.</p>
+          <ul class="site__chips"><li>Three.js</li><li>GSAP</li><li>JavaScript</li><li>Playwright</li></ul>
+          <a class="site__link" href="https://primefix-iota.vercel.app/" target="_blank" rel="noopener">Abrir a prévia</a>
+        </div>
+      </article>
+      <article class="site" style="--cor:#B8935A">
+        <div class="site__img"><img src="../img/sites/faccina.webp" width="1280" height="800" alt="Página inicial do site da Clínica Faccina" decoding="async"></div>
+        <div class="site__corpo">
+          <p class="rotulo">Site · Clínica · Santa Cruz do Capibaribe, PE</p>
+          <h3 class="t3">Clínica Faccina</h3>
+          <p>O botão "Site" do perfil da clínica no Google dava erro. Agora ele abre uma página que apresenta as especialidades, mostra como chegar e chama no WhatsApp.</p>
+          <ul class="site__chips"><li>HTML e CSS</li><li>Vercel</li></ul>
+          <a class="site__link" href="https://clinica-faccina.vercel.app/" target="_blank" rel="noopener">Abrir o site</a>
+        </div>
+      </article>
+      <article class="site" style="--cor:#3D74B4">
+        <div class="site__img"><img src="../img/sites/lacem.webp" width="1280" height="800" alt="Página inicial do site da LACEM" decoding="async"></div>
+        <div class="site__corpo">
+          <p class="rotulo">Site · Laboratório e especialidades médicas</p>
+          <h3 class="t3">LACEM</h3>
+          <p>Site feito do zero pra uma clínica que não tinha nenhum: exames, especialidades, as três unidades e o agendamento num toque.</p>
+          <ul class="site__chips"><li>HTML e CSS</li><li>Vercel</li></ul>
+          <a class="site__link" href="https://lacem-clinica.vercel.app/" target="_blank" rel="noopener">Abrir o site</a>
+        </div>
+      </article>
+      <article class="site" style="--cor:#E8782A">
+        <div class="site__img"><img src="../img/sites/vetday.webp" width="1280" height="800" alt="Página inicial do site da VetDay, com um husky sobre fundo verde" decoding="async"></div>
+        <div class="site__corpo">
+          <p class="rotulo">Site · Clínica veterinária · Salvador, BA · <span class="site__previa">Prévia</span></p>
+          <h3 class="t3">VetDay</h3>
+          <p>Primeiro site de uma clínica veterinária que só tinha Instagram: apresenta a clínica, mostra como chegar e leva o tutor direto pro WhatsApp pra agendar a consulta.</p>
+          <ul class="site__chips"><li>HTML e CSS</li></ul>
+          <span class="site__link site__link--off">Em construção · ainda sem endereço</span>
+        </div>
+      </article>
+      </div>
+    </div>
+  </section>
+  <section class="secao" id="videos" data-ascii aria-labelledby="videos-titulo">
+    <div class="env">
+      <h2 class="t1 entra" id="videos-titulo" style="--i:1">Vídeos personalizados exclusivamente para o <span class="t1__marca">seu negócio</span></h2>
+      <div class="sites sites--videos">
+        <article class="site" style="--cor:#FFC531">
+          <video controls preload="none" playsinline poster="../img/videos/reel-v0n.webp" src="../video/reel-v0n.mp4"></video>
+          <div class="site__corpo">
+            <p class="rotulo">Reel · v0n</p>
+            <h3 class="t3">Anúncio em vídeo</h3>
+            <p>Interface em 3D com foco raso, conversa digitada ao vivo e trilha sintetizada em código.</p>
+            <ul class="site__chips"><li>Remotion</li><li>React</li></ul>
+          </div>
+        </article>
+        <article class="site" style="--cor:#1B2F9E">
+          <video controls preload="none" playsinline poster="../img/videos/primefix-video.webp" src="../video/primefix.mp4"></video>
+          <div class="site__corpo">
+            <p class="rotulo">Reel · PrimeFix</p>
+            <h3 class="t3">Vídeo de produto</h3>
+            <p>Apresentação das peças da PrimeFix em formato de Reels, com anotação à mão sobre cada modelo.</p>
+            <ul class="site__chips"><li>Remotion</li><li>React</li></ul>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+  <!-- Fecho: chamada pro WhatsApp e um celular onde a conversa acontece sozinha quando ele entra na
+       tela (js/servicos.js). A conversa é a mesma do fecho da home. Sem JS, ou com movimento
+       reduzido, as mensagens já aparecem prontas. -->
+  <section class="secao cta" id="contato" aria-labelledby="cta-titulo">
+    <div class="env cta__grade">
+      <div class="cta__texto">
+        <h2 class="t1 entra" id="cta-titulo">Quer ver sua empresa com um desses serviços como prévia? <span class="t1__marca">Fale com a gente aqui.</span></h2>
+        <p class="cta__sub entra" style="--i:1">No Google, ganha quem aparece.</p>
+        <p class="entra" style="--i:2"><a class="btn btn--ouro" href="https://wa.me/5581981400996?text=Oi%2C%20v0n!%20Vi%20a%20p%C3%A1gina%20de%20servi%C3%A7os%20e%20quero%20conversar." target="_blank" rel="noopener">Chamar no WhatsApp</a></p>
+      </div>
+      <div class="fone" role="img" aria-label="Exemplo de conversa no WhatsApp: um cliente pede orçamento, a v0n pergunta o que ele precisa, ele diz que quer aparecer mais na internet e fortalecer a marca, e a v0n responde: pode deixar.">
+        <div class="fone__corpo" aria-hidden="true">
+          <div class="fone__tela">
+          <div class="fone__status"><b>9:41</b><span class="fone__bateria"></span></div>
+          <div class="fone__topo"><img class="fone__av" src="../img/selo.svg" width="34" height="34" alt=""><span class="fone__nome">v0n<small>online</small></span></div>
+          <div class="fone__chat">
+        <div class="fone__linha fone__linha--eu"><p class="fone__msg fone__msg--eu">Oi! Queria fazer um orçamento.<span class="fone__check">✓✓</span></p></div>
+        <div class="fone__linha fone__linha--v0n"><img class="fone__av" src="../img/selo.svg" width="28" height="28" alt=""><span class="fone__digita"><i></i><i></i><i></i></span><p class="fone__msg fone__msg--v0n">Oi! Claro. O que você precisa?</p></div>
+        <div class="fone__linha fone__linha--eu"><p class="fone__msg fone__msg--eu">Quero aparecer mais na internet, deixar minha marca mais forte.<span class="fone__check">✓✓</span></p></div>
+        <div class="fone__linha fone__linha--v0n"><img class="fone__av" src="../img/selo.svg" width="28" height="28" alt=""><span class="fone__digita"><i></i><i></i><i></i></span><p class="fone__msg fone__msg--v0n">Pode deixar.</p></div>
+          </div>
+          <div class="fone__entrada"><span>Mensagem</span></div>
+          </div>
+          <img class="fone__moldura" src="../img/iphone-16.webp" width="800" height="1653" alt="">
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
+<script src="../js/entradas.js" defer></script>
+<script src="../js/servicos.js" defer></script>
+<script src="../js/ascii.js" defer></script>
+</body>
+</html>
